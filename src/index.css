@@ -1,11 +1,37 @@
+@font-face {
+  font-family: mainFont;
+  src: url('./Fonts/AvenirNextLTPro-Regular.ttf');
+}
+
+*,
+*::before,
+*::after{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+
+:root{
+  --main-font: mainFont,-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+  --main-font-color:#fff;
+  --second-font-color:#000;
+  --button-color:#4F3828;
+  --button-green-color:#324F30;
+
+
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--main-font);
+  font-size: 10px;
+  color: var(--main-font-color);
+  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',

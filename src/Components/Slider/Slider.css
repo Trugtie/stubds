@@ -1,0 +1,18 @@
+.mySwiper{
+    height:18vh;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+}
+.swiper-button-prev::after,.swiper-button-next::after{
+    font-size: 25px;
+    color:white;
+}
+
+.slider-title{
+    z-index: 1;
+    position: absolute;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}

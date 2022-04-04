@@ -1,0 +1,22 @@
+.Nav-layout{
+    width: 15vw;
+    height: 100vh;
+    background:black;
+    float:left;
+}
+
+.Container-layout{
+    width: 85vw;
+    height: 100vh;
+    float:right;
+}
+
+.Slider-layout{
+    height: 18vh;
+    background:red;
+}
+
+.Content-layout{
+    height: 82vh;
+    background: linear-gradient(180deg, rgba(246, 240, 234, 0.31) 0%, rgba(241, 223, 209, 0.31) 100%);
+}
