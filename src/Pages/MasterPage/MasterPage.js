@@ -12,7 +12,9 @@ function MasterPage() {
         <div className="Slider-layout">
         <Slider/>
         </div>
-        <div className="Content-layout"></div>
+        <div className="Content-layout">
+          
+        </div>
       </div>
     </div>
   );
