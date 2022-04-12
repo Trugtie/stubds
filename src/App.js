@@ -8,10 +8,11 @@ function App() {
   // const userInfo = useSelector(state=>state.User.userInfo)
   return (
     <div className="App">
-      <Routes>
+      {/* <Routes>
       <Route path="/" element={<MasterPage />} />
       <Route path="/login" element={<Login />} />
-      </Routes>
+      </Routes> */}
+      <MasterPage/>
     </div>
   );
 }
