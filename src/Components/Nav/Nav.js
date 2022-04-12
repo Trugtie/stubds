@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import {Link} from "react-router-dom";
 import ClockCircle from "../ClockCircle/ClockCircle";
 import "./Nav.css";
 import Logo from "./logo.svg";
@@ -31,7 +32,9 @@ function Nav() {
           </div>
           <div className="nav-footer">
             <button className="exitBtn">
-              <img src={ExitIcon} />
+              <Link to="/login">
+                <img src={ExitIcon} />
+              </Link>
             </button>
           </div>
         </nav>
