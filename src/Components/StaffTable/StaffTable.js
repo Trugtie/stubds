@@ -2,6 +2,7 @@ import MaterialTable, { MTableToolbar } from 'material-table';
 import PlusIcon from './plus.svg';
 import staffdata from './staffdata.json';
 import './StaffTable.css';
+import BasicModal from '../Modal/Modal';
 
 export default function StaffTable() {
     
@@ -25,7 +26,7 @@ export default function StaffTable() {
           <div className='table-header'>
             <MTableToolbar {...props} />
             <div>
-              <button className='add-btn'><img src={PlusIcon}/></button>
+              <BasicModal iconBtn={<img src={PlusIcon}/>}/>
             </div>
           </div>
         ),

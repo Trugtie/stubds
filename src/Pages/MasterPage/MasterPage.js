@@ -25,6 +25,7 @@ function MasterPage() {
         </div>
         <div className="Content-layout">
           <Routes>
+            <Route path="/" element={<StaffManagement />} />
             <Route path="/staffmanagement" element={<StaffManagement />} />
             <Route path="/customermanagement" element={<CustomerManagement />} />
           </Routes>
