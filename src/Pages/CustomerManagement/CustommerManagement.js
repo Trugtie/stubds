@@ -1,7 +1,9 @@
 import "./CustomerManagement.css";
 
 function CustomerManagement() {
-  return <div className="CustomerManagement-container">Customer Management</div>;
+  return <div className="CustomerManagement-container">
+    
+  </div>;
 }
 
 export default CustomerManagement;
