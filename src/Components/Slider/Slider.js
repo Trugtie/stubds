@@ -3,8 +3,9 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "./Slider.css";
 import { Autoplay, Navigation } from "swiper";
+import MenuIcon from "@mui/icons-material/Menu";
 
-function Slider() {
+function Slider({handle}) {
   const imgdata = [
     "http://danangcanho.com.vn/wp-content/uploads/2018/06/Forest-City-banner.jpg",
     "https://aquacityvn.vn/wp-content/uploads/2015/01/banner-aqua-city-2.jpg",
@@ -26,6 +27,12 @@ function Slider() {
         modules={[Autoplay, Navigation]}
         className="mySwiper"
       >
+        <div className="nav-toggle" onClick={handle}>
+              <MenuIcon
+                sx={{ fontSize: 40, padding: ".5rem", transition: "all .3s" }}
+                className="nav-button"
+              />
+        </div>
         <h1 className="slider-title">Quản lý nhân viên</h1>
         {imgdata.map((item, key) => (
           <SwiperSlide key={key}

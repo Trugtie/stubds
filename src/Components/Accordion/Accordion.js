@@ -6,6 +6,12 @@ import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import "./Accordion.css";
+import StaffIcon from './staff.svg';
+import CustomerIcon from './customer.svg';
+import BdsIcon from './bds.svg';
+import KyGuiIcon from './kygui.svg';
+import DatCocIcon from './datcoc.svg';
+import ChuyenNhuongIcon from './chuyennhuong.svg';
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
@@ -65,12 +71,12 @@ export default function CustomizedAccordion() {
         onChange={handleChange("panel1")}
       >
         <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <div className="icon-bg">1</div>
+          <div className="icon-bg"><img src={StaffIcon}/></div>
           <div className="acor-heading">QUẢN LÝ NHÂN VIÊN</div>
         </AccordionSummary>
         <AccordionDetails>
           <ul className="acor-list">
-            <Link to="/" className="link">
+            <Link to="/staffmanagement" className="link">
               <li>Xem thông tin</li>
             </Link>
             <Link to="/" className="link">
@@ -84,12 +90,12 @@ export default function CustomizedAccordion() {
         onChange={handleChange("panel2")}
       >
         <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <div className="icon-bg">2</div>
+          <div className="icon-bg"><img src={CustomerIcon}/></div>
           <div className="acor-heading">QUẢN LÝ KHÁCH HÀNG</div>
         </AccordionSummary>
         <AccordionDetails>
           <ul className="acor-list">
-            <Link to="/" className="link">
+            <Link to="/customermanagement" className="link">
               <li>Xem thông tin</li>
             </Link>
             <Link to="/" className="link">
@@ -103,7 +109,7 @@ export default function CustomizedAccordion() {
         onChange={handleChange("panel3")}
       >
         <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-          <div className="icon-bg">3</div>
+          <div className="icon-bg"><img src={BdsIcon}/></div>
           <div className="acor-heading">QUẢN LÝ BẤT ĐỘNG SẢN</div>
         </AccordionSummary>
         <AccordionDetails>
@@ -122,7 +128,7 @@ export default function CustomizedAccordion() {
         onChange={handleChange("panel4")}
       >
         <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
-          <div className="icon-bg">4</div>
+          <div className="icon-bg"><img src={KyGuiIcon}/></div>
           <div className="acor-heading">QUẢN LÝ HĐ KÝ GỬI</div>
         </AccordionSummary>
         <AccordionDetails>
@@ -141,7 +147,7 @@ export default function CustomizedAccordion() {
         onChange={handleChange("panel5")}
       >
         <AccordionSummary aria-controls="panel5d-content" id="panel5d-header">
-          <div className="icon-bg">5</div>
+          <div className="icon-bg"><img src={DatCocIcon}/></div>
           <div className="acor-heading">QUẢN LÝ HĐ ĐẶT CỌC</div>
         </AccordionSummary>
         <AccordionDetails>
@@ -160,7 +166,7 @@ export default function CustomizedAccordion() {
         onChange={handleChange("panel6")}
       >
         <AccordionSummary aria-controls="panel6d-content" id="panel6d-header">
-          <div className="icon-bg">6</div>
+          <div className="icon-bg"><img src={ChuyenNhuongIcon}/></div>
           <div className="acor-heading">QUẢN LÝ HĐ CHUYỂN NHƯỢNG</div>
         </AccordionSummary>
         <AccordionDetails>
