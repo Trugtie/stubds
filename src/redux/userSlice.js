@@ -51,8 +51,7 @@ export const userSlice = createSlice({
          state.userInfo = payload
          state.status = true
       }else{
-         state.loading = HTTP_STATUS.REJECTED
-         state.message = payload
+         state.loading = HTTP_STATUS.REJECTED                  
       }
       },
    }
