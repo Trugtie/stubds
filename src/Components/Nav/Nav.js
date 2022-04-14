@@ -1,20 +1,23 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import ClockCircle from "../ClockCircle/ClockCircle";
 import "./Nav.css";
 import Logo from "./logo.svg";
 import StarIcon from "./star.svg";
 import CustomizedAccordion from "../Accordion/Accordion";
 import ExitIcon from "./exit.svg";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { logout } from '../../redux/userSlice';
 
 function Nav() {
   useEffect(() => {
     ClockCircle();
+    localStorage.getItem('permission') === '1'? setQuyen('Nhân viên Sales'): setQuyen('Nhân viên quản lý')
   }, []);
 
   const dispatch = useDispatch()  
-  const tennv = localStorage.getItem('user')  
+  const tennv = localStorage.getItem('user') 
+  const [quyen,setQuyen] = useState("")  
+
   const onLogout = () => {
     dispatch(logout())
     window.location.reload()
@@ -28,7 +31,9 @@ function Nav() {
             <img className="nav-logo" src={Logo} alt="Logo" />
             <div id="clock"></div>
             <div className="user-info">
-              <h3 className="user-role">Nhân viên quản lý</h3>
+              <h3 className="user-role">
+                {quyen}
+                </h3>
               <div className="user-divider">
                 <img className="user-star" src={StarIcon} />
               </div>
