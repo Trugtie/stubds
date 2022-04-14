@@ -28,25 +28,27 @@ export const userSlice = createSlice({
   },
   reducers:{
      logout:(state)=>{
+        localStorage.removeItem("user")
       state.userInfo = null
       state.loading = null
       state.status = null
      }
   },
   extraReducers:{
-   [login.pending](state){                   //start login
+   [login.pending](state){
       state.loading = HTTP_STATUS.PENDING
-   },
-   [login.fulfilled](state,{payload}){
-      state.loading = HTTP_STATUS.FULFILLED
-      state.userInfo = payload
-      state.status = true
    },
    [login.rejected](state,{payload}){
       state.loading = HTTP_STATUS.REJECTED
       state.message = payload
-      
-   },                                         //end login
+   },
+   [login.fulfilled](state,{payload}){
+      localStorage.setItem("user",payload.tennv)
+      window.location.reload()
+      state.loading = HTTP_STATUS.FULFILLED
+      state.userInfo = payload
+      state.status = true
+   },
   }
 })
 export const {logout} = userSlice.actions;

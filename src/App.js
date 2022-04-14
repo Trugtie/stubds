@@ -1,20 +1,29 @@
 import './App.css';
 import Login from './Pages/Login/Login';
 import MasterPage from './Pages/MasterPage/MasterPage'
-import { Routes, Route } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import React from 'react';
 
 function App() {
-  // const userInfo = useSelector(state=>state.User.userInfo)
-  return (
-    <div className="App">
-      {/* <Routes>
+return (
+  <div className="App">
+     {/* <Routes>
       <Route path="/" element={<MasterPage />} />
       <Route path="/login" element={<Login />} />
-      </Routes> */}
-      <MasterPage/>
-    </div>
-  );
+      </Routes> 
+    <Login /> */}        
+    {
+      localStorage.getItem("user") ?
+        <React.Fragment>
+          <MasterPage />
+        </React.Fragment>
+        :
+        <React.Fragment>
+          <Login />
+        </React.Fragment>
+    }
+  </div>
+);
 }
 
 export default App;

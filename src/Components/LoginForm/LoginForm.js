@@ -5,20 +5,18 @@ import LockIcon from "@mui/icons-material/Lock";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import LinkUI from "@mui/material/Link";
+import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from '@mui/material/styles';
 import "./LoginForm.css"
 
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../redux/userSlice";
 import { HTTP_STATUS } from '../../redux/constants';
 
 
 function LoginForm() {
-  
-  let navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [taikhoan,setTaikhoan] = useState("")
   const [matkhau,setMatkhau] = useState("")
@@ -32,14 +30,10 @@ function LoginForm() {
       if(taikhoan === "" || matkhau === ""){
         return
       }else{
-        // dispatch(login({taikhoan,matkhau}))
+        dispatch(login({taikhoan,matkhau}))         
       }
-   }
+   }  
 
-  //  useSelector(state=>state.User.loading === HTTP_STATUS.FULFILLED ? navigate("/"):'')
-
-
-  
 
   const LoginButton = styled(Button)({
     backgroundColor: 'var(--button-color)',
@@ -89,20 +83,17 @@ function LoginForm() {
             }}
           />
           <br />
-
-          {/* spinner */}
-          {/* {useSelector(state => state.User.loading === HTTP_STATUS.PENDING ?
-            <button className="btn btn-primary">
-              <span className="spinner-border spinner-border-sm"></span>
-              Loading..
-            </button> : '')} */}
-          {/* end spinner */}
-          {/* <h4 style={{ color: "red" }}>{useSelector(state => state.User.loading === HTTP_STATUS.REJECTED ? "Sai tên đăng nhập hoặc mật khẩu" : "")}</h4> */}
+          <br />
+          {useSelector(state => state.User.loading === HTTP_STATUS.PENDING ?
+            <LinearProgress color="inherit" />
+            : '')}
 
           <LoginButton variant="contained" fullWidth type="submit">ĐĂNG NHẬP</LoginButton>
           {/* <Link to='/' style={{textDecoration: 'none'}}>
         <LoginButton variant="contained" fullWidth>ĐĂNG NHẬP</LoginButton>
         </Link> */}
+          <h4 style={{ color: "red" }}>{useSelector(state => state.User.loading === HTTP_STATUS.REJECTED ? "Sai tên đăng nhập hoặc mật khẩu" : "")}</h4>
+
           <br />
           <LinkUI underline="none">
             Quên mật khẩu ?

@@ -24,7 +24,7 @@ function MasterPage() {
           <Slider handle={handleMenu} />
         </div>
         <div className="Content-layout">
-          <Routes>
+          <Routes>          
             <Route path="/" element={<StaffManagement />} />
             <Route path="/staffmanagement" element={<StaffManagement />} />
             <Route path="/customermanagement" element={<CustomerManagement />} />

@@ -1,16 +1,24 @@
 import { useEffect } from "react";
-import {Link} from "react-router-dom";
 import ClockCircle from "../ClockCircle/ClockCircle";
 import "./Nav.css";
 import Logo from "./logo.svg";
 import StarIcon from "./star.svg";
 import CustomizedAccordion from "../Accordion/Accordion";
 import ExitIcon from "./exit.svg";
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/userSlice';
 
 function Nav() {
   useEffect(() => {
     ClockCircle();
   }, []);
+
+  const dispatch = useDispatch()  
+  const tennv = localStorage.getItem('user')  
+  const onLogout = () => {
+    dispatch(logout())
+    window.location.reload()
+  }
 
   return (
     <header>
@@ -24,17 +32,17 @@ function Nav() {
               <div className="user-divider">
                 <img className="user-star" src={StarIcon} />
               </div>
-              <h4 className="user-name">Trugtie</h4>
+              <h4 className="user-name">
+                {tennv}
+                </h4>
             </div>
           </div>
           <div className="nav-content">
             <CustomizedAccordion />
           </div>
           <div className="nav-footer">
-            <button className="exitBtn">
-              <Link to="/login">
-                <img src={ExitIcon} />
-              </Link>
+            <button className="exitBtn" onClick={onLogout}>
+              <img src={ExitIcon} />
             </button>
           </div>
         </nav>
