@@ -36,3 +36,7 @@
 .modal-divider{
     background-color: var(--button-color);
 }
+
+.modal-form{
+    padding:1rem 12rem;
+}

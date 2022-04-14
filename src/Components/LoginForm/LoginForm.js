@@ -45,7 +45,6 @@ function LoginForm() {
       backgroundColor: 'var(--button-green-color)',
     },
   });
-
   return (
     <div className="login-form__container">
       <form onSubmit={e => onSubmit(e)}  >
