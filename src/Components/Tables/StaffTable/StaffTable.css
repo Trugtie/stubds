@@ -59,3 +59,14 @@
 .MuiTableRow-root:hover{
     background:#F6F0EA
 }
+
+.MuiTableSortLabel-root.MuiTableSortLabel-active{
+    color:white !important;
+}
+
+.MuiTableSortLabel-root:hover{
+    color:white !important;
+}
+.MuiTableSortLabel-icon{
+    color:white !important;
+}

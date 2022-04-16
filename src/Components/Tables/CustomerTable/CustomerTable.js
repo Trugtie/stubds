@@ -1,12 +1,19 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
+import { useState } from 'react';
 import PlusIcon from './plus.svg';
+import RequireIcon from './requirement.svg'
 import staffdata from './staffdata.json';
-import './StaffTable.css';
-import BasicModal from '../Modal/Modal';
+import CustomerModal from '../../Modal/CustomerModal/CustomerModal';
+import RequirementModal from '../../Modal/CustomerModal/RequirementModal';
 
-export default function StaffTable() {
-    
+export default function CustomerTable() {
+  
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
+    <div>
     <MaterialTable
       columns={[
         { title: 'ID', field: 'id' },
@@ -14,11 +21,10 @@ export default function StaffTable() {
         { title: 'Ngày sinh', field: 'birthday',type:'date'},
         { title: 'Giới tính', field: 'gender' },
         { title: 'SĐT', field: 'phone',type:'numeric' },
+        { title: 'CMND', field: 'cmnd',type:'numeric' },
         { title: 'Email', field: 'email' },
         { title: 'Địa chỉ', field: 'address' },
-        { title: 'Quyền', field: 'role' },
-        { title: 'Doanh thu', field: 'currency' },
-        
+        { title: 'Loại KH', field: 'type' },
       ]}
       data={staffdata}        
       components={{
@@ -26,10 +32,10 @@ export default function StaffTable() {
           <div className='table-header'>
             <MTableToolbar {...props} />
             <div>
-              <BasicModal iconBtn={<img src={PlusIcon}/>}/>
+              <CustomerModal iconBtn={<img src={PlusIcon}/>}/>
             </div>
           </div>
-        ),
+        )
       }}
 
       actions={[
@@ -39,6 +45,12 @@ export default function StaffTable() {
           onClick: (event, rowData) => alert("You saved " + rowData.name),
           iconProps: { style: { color: "var(--button-green-color)" } }
         },
+        rowData => ({
+          icon: () => <img src={RequireIcon} style={{width:'24px',padding:'1px 2px'}}/>,
+          tooltip: 'Lập yêu cầu',
+          onClick: (event, rowData) => handleOpen(),
+          iconProps: { style: { color: "#B52017"} }
+        }),
         rowData => ({
           icon: 'delete',
           tooltip: 'Xóa',
@@ -52,5 +64,7 @@ export default function StaffTable() {
         pageSizeOptions:[10,15,20]
       }}
     />
+    <RequirementModal open={open} close={handleClose}/>
+    </div>
   );
 }

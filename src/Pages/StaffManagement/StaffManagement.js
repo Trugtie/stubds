@@ -1,5 +1,5 @@
 import './StaffManagement.css';
-import StaffTable from '../../Components/StaffTable/StaffTable'
+import StaffTable from '../../Components/Tables/StaffTable/StaffTable'
 
 
 function StaffManagement(){

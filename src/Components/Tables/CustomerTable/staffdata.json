@@ -1,0 +1,24 @@
+[
+	{
+		"id": 1,
+		"name": "Gray Emerson",
+		"birthday": "02/13/2022",
+		"gender": "Nữ",
+		"phone": "+822 775 666",
+		"email": "est.tempor@protonmail.ca",
+		"address": "Ap #557-8813 Elit Ave",
+		"cmnd":"132156487",
+		"type":"Loại A"
+	},
+	{
+		"id": 2,
+		"name": "Jermaine Ballard",
+		"birthday": "09/12/2021",
+		"gender": "Nam",
+		"phone": "+638 613 334",
+		"email": "a.nunc@protonmail.ca",
+		"address": "Ap #274-7428 Sem St.",
+		"cmnd":"132156487",
+		"type":"Loại B"
+	}
+]

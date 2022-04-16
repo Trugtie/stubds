@@ -1,0 +1,43 @@
+.requirementContainer{
+    height:250px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.requirementContainer .MTableHeader-header-13{
+    font-size:.7rem !important;
+    padding: 2px !important;
+    line-height:10px !important;
+}
+.requirementContainer .MuiTableCell-root {
+    padding:0px;
+    line-height: 1px;
+    text-align: center;
+}
+
+.requirementContainer .MuiToolbar-regular {
+    min-height: 0px;
+    background-color:#f6f0ea;
+}
+
+.requirementContainer .MTableToolbar-title-9{
+    display:flex;
+}
+
+.requirementContainer .MTableToolbar-spacer-7{
+    display:block;
+}
+.requirementContainer .Component-horizontalScrollContainer-12{
+    max-height: 219px;
+}
+
+.requirementContainer .MTablePaginationInner-root-14 {
+    height: 22px;
+}
+
+.requirementContainer .MuiIconButton-root{
+    padding:5px;
+}
+
+.requirementContainer .MTablePaginationInner-root-14 span{
+    font-size:10px;
+}

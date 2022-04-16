@@ -1,0 +1,112 @@
+[
+	{
+		"id": 1,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 2,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 3,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 3,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 3,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 3,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 3,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 3,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 3,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 3,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	},
+    {
+		"id": 4,
+		"size": "200m2",
+		"location": "Quận 7",
+		"description": "blablablablablabla",
+		"cost": "12x58m",
+		"lenght": "12x12m",
+		"width": "12x12m",
+		"type":"Nhà"
+	}
+]

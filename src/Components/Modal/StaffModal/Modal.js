@@ -11,21 +11,20 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
-import { styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 import "./Modal.css";
 
 export default function BasicModal({ iconBtn }) {
-
   const ColorButton = styled(Button)(({ theme }) => ({
-    color: 'white',
-    fontWeight:'bolder',
+    color: "white",
+    fontWeight: "bolder",
     width: "100%",
-    backgroundColor:'var(--button-color)',
-    '&:hover': {
-      backgroundColor: '#80583b',
+    backgroundColor: "var(--button-color)",
+    "&:hover": {
+      backgroundColor: "#80583b",
     },
   }));
-  
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -124,6 +123,12 @@ export default function BasicModal({ iconBtn }) {
                     variant="filled"
                     fullWidth
                     placeholder="Nhập SĐT"
+                    type='number'
+                    onInput={(e) => {
+                      e.target.value = Math.max(0, parseInt(e.target.value))
+                        .toString()
+                        .slice(0, 10);
+                    }}
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -170,7 +175,7 @@ export default function BasicModal({ iconBtn }) {
             </div>
             <h2 className="modal-subtitle">Thông tin làm việc</h2>
             <hr className="modal-divider" />
-            <div className="modal-form" style={{marginTop:'1rem'}}>
+            <div className="modal-form" style={{ marginTop: "1rem" }}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <FormControl
@@ -203,13 +208,14 @@ export default function BasicModal({ iconBtn }) {
                     variant="filled"
                     fullWidth
                     placeholder="Nhập doanh thu..."
+                    type='number'
                   />
                 </Grid>
               </Grid>
             </div>
             <h2 className="modal-subtitle">Thông tin tài khoản</h2>
             <hr className="modal-divider" />
-            <div className="modal-form" style={{marginTop:'2rem'}}>
+            <div className="modal-form" style={{ marginTop: "2rem" }}>
               <Grid container spacing={2}>
                 <Grid item xs={6}>
                   <TextField
@@ -262,8 +268,8 @@ export default function BasicModal({ iconBtn }) {
                 </Grid>
               </Grid>
             </div>
-            <div className="modal-form" style={{marginTop:'3rem'}}>
-            <ColorButton variant="contained">Thêm</ColorButton>
+            <div className="modal-form" style={{ marginTop: "3rem" }}>
+              <ColorButton variant="contained">Thêm</ColorButton>
             </div>
           </div>
         </Box>
