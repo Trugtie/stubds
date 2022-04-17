@@ -1,32 +1,43 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
 import PlusIcon from './plus.svg';
-import staffdata from './staffdata.json';
 import './StaffTable.css';
 import BasicModal from '../../Modal/StaffModal/Modal';
 
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+import { getStaffs } from "../../../redux/staffSlice";
+
 export default function StaffTable() {
-    
+
+  const dispatch = useDispatch();  
+  const {list,status}=JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
+  useEffect(() => {
+    dispatch(getStaffs())    
+  }, [])
+  
+console.log(list);
+
   return (
     <MaterialTable
       columns={[
-        { title: 'ID', field: 'id' },
-        { title: 'Họ tên', field: 'name' },
-        { title: 'Ngày sinh', field: 'birthday',type:'date'},
-        { title: 'Giới tính', field: 'gender' },
-        { title: 'SĐT', field: 'phone',type:'numeric' },
+        { title: 'ID', field: 'nvid' },
+        { title: 'Họ tên', field: 'tennv' },
+        { title: 'Ngày sinh', field: 'ngaysinh', type: 'date' },
+        { title: 'Giới tính', field: 'gioitinh', lookup: { 0: "Nam", 1: "Nữ" }},
+        { title: 'SĐT', field: 'sdt', type: 'numeric' },
         { title: 'Email', field: 'email' },
-        { title: 'Địa chỉ', field: 'address' },
-        { title: 'Quyền', field: 'role' },
-        { title: 'Doanh thu', field: 'currency' },
-        
+        { title: 'Địa chỉ', field: 'diachi' },
+        { title: 'Quyền', field: 'quyen', lookup: { 0: "Quản lý", 1: "Sale" } },
+        { title: 'Doanh thu', field: 'doanhthu' },
+
       ]}
-      data={staffdata}        
+      data={list}
       components={{
         Toolbar: props => (
           <div className='table-header'>
             <MTableToolbar {...props} />
             <div>
-              <BasicModal iconBtn={<img src={PlusIcon}/>}/>
+              <BasicModal iconBtn={<img src={PlusIcon} />} />
             </div>
           </div>
         ),
@@ -48,8 +59,8 @@ export default function StaffTable() {
       ]}
       options={{
         actionsColumnIndex: -1,
-        pageSize:10,
-        pageSizeOptions:[10,15,20]
+        pageSize: 10,
+        pageSizeOptions: [10, 15, 20]
       }}
     />
   );

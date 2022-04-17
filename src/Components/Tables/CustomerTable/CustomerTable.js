@@ -1,10 +1,12 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PlusIcon from './plus.svg';
 import RequireIcon from './requirement.svg'
-import staffdata from './staffdata.json';
 import CustomerModal from '../../Modal/CustomerModal/CustomerModal';
 import RequirementModal from '../../Modal/CustomerModal/RequirementModal';
+
+import { useSelector, useDispatch } from "react-redux";
+import { getCustomers } from "../../../redux/customerSlice";
 
 export default function CustomerTable() {
   
@@ -12,21 +14,29 @@ export default function CustomerTable() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const dispatch = useDispatch();  
+  const {list,status}=JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
+  useEffect(() => {
+    dispatch(getCustomers())    
+  }, [])
+
   return (
     <div>
     <MaterialTable
       columns={[
-        { title: 'ID', field: 'id' },
-        { title: 'Họ tên', field: 'name' },
-        { title: 'Ngày sinh', field: 'birthday',type:'date'},
-        { title: 'Giới tính', field: 'gender' },
-        { title: 'SĐT', field: 'phone',type:'numeric' },
+        { title: 'ID', field: 'khid' },
+        { title: 'Họ tên', field: 'hoten' },
+        { title: 'Ngày sinh', field: 'ngaysinh',type:'date'},
+        { title: 'Giới tính', field: 'gioitinh', lookup: { 0: "Nam", 1: "Nữ" } },
+        { title: 'SĐT', field: 'sodienthoai',type:'numeric' },
         { title: 'CMND', field: 'cmnd',type:'numeric' },
         { title: 'Email', field: 'email' },
-        { title: 'Địa chỉ', field: 'address' },
-        { title: 'Loại KH', field: 'type' },
+        { title: 'Địa chỉ', field: 'diachi' },
+        { title: 'Địa chỉ thanh toán', field: 'diachitt' },
+        { title: 'Loại KH', field: 'loaikh', lookup: { 0: "Cá nhân", 1: "Công ty" } },
+        { title: 'Trạng thái', field: 'trangthai', lookup: { 1: "Available", 0: "Blocked" } },
       ]}
-      data={staffdata}        
+      data={list}        
       components={{
         Toolbar: props => (
           <div className='table-header'>

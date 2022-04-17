@@ -20,7 +20,7 @@ function MasterPage() {
   const [title,setTitle]=useState('Quản lý nhân viên');
 
   useEffect(() => {
-    console.log(location.pathname);
+    // console.log(location.pathname);
     switch (location.pathname){
       case '/staffmanagement':
         setTitle('Quản lý nhân viên');
