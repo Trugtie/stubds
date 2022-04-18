@@ -14,6 +14,10 @@ import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 import "./Modal.css";
 
+import { useSelector, useDispatch } from "react-redux";
+import { addStaff } from "../../../redux/staffSlice";
+import { HTTP_STATUS, validEmail, validPassword, validUsername } from '../../../redux/constants';
+
 export default function BasicModal({ iconBtn }) {
   const ColorButton = styled(Button)(({ theme }) => ({
     color: "white",
@@ -43,21 +47,33 @@ export default function BasicModal({ iconBtn }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [date, setDate] = React.useState(null);
-  const [gender, setGender] = React.useState("");
-  const [role, setRole] = React.useState("");
-  const [userState, setUserState] = React.useState("");
 
-  const handleGender = (event) => {
-    setGender(event.target.value);
-  };
+  const dispatch = useDispatch();
+  const [ho, setHo] = React.useState("");
+  const [tendem, setTendem] = React.useState("");
+  const [ten, setTen] = React.useState("");  
+  const [ngaysinh, setNgaysinh] = React.useState(null);
+  const [sdt, setSdt] = React.useState("");
+  const [gioitinh, setGioitinh] = React.useState("0");
+  const [diachi, setDiachi] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [quyen, setQuyen] = React.useState("1");
+  const [doanhthu, setDoanhthu] = React.useState("0");
+  const [taikhoan, setTaikhoan] = React.useState("");
+  const [matkhau, setMatkhau] = React.useState("");
+  const [matkhau2, setMatkhau2] = React.useState("");
+  const [trangthai, setTrangthai] = React.useState("0");
 
-  const handleRole = (event) => {
-    setRole(event.target.value);
-  };
-
-  const handleUserState = (event) => {
-    setUserState(event.target.value);
+  const handleSubmit = () => {
+    if (taikhoan === "" || matkhau === "" || matkhau2 === "" || ho === "" || ten === "" || ngaysinh === null || sdt === "" || gioitinh === "" || diachi === "" || email === "" || quyen === "") {    
+      window.alert("Thông tin không được để trống")
+      return
+    } else if (matkhau !== matkhau2) {
+      window.alert("Mật khẩu xác nhận không trùng khớp")
+    } else {
+      const tennv = `${ho} ${tendem} ${ten}`
+      dispatch(addStaff({ taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }))
+    }
   };
 
   return (
@@ -84,6 +100,7 @@ export default function BasicModal({ iconBtn }) {
                     label="Họ"
                     variant="filled"
                     placeholder="Nhập họ..."
+                    onChange={(e) => setHo(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={4}>
@@ -92,6 +109,7 @@ export default function BasicModal({ iconBtn }) {
                     label="Tên lót"
                     variant="filled"
                     placeholder="Nhập tên lót..."
+                    onChange={(e) => setTendem(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={4}>
@@ -100,15 +118,16 @@ export default function BasicModal({ iconBtn }) {
                     label="Tên"
                     variant="filled"
                     placeholder="Nhập tên..."
+                    onChange={(e) => setTen(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
                       label="Ngày sinh"
-                      value={date}
+                      value={ngaysinh}
                       onChange={(newValue) => {
-                        setDate(newValue);
+                        setNgaysinh(newValue);
                       }}
                       renderInput={(params) => (
                         <TextField fullWidth {...params} />
@@ -129,6 +148,7 @@ export default function BasicModal({ iconBtn }) {
                         .toString()
                         .slice(0, 10);
                     }}
+                    onChange={(e) => setSdt(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={2}>
@@ -142,14 +162,11 @@ export default function BasicModal({ iconBtn }) {
                     <Select
                       labelId="demo-simple-select-filled-label"
                       id="demo-simple-select-filled"
-                      value={gender}
-                      onChange={handleGender}
+                      value={gioitinh}
+                      onChange={(e) => setGioitinh(e.target.value)}
                     >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={"Nam"}>Nam</MenuItem>
-                      <MenuItem value={"Nữ"}>Nữ</MenuItem>
+                      <MenuItem value={"0"}>Nam</MenuItem>
+                      <MenuItem value={"1"}>Nữ</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -160,6 +177,7 @@ export default function BasicModal({ iconBtn }) {
                     variant="filled"
                     fullWidth
                     placeholder="Nhập địa chỉ..."
+                    onChange={(e) => setDiachi(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -169,6 +187,7 @@ export default function BasicModal({ iconBtn }) {
                     variant="filled"
                     fullWidth
                     placeholder="Nhập email..."
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -188,14 +207,11 @@ export default function BasicModal({ iconBtn }) {
                     <Select
                       labelId="demo-simple-select-filled-label"
                       id="demo-simple-select-filled"
-                      value={role}
-                      onChange={handleRole}
+                      value={quyen}
+                      onChange={(e) => setQuyen(e.target.value)}
                     >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={"Quản lý"}>Quản lý</MenuItem>
-                      <MenuItem value={"Nhân viên sale"}>
+                      <MenuItem value={"0"}>Quản lý</MenuItem>
+                      <MenuItem value={"1"}>
                         Nhân viên sale
                       </MenuItem>
                     </Select>
@@ -209,6 +225,7 @@ export default function BasicModal({ iconBtn }) {
                     fullWidth
                     placeholder="Nhập doanh thu..."
                     type='number'
+                    onChange={(e) => setDoanhthu(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -224,6 +241,7 @@ export default function BasicModal({ iconBtn }) {
                     variant="filled"
                     fullWidth
                     placeholder="Nhập tên tài khoản..."
+                    onChange={(e) => setTaikhoan(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -237,12 +255,9 @@ export default function BasicModal({ iconBtn }) {
                     <Select
                       labelId="demo-simple-select-filled-label"
                       id="demo-simple-select-filled"
-                      value={userState}
-                      onChange={handleUserState}
+                      value={trangthai}
+                      onChange={(e) => setTrangthai(e.target.value)}
                     >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
                       <MenuItem value={"0"}>Hoạt động</MenuItem>
                       <MenuItem value={"1"}>Bị khóa</MenuItem>
                     </Select>
@@ -253,8 +268,10 @@ export default function BasicModal({ iconBtn }) {
                     id="filled-basic"
                     label="Mật khẩu"
                     variant="filled"
+                    type="password"
                     fullWidth
                     placeholder="Nhập mật khẩu..."
+                    onChange={(e) => setMatkhau(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -262,14 +279,16 @@ export default function BasicModal({ iconBtn }) {
                     id="filled-basic"
                     label="Xác nhận mật khẩu"
                     variant="filled"
+                    type="password"
                     fullWidth
                     placeholder="Nhập lại mật khẩu..."
+                    onChange={(e) => setMatkhau2(e.target.value)}
                   />
                 </Grid>
               </Grid>
             </div>
             <div className="modal-form" style={{ marginTop: "3rem" }}>
-              <ColorButton variant="contained">Thêm</ColorButton>
+              <ColorButton variant="contained" onClick={e => handleSubmit(e)}>Thêm</ColorButton>
             </div>
           </div>
         </Box>
