@@ -1,5 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
+import frLocale from "date-fns/locale/fr";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -15,7 +16,7 @@ import { styled } from "@mui/material/styles";
 
 import { useDispatch } from "react-redux";
 import { addCustomer, editCustomer } from "../../../redux/customerSlice";
-import { HTTP_STATUS } from '../../../redux/constants';
+import { HTTP_STATUS } from "../../../redux/constants";
 
 export default function CustomerModal({ cus, isOpen, isClose }) {
   const ColorButton = styled(Button)(({ theme }) => ({
@@ -60,19 +61,19 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
 
   React.useEffect(() => {
     if (cus) {
-      handleForm()
+      handleForm();
     } else {
-      handleFormAdd()
+      handleFormAdd();
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   const handleForm = () => {
-    var hotenkh = cus.hoten.split(' ');
+    var hotenkh = cus.hoten.split(" ");
     var lenght = hotenkh.length;
     setHo(hotenkh[0]);
     setTen(hotenkh[lenght - 1]);
     if (lenght > 2) {
-      setTendem(hotenkh.slice(1, lenght - 1).join(' '));
+      setTendem(hotenkh.slice(1, lenght - 1).join(" "));
     }
     setNgaysinh(cus.ngaysinh);
     setSdt(cus.sodienthoai);
@@ -103,28 +104,88 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
   };
 
   const handleSubmit = () => {
-    if (ho === "" || ten === "" || ngaysinh === null || sodienthoai === "" || gioitinh === "" || diachi === "" || diachitt === "" || email === "" || cmnd === "" || loaikh === "") {
-      window.alert("Thông tin không được để trống")
-      return
+    if (
+      ho === "" ||
+      ten === "" ||
+      ngaysinh === null ||
+      sodienthoai === "" ||
+      gioitinh === "" ||
+      diachi === "" ||
+      diachitt === "" ||
+      email === "" ||
+      cmnd === "" ||
+      loaikh === ""
+    ) {
+      window.alert("Thông tin không được để trống");
+      return;
     } else {
+<<<<<<< HEAD
       const hoten = `${ho} ${tendem} ${ten}`
       dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
+=======
+      const hoten = `${ho} ${tendem} ${ten}`;
+      dispatch(
+        addCustomer({
+          ngaysinh,
+          sodienthoai,
+          gioitinh,
+          diachi,
+          diachitt,
+          email,
+          cmnd,
+          trangthai,
+          hoten,
+          loaikh,
+          mota,
+        })
+      );
+>>>>>>> b0c71318b851c7e1227e7f081cb0023cb36e320c
       isClose();
     }
   };
 
   const handleEdit = () => {
-    if (ho === "" || ten === "" || ngaysinh === null || sodienthoai === "" || gioitinh === "" || diachi === "" || diachitt === "" || email === "" || cmnd === "" || loaikh === "") {
-      window.alert("Thông tin không được để trống")
-      return
+    if (
+      ho === "" ||
+      ten === "" ||
+      ngaysinh === null ||
+      sodienthoai === "" ||
+      gioitinh === "" ||
+      diachi === "" ||
+      diachitt === "" ||
+      email === "" ||
+      cmnd === "" ||
+      loaikh === ""
+    ) {
+      window.alert("Thông tin không được để trống");
+      return;
     } else {
-      const hoten = `${ho} ${tendem} ${ten}`
-      const khid = cus.khid
+      const hoten = `${ho} ${tendem} ${ten}`;
+      const khid = cus.khid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa khách hàng ID: " + khid)) {
+<<<<<<< HEAD
         dispatch(editCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
+=======
+        dispatch(
+          editCustomer({
+            khid,
+            ngaysinh,
+            sodienthoai,
+            gioitinh,
+            diachi,
+            diachitt,
+            email,
+            cmnd,
+            trangthai,
+            hoten,
+            loaikh,
+            mota,
+          })
+        );
+>>>>>>> b0c71318b851c7e1227e7f081cb0023cb36e320c
         isClose();
       } else {
-        return
+        return;
       }
     }
   };
@@ -176,7 +237,10 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                 />
               </Grid>
               <Grid item xs={6}>
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  locale={frLocale}
+                >
                   <DatePicker
                     required
                     label="Ngày sinh"
@@ -184,7 +248,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                     onChange={(newValue) => {
                       setNgaysinh(newValue);
                     }}
-                    renderInput={(params) => (                      
+                    renderInput={(params) => (
                       <TextField fullWidth {...params} />
                     )}
                   />
@@ -348,11 +412,15 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
             </Grid>
           </div>
           <div className="modal-form" style={{ marginTop: "1rem" }}>
-          {cus ?
-                <ColorButton variant="contained" onClick={e => handleEdit(e)}>Cập nhật khách hàng</ColorButton>
-                :
-                <ColorButton variant="contained" onClick={e => handleSubmit(e)}>Thêm khách hàng</ColorButton>
-              }
+            {cus ? (
+              <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
+                Cập nhật khách hàng
+              </ColorButton>
+            ) : (
+              <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
+                Thêm khách hàng
+              </ColorButton>
+            )}
           </div>
         </div>
       </Box>
