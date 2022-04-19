@@ -73,7 +73,7 @@ export default function CustomerTable() {
         actions={[
           {
             icon: 'edit',
-            tooltip: 'Thêm',
+            tooltip: 'Sửa',
             onClick: (event, rowData) => handleOpen(rowData),
             iconProps: { style: { color: "var(--button-green-color)" } }
           },
