@@ -111,7 +111,8 @@ export default function BasicModal({ staff, isOpen, isClose }) {
       window.alert("Mật khẩu xác nhận không trùng khớp")
     } else {
       const tennv = `${ho} ${tendem} ${ten}`
-      dispatch(addStaff({ taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }))
+      dispatch(addStaff({ taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
+      isClose();
     }
   };
 
@@ -125,7 +126,8 @@ export default function BasicModal({ staff, isOpen, isClose }) {
       const tennv = `${ho} ${tendem} ${ten}`
       const nvid = staff.nvid
       if (window.confirm("Bạn có chắc muốn chỉnh sửa nhân viên ID: " + nvid)) {
-        dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }))
+        dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
+        isClose();
       } else {
         return
       }
@@ -182,7 +184,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
                     <DatePicker
                       required
                       label="Ngày sinh"
-                      defaultValue={ngaysinh}
+                      value={ngaysinh}
                       onChange={(newValue) => {
                         setNgaysinh(newValue);
                       }}

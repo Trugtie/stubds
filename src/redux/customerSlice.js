@@ -82,6 +82,7 @@ export const customerSlice = createSlice({
             state.message = payload.message
         },
 
+        // getCustomer
         [getCustomers.pending](state) {
             state.status = HTTP_STATUS.PENDING
         },

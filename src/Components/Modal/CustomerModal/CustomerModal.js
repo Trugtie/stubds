@@ -108,7 +108,8 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       return
     } else {
       const hoten = `${ho} ${tendem} ${ten}`
-      dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }))
+      dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
+      isClose();
     }
   };
 
@@ -120,7 +121,8 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       const hoten = `${ho} ${tendem} ${ten}`
       const khid = cus.khid
       if (window.confirm("Bạn có chắc muốn chỉnh sửa khách hàng ID: " + khid)) {
-        dispatch(addCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }))
+        dispatch(editCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
+        isClose();
       } else {
         return
       }
@@ -178,7 +180,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                   <DatePicker
                     required
                     label="Ngày sinh"
-                    defaultValue={ngaysinh}
+                    value={ngaysinh}
                     onChange={(newValue) => {
                       setNgaysinh(newValue);
                     }}
@@ -316,7 +318,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                   sx={{ width: "100%", minHeight: "100%" }}
                 >
                   <InputLabel id="demo-simple-select-filled-label">
-                    Giới tính
+                    Trạng thái
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-filled-label"
