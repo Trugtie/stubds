@@ -291,6 +291,44 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                   }}
                 />
               </Grid>
+              <Grid item xs={6}>
+                <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Loại khách hàng
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={loaikh}
+                    onChange={(e) => setLoai(e.target.value)}
+                  >
+                    <MenuItem value={"0"}>Cá nhân</MenuItem>
+                    <MenuItem value={"1"}>Công ty</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Giới tính
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={trangthai}
+                    onChange={(e) => setTrangthai(e.target.value)}
+                  >
+                    <MenuItem value={"0"}>Hoạt động</MenuItem>
+                    <MenuItem value={"1"}>Bị khoá</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   id="filled-basic"
@@ -307,7 +345,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
               </Grid>
             </Grid>
           </div>
-          <div className="modal-form" style={{ marginTop: "4rem" }}>
+          <div className="modal-form" style={{ marginTop: "1rem" }}>
           {cus ?
                 <ColorButton variant="contained" onClick={e => handleEdit(e)}>Cập nhật khách hàng</ColorButton>
                 :
