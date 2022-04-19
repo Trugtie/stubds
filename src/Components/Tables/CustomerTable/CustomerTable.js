@@ -54,7 +54,7 @@ export default function CustomerTable() {
           { title: 'Địa chỉ', field: 'diachi' },
           { title: 'Địa chỉ thường trú', field: 'diachitt' },
           { title: 'Loại KH', field: 'loaikh', lookup: { 0: "Cá nhân", 1: "Công ty" } },
-          { title: 'Trạng thái', field: 'trangthai', lookup: { 1: "Available", 0: "Blocked" } },
+          { title: 'Trạng thái', field: 'trangthai', lookup: { 0: "Available", 1: "Blocked" } },
         ]}
         data={list}
         components={{
