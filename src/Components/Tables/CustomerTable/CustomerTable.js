@@ -32,7 +32,6 @@ export default function CustomerTable() {
         { title: 'CMND', field: 'cmnd',type:'numeric' },
         { title: 'Email', field: 'email' },
         { title: 'Địa chỉ', field: 'diachi' },
-        { title: 'Địa chỉ thanh toán', field: 'diachitt' },
         { title: 'Loại KH', field: 'loaikh', lookup: { 0: "Cá nhân", 1: "Công ty" } },
         { title: 'Trạng thái', field: 'trangthai', lookup: { 1: "Available", 0: "Blocked" } },
       ]}
@@ -51,7 +50,7 @@ export default function CustomerTable() {
       actions={[
         {
           icon: 'edit',
-          tooltip: 'Thêm',
+          tooltip: 'Sửa',
           onClick: (event, rowData) => alert("You saved " + rowData.name),
           iconProps: { style: { color: "var(--button-green-color)" } }
         },

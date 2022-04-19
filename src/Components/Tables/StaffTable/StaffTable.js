@@ -46,7 +46,7 @@ console.log(list);
       actions={[
         {
           icon: 'edit',
-          tooltip: 'Thêm',
+          tooltip: 'Sửa',
           onClick: (event, rowData) => alert("You saved " + rowData.name),
           iconProps: { style: { color: "var(--button-green-color)" } }
         },
