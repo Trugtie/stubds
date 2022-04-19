@@ -12,7 +12,7 @@ export const getStaffs = createAsyncThunk(
 
 export const deleteStaff = createAsyncThunk(
     'staff/deleteStaff',
-    async (value) => {        
+    async (value) => {
         const { data } = await axios.delete(`${API_URL}nhanvien/${value}`)
         return data;
     }
@@ -20,13 +20,19 @@ export const deleteStaff = createAsyncThunk(
 
 export const addStaff = createAsyncThunk(
     'staff/addStaff',
-    async (value) => {
-        console.log(value)
+    async (value) => {        
         const { data } = await axios.post(`${API_URL}nhanvien`, value)
         return data;
     }
 );
 
+export const editStaff = createAsyncThunk(
+    'staff/editStaff',
+    async (value) => {        
+        const { data } = await axios.put(`${API_URL}nhanvien`, value)
+        return data;
+    }
+);
 
 export const staffSlice = createSlice({
     name: "staff",
@@ -40,13 +46,27 @@ export const staffSlice = createSlice({
         [addStaff.pending](state) {
             state.status = HTTP_STATUS.PENDING
         },
-        [addStaff.fulfilled](state, { payload }) {
+        [addStaff.fulfilled](state, { payload }) {            
             state.list.push(payload)
             state.status = HTTP_STATUS.FULFILLED
         },
-        [addStaff.rejected](state, { payload }) {
-            state.status = HTTP_STATUS.REJECTED
-            state.message =  payload.message
+        [addStaff.rejected](state) {
+            state.status = HTTP_STATUS.REJECTED            
+        },
+
+        // editStaff
+        [editStaff.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [editStaff.fulfilled](state, { payload }) {            
+            state.status = HTTP_STATUS.FULFILLED
+            const index = state.list.findIndex((item) => item.nvid === payload.nvid)
+            if(index >= 0){
+                state.list[index] = payload;
+            }            
+        },
+        [editStaff.rejected](state) {
+            state.status = HTTP_STATUS.REJECTED            
         },
 
         // deleteStaff
@@ -54,13 +74,13 @@ export const staffSlice = createSlice({
             state.status = HTTP_STATUS.PENDING
         },
         [deleteStaff.fulfilled](state, { payload }) {
-            state.status = HTTP_STATUS.FULFILLED
             state.list = state.list.filter((item) => item.nvid !== payload.nvid)
+            state.status = HTTP_STATUS.FULFILLED
             return state
         },
         [deleteStaff.rejected](state, { payload }) {
             state.status = HTTP_STATUS.REJECTED
-            state.message =  payload.message
+            state.message = payload.message
         },
 
         // getStaffs

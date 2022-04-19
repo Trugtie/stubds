@@ -10,6 +10,30 @@ export const getCustomers = createAsyncThunk(
     }
 )
 
+export const deleteCustomer = createAsyncThunk(
+    'customer/deleteCustomer',
+    async (value) => {
+        const { data } = await axios.delete(`${API_URL}khachhang/${value}`)
+        return data;
+    }
+);
+
+export const addCustomer = createAsyncThunk(
+    'customer/addCustomer',
+    async (value) => {
+        const { data } = await axios.post(`${API_URL}khachhang`, value)
+        return data;
+    }
+);
+
+export const editCustomer = createAsyncThunk(
+    'customer/editCustomer',
+    async (value) => {
+        const { data } = await axios.put(`${API_URL}khachhang`, value)
+        return data;
+    }
+);
+
 export const customerSlice = createSlice({
     name: "customer",
     initialState: {
@@ -17,6 +41,47 @@ export const customerSlice = createSlice({
         status: null
     },
     extraReducers: {
+        // addCustomer
+        [addCustomer.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [addCustomer.fulfilled](state, { payload }) {
+            state.list.push(payload)
+            state.status = HTTP_STATUS.FULFILLED
+        },
+        [addCustomer.rejected](state) {
+            state.status = HTTP_STATUS.REJECTED
+        },
+
+        // editCustomer
+        [editCustomer.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [editCustomer.fulfilled](state, { payload }) {
+            state.status = HTTP_STATUS.FULFILLED
+            const index = state.list.findIndex((item) => item.khid === payload.khid)
+            if (index >= 0) {
+                state.list[index] = payload;
+            }
+        },
+        [editCustomer.rejected](state) {
+            state.status = HTTP_STATUS.REJECTED
+        },
+
+        // deleteCustomer
+        [deleteCustomer.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [deleteCustomer.fulfilled](state, { payload }) {
+            state.list = state.list.filter((item) => item.khid !== payload.khid)
+            state.status = HTTP_STATUS.FULFILLED
+            return state
+        },
+        [deleteCustomer.rejected](state, { payload }) {
+            state.status = HTTP_STATUS.REJECTED
+            state.message = payload.message
+        },
+
         [getCustomers.pending](state) {
             state.status = HTTP_STATUS.PENDING
         },
