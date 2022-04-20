@@ -119,27 +119,8 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       window.alert("Thông tin không được để trống");
       return;
     } else {
-<<<<<<< HEAD
       const hoten = `${ho} ${tendem} ${ten}`
       dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
-=======
-      const hoten = `${ho} ${tendem} ${ten}`;
-      dispatch(
-        addCustomer({
-          ngaysinh,
-          sodienthoai,
-          gioitinh,
-          diachi,
-          diachitt,
-          email,
-          cmnd,
-          trangthai,
-          hoten,
-          loaikh,
-          mota,
-        })
-      );
->>>>>>> b0c71318b851c7e1227e7f081cb0023cb36e320c
       isClose();
     }
   };
@@ -163,26 +144,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       const hoten = `${ho} ${tendem} ${ten}`;
       const khid = cus.khid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa khách hàng ID: " + khid)) {
-<<<<<<< HEAD
         dispatch(editCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
-=======
-        dispatch(
-          editCustomer({
-            khid,
-            ngaysinh,
-            sodienthoai,
-            gioitinh,
-            diachi,
-            diachitt,
-            email,
-            cmnd,
-            trangthai,
-            hoten,
-            loaikh,
-            mota,
-          })
-        );
->>>>>>> b0c71318b851c7e1227e7f081cb0023cb36e320c
         isClose();
       } else {
         return;

@@ -4,8 +4,10 @@ import axios from "axios";
 
 let config = {
    headers: {
-      "Content-Type": "application/json",
+      // "Content-Type": "multipart/form-data",
       'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, PUT, OPTIONS',
+      'Access-Control-Allow-Headers': '*',      
    }
 }
 
@@ -13,8 +15,9 @@ let config = {
 export const login = createAsyncThunk(
    'user/login',
    async (value) => {
-      const { data } = await axios.post(`${API_URL}nhanvien/login`, value)      
-         return data;         
+      console.log(value)
+      const { data } = await axios.post(`${API_URL}login`, value, config)
+      return data;
    }
 )
 
@@ -43,16 +46,17 @@ export const userSlice = createSlice({
          state.message = payload
       },
       [login.fulfilled](state, { payload }) {
-         if (payload){
-         localStorage.setItem("user", payload.tennv)
-         localStorage.setItem("permission", payload.quyen)
-         window.location.reload()
-         state.loading = HTTP_STATUS.FULFILLED
-         state.userInfo = payload
-         state.status = true
-      }else{
-         state.loading = HTTP_STATUS.REJECTED                  
-      }
+         if (payload) {
+            console.log(payload)
+            localStorage.setItem("user", payload.tennv)
+            localStorage.setItem("permission", payload.quyen)
+            // window.location.reload()
+            state.loading = HTTP_STATUS.FULFILLED
+            state.userInfo = payload
+            state.status = true
+         } else {
+            state.loading = HTTP_STATUS.REJECTED
+         }
       },
    }
 })

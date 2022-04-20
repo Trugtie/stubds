@@ -127,27 +127,8 @@ export default function BasicModal({ staff, isOpen, isClose }) {
     } else if (matkhau !== matkhau2) {
       window.alert("Mật khẩu xác nhận không trùng khớp");
     } else {
-<<<<<<< HEAD
       const tennv = `${ho} ${tendem} ${ten}`
       dispatch(addStaff({ taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
-=======
-      const tennv = `${ho} ${tendem} ${ten}`;
-      dispatch(
-        addStaff({
-          taikhoan,
-          matkhau,
-          ngaysinh,
-          sdt,
-          gioitinh,
-          diachi,
-          email,
-          quyen,
-          doanhthu,
-          trangthai,
-          tennv,
-        })
-      );
->>>>>>> b0c71318b851c7e1227e7f081cb0023cb36e320c
       isClose();
     }
   };
@@ -172,97 +153,13 @@ export default function BasicModal({ staff, isOpen, isClose }) {
       const tennv = `${ho} ${tendem} ${ten}`;
       const nvid = staff.nvid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa nhân viên ID: " + nvid)) {
-<<<<<<< HEAD
         dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
-=======
-        dispatch(
-          editStaff({
-            nvid,
-            taikhoan,
-            matkhau,
-            ngaysinh,
-            sdt,
-            gioitinh,
-            diachi,
-            email,
-            quyen,
-            doanhthu,
-            trangthai,
-            tennv,
-          })
-        );
->>>>>>> b0c71318b851c7e1227e7f081cb0023cb36e320c
         isClose();
       } else {
         return;
       }
     }
   };
-<<<<<<< HEAD
-  return (    
-      <Modal
-        open={isOpen}
-        onClose={isClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <h1 className="modal-title">NHÂN VIÊN</h1>
-          <div className="modal-content">
-            <h2 className="modal-subtitle">Thông tin cá nhân</h2>
-            <hr className="modal-divider" />
-            <div className="modal-form">
-              <Grid container spacing={2}>
-                <Grid item xs={4}>
-                  <TextField
-                    required
-                    id="filled-basic"
-                    label="Họ"
-                    variant="filled"
-                    placeholder="Nhập họ..."
-                    defaultValue={ho}
-                    onChange={(e) => setHo(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    id="filled-basic"
-                    label="Tên đệm"
-                    variant="filled"
-                    placeholder="Nhập tên đệm..."
-                    defaultValue={tendem}
-                    onChange={(e) => setTendem(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-                    required
-                    id="filled-basic"
-                    label="Tên"
-                    variant="filled"
-                    placeholder="Nhập tên..."
-                    defaultValue={ten}
-                    onChange={(e) => setTen(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      required
-                      label="Ngày sinh"
-                      value={ngaysinh}
-                      onChange={(newValue) => {
-                        setNgaysinh(newValue);
-                      }}
-                      renderInput={(params) => (
-                        <TextField fullWidth {...params} />
-                      )}
-                    />
-                  </LocalizationProvider>
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField
-=======
   return (
     <Modal
       open={isOpen}
@@ -315,7 +212,6 @@ export default function BasicModal({ staff, isOpen, isClose }) {
                   locale={frLocale}
                 >
                   <DatePicker
->>>>>>> b0c71318b851c7e1227e7f081cb0023cb36e320c
                     required
                     label="Ngày sinh"
                     value={ngaysinh}

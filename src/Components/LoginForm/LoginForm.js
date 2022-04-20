@@ -11,27 +11,47 @@ import "./LoginForm.css"
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../redux/userSlice";
-import { HTTP_STATUS } from '../../redux/constants';
+import { HTTP_STATUS, API_URL } from '../../redux/constants';
+import axios from 'axios';
 
 
 function LoginForm() {
   const dispatch = useDispatch();
 
-  const [taikhoan,setTaikhoan] = useState("")
-  const [matkhau,setMatkhau] = useState("")
+  const [taikhoan, setTaikhoan] = useState("")
+  const [matkhau, setMatkhau] = useState("")
 
   const onSubmit = (e) => {
     e.preventDefault()
     onLogin()
   }
 
-   const onLogin=()=>{
-      if(taikhoan === "" || matkhau === ""){
-        return
-      }else{
-        dispatch(login({taikhoan,matkhau}))         
-      }
-   }  
+  const onLogin = () => {
+    if (taikhoan === "" || matkhau === "") {
+      return
+    } else {
+      // dispatch(login({taikhoan,matkhau}))
+      var bodyLogin = new FormData();
+      bodyLogin.append('taikhoan', taikhoan);
+      bodyLogin.append('matkhau', matkhau);      
+      // dispatch(login({ bodyLogin }))
+      axios({
+        method: "post",
+        url: `${API_URL}login`,
+        data: bodyLogin,        
+        headers: {          
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Headers': '*',          
+        },
+      })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (response) {
+          console.log(response);
+        });
+    }
+  }
 
 
   const LoginButton = styled(Button)({
