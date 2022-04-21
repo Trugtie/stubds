@@ -30,19 +30,16 @@ function LoginForm() {
     if (taikhoan === "" || matkhau === "") {
       return
     } else {
-      // dispatch(login({taikhoan,matkhau}))
       var bodyLogin = new FormData();
       bodyLogin.append('taikhoan', taikhoan);
-      bodyLogin.append('matkhau', matkhau);      
+      bodyLogin.append('matkhau', matkhau);
       // dispatch(login({ bodyLogin }))
+
       axios({
         method: "post",
         url: `${API_URL}login`,
-        data: bodyLogin,        
-        headers: {          
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': '*',          
-        },
+        data: bodyLogin,
+        // withCredentials: true
       })
         .then(function (response) {
           console.log(response);
