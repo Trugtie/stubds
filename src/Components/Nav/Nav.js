@@ -5,18 +5,25 @@ import Logo from "./logo.svg";
 import StarIcon from "./star.svg";
 import CustomizedAccordion from "../Accordion/Accordion";
 import ExitIcon from "./exit.svg";
-import { useDispatch} from 'react-redux';
-import { logout } from '../../redux/userSlice';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/staffSlice';
+import { Buffer } from 'buffer';
 
 function Nav() {
   useEffect(() => {
     ClockCircle();
-    localStorage.getItem('permission') === '1'? setQuyen('Nhân viên Sales'): setQuyen('Nhân viên quản lý')
+    handleTitle();
   }, []);
 
-  const dispatch = useDispatch()  
-  const tennv = localStorage.getItem('user') 
-  const [quyen,setQuyen] = useState("")  
+  const handleTitle = () => {
+    window.Buffer = Buffer;
+    var permission = window.Buffer.from(`ADMIN`).toString('base64');
+    permission === localStorage.getItem("permission") ? setQuyen('Nhân viên quản lý') : setQuyen('Nhân viên Sales')
+  }
+
+  const dispatch = useDispatch()
+  const tennv = localStorage.getItem('user')
+  const [quyen, setQuyen] = useState("")
 
   const onLogout = () => {
     dispatch(logout())
@@ -33,13 +40,13 @@ function Nav() {
             <div className="user-info">
               <h3 className="user-role">
                 {quyen}
-                </h3>
+              </h3>
               <div className="user-divider">
                 <img className="user-star" src={StarIcon} />
               </div>
               <h4 className="user-name">
                 {tennv}
-                </h4>
+              </h4>
             </div>
           </div>
           <div className="nav-content">

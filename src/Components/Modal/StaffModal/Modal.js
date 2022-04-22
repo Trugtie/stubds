@@ -127,22 +127,8 @@ export default function BasicModal({ staff, isOpen, isClose }) {
     } else if (matkhau !== matkhau2) {
       window.alert("Mật khẩu xác nhận không trùng khớp");
     } else {
-      const tennv = `${ho} ${tendem} ${ten}`;
-      dispatch(
-        addStaff({
-          taikhoan,
-          matkhau,
-          ngaysinh,
-          sdt,
-          gioitinh,
-          diachi,
-          email,
-          quyen,
-          doanhthu,
-          trangthai,
-          tennv,
-        })
-      );
+      const tennv = `${ho} ${tendem} ${ten}`
+      dispatch(addStaff({ taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
       isClose();
     }
   };
@@ -167,22 +153,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
       const tennv = `${ho} ${tendem} ${ten}`;
       const nvid = staff.nvid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa nhân viên ID: " + nvid)) {
-        dispatch(
-          editStaff({
-            nvid,
-            taikhoan,
-            matkhau,
-            ngaysinh,
-            sdt,
-            gioitinh,
-            diachi,
-            email,
-            quyen,
-            doanhthu,
-            trangthai,
-            tennv,
-          })
-        );
+        dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
         isClose();
       } else {
         return;

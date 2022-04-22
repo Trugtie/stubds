@@ -10,28 +10,28 @@ import "./LoginForm.css"
 
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../redux/userSlice";
-import { HTTP_STATUS } from '../../redux/constants';
+import { login } from "../../redux/staffSlice";
+import { HTTP_STATUS, API_URL } from '../../redux/constants';
 
 
 function LoginForm() {
   const dispatch = useDispatch();
 
-  const [taikhoan,setTaikhoan] = useState("")
-  const [matkhau,setMatkhau] = useState("")
+  const [username, setTaikhoan] = useState("")
+  const [password, setMatkhau] = useState("")
 
   const onSubmit = (e) => {
     e.preventDefault()
     onLogin()
   }
 
-   const onLogin=()=>{
-      if(taikhoan === "" || matkhau === ""){
-        return
-      }else{
-        dispatch(login({taikhoan,matkhau}))         
-      }
-   }  
+  const onLogin = () => {
+    if (username === "" || password === "") {
+      return
+    } else {
+      dispatch(login({ username, password }))
+    }
+  }
 
 
   const LoginButton = styled(Button)({
@@ -82,15 +82,12 @@ function LoginForm() {
           />
           <br />
           <br />
-          {useSelector(state => state.User.loading === HTTP_STATUS.PENDING ?
+          {useSelector(state => state.Staff.status === HTTP_STATUS.PENDING ?
             <LinearProgress color="inherit" />
             : '')}
 
           <LoginButton variant="contained" fullWidth type="submit">ĐĂNG NHẬP</LoginButton>
-          {/* <Link to='/' style={{textDecoration: 'none'}}>
-        <LoginButton variant="contained" fullWidth>ĐĂNG NHẬP</LoginButton>
-        </Link> */}
-          <h4 style={{ color: "red" }}>{useSelector(state => state.User.loading === HTTP_STATUS.REJECTED ? "Sai tên đăng nhập hoặc mật khẩu" : "")}</h4>
+          <h4 style={{ color: "red" }}>{useSelector(state => state.Staff.status === HTTP_STATUS.REJECTED ? "Sai tên đăng nhập hoặc mật khẩu" : "")}</h4>
 
           <br />
           <LinkUI underline="none">
