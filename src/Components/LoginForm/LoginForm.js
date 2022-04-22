@@ -10,16 +10,15 @@ import "./LoginForm.css"
 
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../redux/userSlice";
+import { login } from "../../redux/staffSlice";
 import { HTTP_STATUS, API_URL } from '../../redux/constants';
-import axios from 'axios';
 
 
 function LoginForm() {
   const dispatch = useDispatch();
 
-  const [taikhoan, setTaikhoan] = useState("")
-  const [matkhau, setMatkhau] = useState("")
+  const [username, setTaikhoan] = useState("")
+  const [password, setMatkhau] = useState("")
 
   const onSubmit = (e) => {
     e.preventDefault()
@@ -27,26 +26,10 @@ function LoginForm() {
   }
 
   const onLogin = () => {
-    if (taikhoan === "" || matkhau === "") {
+    if (username === "" || password === "") {
       return
     } else {
-      var bodyLogin = new FormData();
-      bodyLogin.append('taikhoan', taikhoan);
-      bodyLogin.append('matkhau', matkhau);
-      // dispatch(login({ bodyLogin }))
-
-      axios({
-        method: "post",
-        url: `${API_URL}login`,
-        data: bodyLogin,
-        // withCredentials: true
-      })
-        .then(function (response) {
-          console.log(response);
-        })
-        .catch(function (response) {
-          console.log(response);
-        });
+      dispatch(login({ username, password }))
     }
   }
 
@@ -99,15 +82,12 @@ function LoginForm() {
           />
           <br />
           <br />
-          {useSelector(state => state.User.loading === HTTP_STATUS.PENDING ?
+          {useSelector(state => state.Staff.status === HTTP_STATUS.PENDING ?
             <LinearProgress color="inherit" />
             : '')}
 
           <LoginButton variant="contained" fullWidth type="submit">ĐĂNG NHẬP</LoginButton>
-          {/* <Link to='/' style={{textDecoration: 'none'}}>
-        <LoginButton variant="contained" fullWidth>ĐĂNG NHẬP</LoginButton>
-        </Link> */}
-          <h4 style={{ color: "red" }}>{useSelector(state => state.User.loading === HTTP_STATUS.REJECTED ? "Sai tên đăng nhập hoặc mật khẩu" : "")}</h4>
+          <h4 style={{ color: "red" }}>{useSelector(state => state.Staff.status === HTTP_STATUS.REJECTED ? "Sai tên đăng nhập hoặc mật khẩu" : "")}</h4>
 
           <br />
           <LinkUI underline="none">
