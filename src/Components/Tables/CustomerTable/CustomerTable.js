@@ -5,9 +5,9 @@ import RequireIcon from './requirement.svg'
 import CustomerModal from '../../Modal/CustomerModal/CustomerModal';
 import RequirementModal from '../../Modal/CustomerModal/RequirementModal';
 import Button from "@mui/material/Button";
-
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomers, deleteCustomer } from "../../../redux/customerSlice";
+import AlertToast from "../../Alert/alert";
 
 export default function CustomerTable() {
   const dispatch = useDispatch();
@@ -15,6 +15,7 @@ export default function CustomerTable() {
   useEffect(() => {
     dispatch(getCustomers())
   }, [])
+
 
   const handleDelete = (cus) => {
     if (window.confirm("Bạn có chắc muốn xoá khách hàng " + cus.hoten)) {
@@ -24,6 +25,7 @@ export default function CustomerTable() {
     }
   };
 
+  
   const [openAdd, setOpenAdd] = useState(false);
   const [openRe, setOpenRe] = useState(false);
   const [cusEdit, setCustomer] = useState(null);
@@ -39,6 +41,15 @@ export default function CustomerTable() {
     setCustomer(cus);
     setOpenRe(true);;
   }
+  // TOAST
+  const [toast, setToast] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
+  const handleCloseToast = () => setOpenToast(false);
+  useEffect(() => {
+    setOpenToast(true);
+    setToast(status);
+  }, [status])
+  // TOAST
 
   return (
     <div>
@@ -46,7 +57,7 @@ export default function CustomerTable() {
         columns={[
           { title: 'ID', field: 'khid' },
           { title: 'Họ tên', field: 'hoten' },
-          { title: 'Ngày sinh', field: 'ngaysinh', type: 'date' },
+          { title: 'Ngày sinh', field: 'ngaysinh', type: 'date', dateSetting: { locale: "vi-VN" } },
           { title: 'Giới tính', field: 'gioitinh', lookup: { 0: "Nam", 1: "Nữ" } },
           { title: 'SĐT', field: 'sodienthoai', type: 'numeric' },
           { title: 'CMND', field: 'cmnd', type: 'numeric' },
@@ -65,6 +76,7 @@ export default function CustomerTable() {
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
+                <AlertToast value={toast} open={openToast} close={handleCloseToast} />
               </div>
             </div>
           )
@@ -98,6 +110,7 @@ export default function CustomerTable() {
       />
       <CustomerModal cus={cusEdit} isOpen={openAdd} isClose={handleClose} />
       <RequirementModal open={openRe} close={handleClose} />
+
     </div>
   );
 }

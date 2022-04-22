@@ -3,7 +3,14 @@ export const API_URL="https://realestatebk.herokuapp.com/";
 export const HTTP_STATUS = Object.freeze({
     PENDING: 'PENDING',
     FULFILLED: 'FULFILLED',
-    REJECTED: 'REJECTED'
+    REJECTED: 'REJECTED',
+    BLOCKED: 'BLOCKED',
+    DELETED: 'DELETED',
+    DELETE_FAILED: 'DELETE_FAILED',
+    EDITED: 'EDITED',
+    EDIT_FAILED: 'EDIT_FAILED',
+    INSERTED: 'INSERTED',
+    INSERT_FAILED: 'INSERT_FAILED',
 })
 
 export const validEmail = new RegExp(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/);

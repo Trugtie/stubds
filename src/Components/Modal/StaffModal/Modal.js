@@ -59,10 +59,10 @@ export default function BasicModal({ staff, isOpen, isClose }) {
   const [gioitinh, setGioitinh] = React.useState("0");
   const [diachi, setDiachi] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [quyen, setQuyen] = React.useState("1");
+  const [quyen, setQuyen] = React.useState("SALE");
   const [doanhthu, setDoanhthu] = React.useState("0");
   const [taikhoan, setTaikhoan] = React.useState("");
-  const [matkhau, setMatkhau] = React.useState("");
+  const [matkhau1, setMatkhau] = React.useState("");
   const [matkhau2, setMatkhau2] = React.useState("");
   const [trangthai, setTrangthai] = React.useState("0");
 
@@ -102,7 +102,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
     setGioitinh("0");
     setDiachi("");
     setEmail("");
-    setQuyen("1");
+    setQuyen("SALE");
     setDoanhthu("0");
     setTaikhoan("");
     setTrangthai("0");
@@ -111,7 +111,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
   const handleSubmit = () => {
     if (
       taikhoan === "" ||
-      matkhau === "" ||
+      matkhau1 === "" ||
       matkhau2 === "" ||
       ho === "" ||
       ten === "" ||
@@ -124,10 +124,11 @@ export default function BasicModal({ staff, isOpen, isClose }) {
     ) {
       window.alert("Thông tin không được để trống");
       return;
-    } else if (matkhau !== matkhau2) {
+    } else if (matkhau1 !== matkhau2) {
       window.alert("Mật khẩu xác nhận không trùng khớp");
     } else {
-      const tennv = `${ho} ${tendem} ${ten}`
+      var tennv = `${ho} ${tendem} ${ten}`
+      var matkhau = matkhau1
       dispatch(addStaff({ taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
       isClose();
     }
@@ -147,13 +148,19 @@ export default function BasicModal({ staff, isOpen, isClose }) {
     ) {
       window.alert("Thông tin không được để trống");
       return;
-    } else if (matkhau !== matkhau2) {
+    } else if (matkhau1 !== matkhau2) {
       window.alert("Mật khẩu xác nhận không trùng khớp");
     } else {
-      const tennv = `${ho} ${tendem} ${ten}`;
-      const nvid = staff.nvid;
+      var tennv = `${ho} ${tendem} ${ten}`;
+      var nvid = staff.nvid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa nhân viên ID: " + nvid)) {
-        dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
+        if (matkhau1 === "" || matkhau1 === " " || matkhau1 === null) {
+          var matkhau =staff.matkhau;
+          dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }))
+        } else {
+          var matkhau =matkhau1;
+          dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }))
+        }
         isClose();
       } else {
         return;
@@ -305,8 +312,8 @@ export default function BasicModal({ staff, isOpen, isClose }) {
                     defaultValue={quyen}
                     onChange={(e) => setQuyen(e.target.value)}
                   >
-                    <MenuItem value={"0"}>Quản lý</MenuItem>
-                    <MenuItem value={"1"}>Nhân viên sale</MenuItem>
+                    <MenuItem value={"ADMIN"}>Quản lý</MenuItem>
+                    <MenuItem value={"SALE"}>Nhân viên sale</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>

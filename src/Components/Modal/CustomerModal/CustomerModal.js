@@ -14,7 +14,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addCustomer, editCustomer } from "../../../redux/customerSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 
@@ -66,7 +66,6 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       handleFormAdd();
     }
   }, [isOpen]);
-
   const handleForm = () => {
     var hotenkh = cus.hoten.split(" ");
     var lenght = hotenkh.length;

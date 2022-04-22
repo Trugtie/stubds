@@ -74,16 +74,14 @@ export const staffSlice = createSlice({
             state.status = HTTP_STATUS.PENDING
         },
         [login.fulfilled](state, { payload }) {
-            if (payload) {
-                console.log(payload)
+            if (payload.trangthai !== 1) {
                 var permission = window.Buffer.from(`${payload.quyen}`).toString('base64');
                 localStorage.setItem("user", payload.tennv)
                 localStorage.setItem("permission", permission)
                 window.location.reload()
                 state.status = HTTP_STATUS.FULFILLED
             } else {
-                console.log(payload)
-                state.status = HTTP_STATUS.REJECTED
+                state.status = HTTP_STATUS.BLOCKED
             }
         },
         [login.rejected](state) {
@@ -96,10 +94,10 @@ export const staffSlice = createSlice({
         },
         [addStaff.fulfilled](state, { payload }) {
             state.list.push(payload)
-            state.status = HTTP_STATUS.FULFILLED
+            state.status = HTTP_STATUS.INSERTED
         },
         [addStaff.rejected](state) {
-            state.status = HTTP_STATUS.REJECTED
+            state.status = HTTP_STATUS.INSERT_FAILED
         },
 
         // editStaff
@@ -107,14 +105,14 @@ export const staffSlice = createSlice({
             state.status = HTTP_STATUS.PENDING
         },
         [editStaff.fulfilled](state, { payload }) {
-            state.status = HTTP_STATUS.FULFILLED
+            state.status = HTTP_STATUS.EDITED
             const index = state.list.findIndex((item) => item.nvid === payload.nvid)
             if (index >= 0) {
                 state.list[index] = payload;
             }
         },
         [editStaff.rejected](state) {
-            state.status = HTTP_STATUS.REJECTED
+            state.status = HTTP_STATUS.EDIT_FAILED
         },
 
         // deleteStaff
@@ -123,11 +121,11 @@ export const staffSlice = createSlice({
         },
         [deleteStaff.fulfilled](state, { payload }) {
             state.list = state.list.filter((item) => item.nvid !== payload.nvid)
-            state.status = HTTP_STATUS.FULFILLED
+            state.status = HTTP_STATUS.DELETED
             return state
         },
         [deleteStaff.rejected](state, { payload }) {
-            state.status = HTTP_STATUS.REJECTED
+            state.status = HTTP_STATUS.DELETE_FAILED
             state.message = payload.message
         },
 

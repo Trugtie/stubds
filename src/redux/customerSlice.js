@@ -51,10 +51,10 @@ export const customerSlice = createSlice({
         },
         [addCustomer.fulfilled](state, { payload }) {
             state.list.push(payload)
-            state.status = HTTP_STATUS.FULFILLED
+            state.status = HTTP_STATUS.INSERTED
         },
         [addCustomer.rejected](state) {
-            state.status = HTTP_STATUS.REJECTED
+            state.status = HTTP_STATUS.INSERT_FAILED
         },
 
         // editCustomer
@@ -62,14 +62,14 @@ export const customerSlice = createSlice({
             state.status = HTTP_STATUS.PENDING
         },
         [editCustomer.fulfilled](state, { payload }) {
-            state.status = HTTP_STATUS.FULFILLED
+            state.status = HTTP_STATUS.EDITED
             const index = state.list.findIndex((item) => item.khid === payload.khid)
             if (index >= 0) {
                 state.list[index] = payload;
             }
         },
         [editCustomer.rejected](state) {
-            state.status = HTTP_STATUS.REJECTED
+            state.status = HTTP_STATUS.EDIT_FAILED
         },
 
         // deleteCustomer
@@ -78,11 +78,11 @@ export const customerSlice = createSlice({
         },
         [deleteCustomer.fulfilled](state, { payload }) {
             state.list = state.list.filter((item) => item.khid !== payload.khid)
-            state.status = HTTP_STATUS.FULFILLED
+            state.status = HTTP_STATUS.DELETED
             return state
         },
         [deleteCustomer.rejected](state, { payload }) {
-            state.status = HTTP_STATUS.REJECTED
+            state.status = HTTP_STATUS.DELETE_FAILED
             state.message = payload.message
         },
 

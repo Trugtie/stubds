@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getStaffs, deleteStaff } from "../../../redux/staffSlice";
+import AlertToast from "../../Alert/alert";
 
 export default function StaffTable() {
   const dispatch = useDispatch();
@@ -30,19 +31,32 @@ export default function StaffTable() {
     setStaff(staff);
     setOpen(true);
   }
+
+  // TOAST
+  const [toast, setToast] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
+  const handleCloseToast = () => setOpenToast(false);
+  useEffect(() => {
+    setOpenToast(true);
+    setToast(status);
+  }, [status])
+  // TOAST
+
+
   return (
     <div>
       <MaterialTable
         columns={[
           { title: 'ID', field: 'nvid' },
           { title: 'Họ tên', field: 'tennv' },
-          { title: 'Ngày sinh', field: 'ngaysinh', type: 'date' },
+          { title: 'Ngày sinh', field: 'ngaysinh', type: 'date', dateSetting: { locale: "vi-VN" } },
           { title: 'Giới tính', field: 'gioitinh', lookup: { 0: "Nam", 1: "Nữ" } },
           { title: 'SĐT', field: 'sdt', type: 'numeric' },
           { title: 'Email', field: 'email' },
           { title: 'Địa chỉ', field: 'diachi' },
-          { title: 'Quyền', field: 'quyen', lookup: { 0: "Quản lý", 1: "Sale" } },
+          { title: 'Quyền', field: 'quyen' },
           { title: 'Doanh thu', field: 'doanhthu' },
+          { title: 'Trạng thái', field: 'trangthai', lookup: { 0: "Available", 1: "Blocked" } },
 
         ]}
         data={list}
@@ -54,6 +68,7 @@ export default function StaffTable() {
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
+                <AlertToast value={toast} open={openToast} close={handleCloseToast} />
               </div>
             </div>
           ),

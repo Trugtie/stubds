@@ -88,6 +88,7 @@ function LoginForm() {
 
           <LoginButton variant="contained" fullWidth type="submit">ĐĂNG NHẬP</LoginButton>
           <h4 style={{ color: "red" }}>{useSelector(state => state.Staff.status === HTTP_STATUS.REJECTED ? "Sai tên đăng nhập hoặc mật khẩu" : "")}</h4>
+          <h4 style={{ color: "red" }}>{useSelector(state => state.Staff.status === HTTP_STATUS.BLOCKED ? "Tài khoản của bạn đã bị khoá" : "")}</h4>
 
           <br />
           <LinkUI underline="none">

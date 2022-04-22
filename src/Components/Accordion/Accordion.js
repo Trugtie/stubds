@@ -57,7 +57,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: "0",
 }));
 
-export default function CustomizedAccordion() {
+export default function CustomizedAccordion({ permission }) {
   const [expanded, setExpanded] = React.useState("panel1");
 
   const handleChange = (panel) => (event, newExpanded) => {
@@ -66,50 +66,7 @@ export default function CustomizedAccordion() {
 
   return (
     <div>
-      {localStorage.getItem('permission') === '1' ?
-        <React.Fragment>
-          <Accordion
-            expanded={expanded === "panel1"}
-            onChange={handleChange("panel1")}
-          >
-            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-              <div className="icon-bg"><img src={CustomerIcon} /></div>
-              <div className="acor-heading">QUẢN LÝ KHÁCH HÀNG</div>
-            </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/customermanagement" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm khách hàng</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === "panel2"}
-            onChange={handleChange("panel2")}
-          >
-            <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-              <div className="icon-bg"><img src={BdsIcon} /></div>
-              <div className="acor-heading">QUẢN LÝ BẤT ĐỘNG SẢN</div>
-            </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm BĐS</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
-          </Accordion>
-        </React.Fragment>
-
-        :
-
+      {permission === localStorage.getItem('permission') ?
         <React.Fragment>
           <Accordion
             expanded={expanded === "panel1"}
@@ -221,6 +178,47 @@ export default function CustomizedAccordion() {
                 </Link>
                 <Link to="/" className="link">
                   <li>Thêm hợp đồng</li>
+                </Link>
+              </ul>
+            </AccordionDetails>
+          </Accordion>
+        </React.Fragment>
+        :
+        <React.Fragment>
+          <Accordion
+            expanded={expanded === "panel1"}
+            onChange={handleChange("panel1")}
+          >
+            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+              <div className="icon-bg"><img src={CustomerIcon} /></div>
+              <div className="acor-heading">QUẢN LÝ KHÁCH HÀNG</div>
+            </AccordionSummary>
+            <AccordionDetails>
+              <ul className="acor-list">
+                <Link to="/customermanagement" className="link">
+                  <li>Xem thông tin</li>
+                </Link>
+                <Link to="/" className="link">
+                  <li>Thêm khách hàng</li>
+                </Link>
+              </ul>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel2"}
+            onChange={handleChange("panel2")}
+          >
+            <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+              <div className="icon-bg"><img src={BdsIcon} /></div>
+              <div className="acor-heading">QUẢN LÝ BẤT ĐỘNG SẢN</div>
+            </AccordionSummary>
+            <AccordionDetails>
+              <ul className="acor-list">
+                <Link to="/" className="link">
+                  <li>Xem thông tin</li>
+                </Link>
+                <Link to="/" className="link">
+                  <li>Thêm BĐS</li>
                 </Link>
               </ul>
             </AccordionDetails>

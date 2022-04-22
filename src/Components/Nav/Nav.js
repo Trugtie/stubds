@@ -15,19 +15,17 @@ function Nav() {
     handleTitle();
   }, []);
 
-  const handleTitle = () => {
-    window.Buffer = Buffer;
-    var permission = window.Buffer.from(`ADMIN`).toString('base64');
-    permission === localStorage.getItem("permission") ? setQuyen('Nhân viên quản lý') : setQuyen('Nhân viên Sales')
-  }
-
   const dispatch = useDispatch()
   const tennv = localStorage.getItem('user')
   const [quyen, setQuyen] = useState("")
-
+  window.Buffer = Buffer;
   const onLogout = () => {
     dispatch(logout())
     window.location.reload()
+  }
+
+  const handleTitle = () => {
+    window.Buffer.from(`ADMIN`).toString('base64') === localStorage.getItem("permission") ? setQuyen('Nhân viên quản lý') : setQuyen('Nhân viên Sales')
   }
 
   return (
@@ -50,7 +48,7 @@ function Nav() {
             </div>
           </div>
           <div className="nav-content">
-            <CustomizedAccordion />
+            <CustomizedAccordion permission={window.Buffer.from(`ADMIN`).toString('base64')} />
           </div>
           <div className="nav-footer">
             <button className="exitBtn" onClick={onLogout}>
