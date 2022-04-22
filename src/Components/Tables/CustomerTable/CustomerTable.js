@@ -7,6 +7,8 @@ import RequirementModal from '../../Modal/CustomerModal/RequirementModal';
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
 import { getCustomers, deleteCustomer } from "../../../redux/customerSlice";
+import { HTTP_STATUS } from "../../../redux/constants";
+import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
 
 export default function CustomerTable() {
@@ -24,8 +26,6 @@ export default function CustomerTable() {
       return;
     }
   };
-
-  
   const [openAdd, setOpenAdd] = useState(false);
   const [openRe, setOpenRe] = useState(false);
   const [cusEdit, setCustomer] = useState(null);
@@ -76,6 +76,13 @@ export default function CustomerTable() {
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
+                {status === HTTP_STATUS.PENDING ? 
+                <Loading
+                  loading={true}
+                  background="rgba(0,0,0,0.2)"
+                  loaderColor="#CF9269"
+                /> 
+                : ""}
                 <AlertToast value={toast} open={openToast} close={handleCloseToast} />
               </div>
             </div>
@@ -108,9 +115,10 @@ export default function CustomerTable() {
           pageSizeOptions: [10, 15, 20]
         }}
       />
-      <CustomerModal cus={cusEdit} isOpen={openAdd} isClose={handleClose} />
+      <CustomerModal cus={cusEdit} isOpen={openAdd} isClose={handleClose}  />
       <RequirementModal open={openRe} close={handleClose} />
 
     </div>
   );
 }
+

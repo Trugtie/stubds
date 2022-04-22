@@ -7,7 +7,10 @@ import Button from "@mui/material/Button";
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getStaffs, deleteStaff } from "../../../redux/staffSlice";
+import { HTTP_STATUS } from "../../../redux/constants";
+import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
+
 
 export default function StaffTable() {
   const dispatch = useDispatch();
@@ -15,7 +18,6 @@ export default function StaffTable() {
   useEffect(() => {
     dispatch(getStaffs())
   }, [])
-
   const handleDelete = (staff) => {
     if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
       dispatch(deleteStaff(staff.nvid))
@@ -68,6 +70,13 @@ export default function StaffTable() {
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
+                {status === HTTP_STATUS.PENDING ? 
+                <Loading
+                  loading={true}
+                  background="rgba(0,0,0,0.2)"
+                  loaderColor="#CF9269"
+                /> 
+                : ""}
                 <AlertToast value={toast} open={openToast} close={handleCloseToast} />
               </div>
             </div>

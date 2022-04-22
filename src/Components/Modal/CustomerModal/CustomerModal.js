@@ -307,16 +307,35 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                 />
               </Grid>
               <Grid item xs={6}>
+
                 <TextField
                   id="filled-basic"
                   label="Nhân viên phụ trách"
                   variant="filled"
                   fullWidth
-                  defaultValue="Nguyễn Văn A"
+                  defaultValue={localStorage.getItem('user')}
                   InputProps={{
                     readOnly: true,
                   }}
                 />
+
+                {/* <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Nhân viên phụ trách
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={loaikh}
+                  // onChange={(e) => setLoai(e.target.value)}
+                  >
+                    <MenuItem value={"0"}>Cá nhân</MenuItem>
+                  </Select>
+                </FormControl> */}
+
               </Grid>
               <Grid item xs={6}>
                 <FormControl
