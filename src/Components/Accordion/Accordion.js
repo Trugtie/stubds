@@ -116,7 +116,7 @@ export default function CustomizedAccordion({ permission }) {
             </AccordionSummary>
             <AccordionDetails>
               <ul className="acor-list">
-                <Link to="/" className="link">
+                <Link to="/property" className="link">
                   <li>Xem thông tin</li>
                 </Link>
                 <Link to="/" className="link">
@@ -135,7 +135,7 @@ export default function CustomizedAccordion({ permission }) {
             </AccordionSummary>
             <AccordionDetails>
               <ul className="acor-list">
-                <Link to="/" className="link">
+                <Link to="/consignment" className="link">
                   <li>Xem thông tin</li>
                 </Link>
                 <Link to="/" className="link">
@@ -154,7 +154,7 @@ export default function CustomizedAccordion({ permission }) {
             </AccordionSummary>
             <AccordionDetails>
               <ul className="acor-list">
-                <Link to="/" className="link">
+                <Link to="/deposit" className="link">
                   <li>Xem thông tin</li>
                 </Link>
                 <Link to="/" className="link">
@@ -173,7 +173,7 @@ export default function CustomizedAccordion({ permission }) {
             </AccordionSummary>
             <AccordionDetails>
               <ul className="acor-list">
-                <Link to="/" className="link">
+                <Link to="/assignment" className="link">
                   <li>Xem thông tin</li>
                 </Link>
                 <Link to="/" className="link">
@@ -214,7 +214,7 @@ export default function CustomizedAccordion({ permission }) {
             </AccordionSummary>
             <AccordionDetails>
               <ul className="acor-list">
-                <Link to="/" className="link">
+                <Link to="/property" className="link">
                   <li>Xem thông tin</li>
                 </Link>
                 <Link to="/" className="link">
