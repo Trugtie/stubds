@@ -1,28 +1,22 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
-import frLocale from "date-fns/locale/fr";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
 import Modal from "@mui/material/Modal";
+import Select from "@mui/material/Select";
+import { styled } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import { styled } from "@mui/material/styles";
-import "./Modal.css";
-
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import frLocale from "date-fns/locale/fr";
+import * as React from "react";
 import { useDispatch } from "react-redux";
 import { addStaff, editStaff } from "../../../redux/staffSlice";
-import {
-  HTTP_STATUS,
-  validEmail,
-  validPassword,
-  validUsername,
-} from "../../../redux/constants";
+import "./Modal.css";
+
 
 export default function BasicModal({ staff, isOpen, isClose }) {
   const ColorButton = styled(Button)(({ theme }) => ({

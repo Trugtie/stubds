@@ -1,7 +1,7 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
 import PlusIcon from './plus.svg';
 import './Contract_Assignment.css';
-// import StaffModal from '../../Modal/StaffModal/Modal';
+import AssignmentModal from '../../Modal/AssignmentModal';
 import Button from "@mui/material/Button";
 
 import React, { useEffect, useState } from 'react';
@@ -96,7 +96,7 @@ export default function Contract_Assignment() {
           pageSizeOptions: [10, 15, 20]
         }}
       />
-      {/* <StaffModal staff={staffEdit} isOpen={open} isClose={handleClose} /> */}
+      <AssignmentModal isOpen={open} isClose={handleClose} />
     </div>
   );
 }

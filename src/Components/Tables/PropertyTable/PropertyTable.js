@@ -1,7 +1,7 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
 import PlusIcon from './plus.svg';
 import './PropertyTable.css';
-// import StaffModal from '../../Modal/StaffModal/Modal';
+import PropertyModal from '../../Modal/PropertyModal/PropertyModal';
 import Button from "@mui/material/Button";
 
 import React, { useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ import { getProperties } from "../../../redux/propertySlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
+import ThumbGallery from "../../ThumbGallery"
 
 
 export default function PropertyTable() {
@@ -100,8 +101,18 @@ export default function PropertyTable() {
           pageSize: 10,
           pageSizeOptions: [10, 15, 20]
         }}
+        detailPanel={
+          rowData => {
+          return (
+            <div style={{display: 'flex',justifyContent: 'center'}}>
+            <ThumbGallery/>
+            </div>
+          )
+        }
+      }
+      onRowClick={(event, rowData, togglePanel) => togglePanel()}
       />
-      {/* <StaffModal staff={staffEdit} isOpen={open} isClose={handleClose} /> */}
+      <PropertyModal isOpen={open} isClose={handleClose} />
     </div>
   );
 }
