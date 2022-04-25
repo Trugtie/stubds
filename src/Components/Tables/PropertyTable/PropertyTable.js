@@ -20,14 +20,6 @@ export default function PropertyTable() {
     dispatch(getProperties())
   }, [])
 
-  // const handleDelete = (staff) => {
-  //   if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
-  //     dispatch(deleteStaff(staff.nvid))
-  //   } else {
-  //     return;
-  //   }
-  // };
-
   const [open, setOpen] = useState(false);
   const [propertyEdit, setProperty] = useState(null);
   const handleClose = () => setOpen(false);
@@ -92,7 +84,7 @@ export default function PropertyTable() {
             {
               icon: 'edit',
               tooltip: 'Sửa',
-              onClick: (event, rowData) => window.alert(rowData.bdsid),
+              onClick: (event, rowData) => handleOpen(rowData),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
           ]}
@@ -112,7 +104,7 @@ export default function PropertyTable() {
       }
       onRowClick={(event, rowData, togglePanel) => togglePanel()}
       />
-      <PropertyModal isOpen={open} isClose={handleClose} />
+      <PropertyModal property={propertyEdit} isOpen={open} isClose={handleClose} />
     </div>
   );
 }

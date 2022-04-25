@@ -1,24 +1,20 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import frLocale from "date-fns/locale/fr";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TextField from "@mui/material/TextField";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
-
 import { useDispatch, useSelector } from "react-redux";
-import { addCustomer, editCustomer } from "../../../redux/customerSlice";
-import { HTTP_STATUS } from "../../../redux/constants";
+import { addProperty, editProperty } from "../../../redux/propertySlice";
+import { getCustomers } from "../../../redux/customerSlice";
+import { getTypes } from "../../../redux/propertyTypeSlice";
 
-export default function PropertyModal({ cus, isOpen, isClose }) {
+export default function PropertyModal({ property, isOpen, isClose }) {
   const ColorButton = styled(Button)(({ theme }) => ({
     color: "white",
     fontWeight: "bolder",
@@ -44,106 +40,119 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
     boxShadow: 24,
   };
 
+  const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
+  const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
+
   const dispatch = useDispatch();
-  const [ho, setHo] = React.useState("");
-  const [tendem, setTendem] = React.useState("");
-  const [ten, setTen] = React.useState("");
-  const [ngaysinh, setNgaysinh] = React.useState(null);
-  const [sodienthoai, setSdt] = React.useState("");
-  const [cmnd, setCmnd] = React.useState("");
-  const [gioitinh, setGioitinh] = React.useState("0");
-  const [diachi, setDiachi] = React.useState("");
-  const [diachitt, setDiachitt] = React.useState("");
-  const [email, setEmail] = React.useState("");
+  React.useEffect(() => {
+    dispatch(getTypes())
+    dispatch(getCustomers())
+  }, [])
+
+  const [chieudai, setChieudai] = React.useState("");
+  const [chieurong, setChieurong] = React.useState("");
+  const [dientich, setDientich] = React.useState("");
+  const [dongia, setDongia] = React.useState("0");
+  const [hinhanh, setHinhanh] = React.useState(null);
+  const [huehong, setHuehong] = React.useState("0");
+  const [masoqsdd, setMasoqsdd] = React.useState("");  
   const [mota, setMota] = React.useState("");
-  const [loaikh, setLoai] = React.useState("0");
-  const [trangthai, setTrangthai] = React.useState("0");
+  const [phuong, setPhuong] = React.useState("");
+  const [quan, setQuan] = React.useState("");  
+  const [sonha, setSonha] = React.useState("");
+  const [tenduong, setTenduong] = React.useState("");  
+  const [thanhpho, setThanhpho] = React.useState("");
+  const [khid, setKhid] = React.useState("");  
+  const [tinhtrang, setTinhtrang] = React.useState("0");
+  const [loaibdid, setLoaibdid] = React.useState("");  
 
   React.useEffect(() => {
-    if (cus) {
-      handleForm();
+    if (property) {
+      handleFormEdit(property);
     } else {
       handleFormAdd();
     }
   }, [isOpen]);
-  const handleForm = () => {
-    var hotenkh = cus.hoten.split(" ");
-    var lenght = hotenkh.length;
-    setHo(hotenkh[0]);
-    setTen(hotenkh[lenght - 1]);
-    if (lenght > 2) {
-      setTendem(hotenkh.slice(1, lenght - 1).join(" "));
-    }
-    setNgaysinh(cus.ngaysinh);
-    setSdt(cus.sodienthoai);
-    setGioitinh(cus.gioitinh);
-    setDiachi(cus.diachi);
-    setEmail(cus.email);
-    setTrangthai(cus.trangthai);
-    setDiachitt(cus.diachitt);
-    setMota(cus.mota);
-    setLoai(cus.loaikh);
-    setCmnd(cus.cmnd);
+  const handleFormEdit = (prop) => {
+    setChieudai(prop.chieudai);
+    setChieurong(prop.chieurong);
+    setDientich(prop.dientich);
+    setDongia(prop.dongia);
+    setHinhanh(prop.hinhanh);
+    setHuehong(prop.huehong);
+    setMasoqsdd(prop.masoqsdd);
+    setMota(prop.mota);
+    setPhuong(prop.phuong)
+    setQuan(prop.quan);
+    setSonha(prop.sonha);
+    setTenduong(prop.tenduong);
+    setThanhpho(prop.thanhpho);
+    setKhid(prop.khid);
+    setTinhtrang(prop.tinhtrang);
+    setLoaibdid(prop.loaibdid);
   };
 
   const handleFormAdd = () => {
-    setHo("");
-    setTen("");
-    setTendem("");
-    setNgaysinh(null);
-    setSdt("");
-    setGioitinh("0");
-    setDiachi("");
-    setEmail("");
-    setTrangthai("0");
-    setDiachitt("");
+    setChieudai("");
+    setChieurong("");
+    setDientich("");
+    setDongia("0");
+    setHinhanh(null);
+    setHuehong("0");
+    setMasoqsdd("");
     setMota("");
-    setLoai("0");
-    setCmnd("");
+    setPhuong("");
+    setQuan("");
+    setSonha("");
+    setTenduong("");
+    setThanhpho("");
+    setKhid("");
+    setTinhtrang("0");
+    setLoaibdid("");
   };
 
   const handleSubmit = () => {
     if (
-      ho === "" ||
-      ten === "" ||
-      ngaysinh === null ||
-      sodienthoai === "" ||
-      gioitinh === "" ||
-      diachi === "" ||
-      diachitt === "" ||
-      email === "" ||
-      cmnd === "" ||
-      loaikh === ""
+      chieudai === "" ||
+      chieurong === "" ||
+      dientich === "" ||
+      dongia === "" ||
+      huehong === "" ||
+      masoqsdd === "" ||
+      phuong === "" ||
+      quan === "" ||
+      sonha === "" ||
+      tenduong === "" ||
+      thanhpho === ""
     ) {
       window.alert("Thông tin không được để trống");
       return;
     } else {
-      const hoten = `${ho} ${tendem} ${ten}`
-      dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
+      // dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
       isClose();
     }
   };
 
   const handleEdit = () => {
     if (
-      ho === "" ||
-      ten === "" ||
-      ngaysinh === null ||
-      sodienthoai === "" ||
-      gioitinh === "" ||
-      diachi === "" ||
-      diachitt === "" ||
-      email === "" ||
-      cmnd === "" ||
-      loaikh === ""
+      chieudai === "" ||
+      chieurong === "" ||
+      dientich === "" ||
+      dongia === "" ||
+      huehong === "" ||
+      masoqsdd === "" ||
+      phuong === "" ||
+      quan === "" ||
+      sonha === "" ||
+      tenduong === "" ||
+      thanhpho === ""
     ) {
       window.alert("Thông tin không được để trống");
       return;
     } else {
-      const hoten = `${ho} ${tendem} ${ten}`;
-      const khid = cus.khid;
-      if (window.confirm("Bạn có chắc muốn chỉnh sửa khách hàng ID: " + khid)) {
-        dispatch(editCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
+      const bdsid = property.bdsid;
+      if (window.confirm("Bạn có chắc muốn chỉnh sửa bất động sản ID: " + khid)) {
+        // dispatch(editCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
         isClose();
       } else {
         return;
@@ -172,8 +181,8 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   label="Chiều dài (m)"
                   variant="filled"
                   placeholder="Nhập chiều dài..."
-                  defaultValue={ho}
-                  onChange={(e) => setHo(e.target.value)}
+                  defaultValue={chieudai}
+                  onChange={(e) => setChieudai(e.target.value)}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -182,8 +191,8 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   label="Chiều rộng (m)"
                   variant="filled"
                   placeholder="Nhập chiều rộng..."
-                  defaultValue={tendem}
-                  onChange={(e) => setTendem(e.target.value)}
+                  defaultValue={chieurong}
+                  onChange={(e) => setChieurong(e.target.value)}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -193,8 +202,8 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   label="Diện tích (m2)"
                   variant="filled"
                   placeholder="Nhập diện tích..."
-                  defaultValue={ten}
-                  onChange={(e) => setTen(e.target.value)}
+                  defaultValue={dientich}
+                  onChange={(e) => setDientich(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -204,8 +213,8 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   variant="filled"
                   placeholder="Nhập đơn giá..."
                   fullWidth
-                  defaultValue={tendem}
-                  onChange={(e) => setTendem(e.target.value)}
+                  defaultValue={dongia}
+                  onChange={(e) => setDongia(e.target.value)}
                   type="number"
                 />
               </Grid>
@@ -218,13 +227,13 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   fullWidth
                   placeholder="Nhập mã QSDĐ..."
                   type="number"
-                  defaultValue={sodienthoai}
-                  onInput={(e) => {
-                    e.target.value = Math.max(0, parseInt(e.target.value))
-                      .toString()
-                      .slice(0, 10);
-                  }}
-                  onChange={(e) => setSdt(e.target.value)}
+                  defaultValue={masoqsdd}
+                  // onInput={(e) => {
+                  //   e.target.value = Math.max(0, parseInt(e.target.value))
+                  //     .toString()
+                  //     .slice(0, 10);
+                  // }}
+                  onChange={(e) => setMasoqsdd(e.target.value)}
                 />
               </Grid>
               <Grid item xs={3}>
@@ -236,13 +245,13 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   fullWidth
                   placeholder="%"
                   type="number"
-                  defaultValue={sodienthoai}
+                  defaultValue={huehong}
                   onInput={(e) => {
                     e.target.value = Math.max(0, parseInt(e.target.value))
                       .toString()
                       .slice(0, 2);
                   }}
-                  onChange={(e) => setSdt(e.target.value)}
+                  onChange={(e) => setHuehong(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -253,8 +262,8 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   variant="filled"
                   fullWidth
                   placeholder="Nhập số nhà..."
-                  defaultValue={diachi}
-                  onChange={(e) => setDiachi(e.target.value)}
+                  defaultValue={sonha}
+                  onChange={(e) => setSonha(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -265,11 +274,48 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   variant="filled"
                   fullWidth
                   placeholder="Nhập tên đường..."
-                  defaultValue={diachi}
-                  onChange={(e) => setDiachi(e.target.value)}
+                  defaultValue={tenduong}
+                  onChange={(e) => setTenduong(e.target.value)}
                 />
               </Grid>
               <Grid item xs={4}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Thành phố/Tỉnh"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập thành phố/tỉnh..."
+                  defaultValue={thanhpho}
+                  onChange={(e) => setThanhpho(e.target.value)}
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Quận/Huyện"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập quận/huyện..."
+                  defaultValue={quan}
+                  onChange={(e) => setQuan(e.target.value)}
+                />
+                </Grid>
+                <Grid item xs={4}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Phường/xã"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập phường/xã..."
+                  defaultValue={phuong}
+                  onChange={(e) => setPhuong(e.target.value)}
+                />
+              </Grid>
+              
+              {/* <Grid item xs={4}>
               <FormControl
                   variant="filled"
                   sx={{ width: "100%", minHeight: "100%" }}
@@ -325,7 +371,8 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                     <MenuItem value={"1"}>Công ty</MenuItem>
                   </Select>
                 </FormControl>
-              </Grid>
+              </Grid> */}
+
               <Grid item xs={4}>
               <FormControl
                   variant="filled"
@@ -337,11 +384,13 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={tinhtrang}
+                    onChange={(e) => setTinhtrang(e.target.value)}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                    <MenuItem value={"Đang ký gửi"}>Đang ký gửi</MenuItem>
+                    <MenuItem value={"Đang đặt cọc"}>Đang đặt cọc</MenuItem>
+                    <MenuItem value={"Đã chuyển nhượng"}>Đã chuyển nhượng</MenuItem>
+                    <MenuItem value={"Hết hạn"}>Hết hạn</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -356,11 +405,16 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={khid}
+                    onChange={(e) => setKhid(e.target.value)}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                     {customers.list?.map(item => {
+                        return (
+                          <MenuItem value={item.khid}>
+                            {item.hoten}
+                          </MenuItem>
+                        );
+                      })}
                   </Select>
                 </FormControl>
               </Grid>
@@ -375,11 +429,16 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={loaibdid}
+                    onChange={(e) => setLoaibdid(e.target.value)}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                     {types.list?.map(item => {
+                        return (
+                          <MenuItem value={item.loaiid}>
+                            {item.tenloai}
+                          </MenuItem>
+                        );
+                      })}
                   </Select>
                 </FormControl>
               </Grid>
@@ -401,13 +460,13 @@ export default function PropertyModal({ cus, isOpen, isClose }) {
             </Grid>
           </div>
           <div className="modal-form" style={{ marginTop: "8rem" }}>
-            {cus ? (
+            {property ? (
               <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
-                Cập nhật khách hàng
+                Cập nhật bất động sản
               </ColorButton>
             ) : (
               <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
-                Thêm khách hàng
+                Thêm bất động sản
               </ColorButton>
             )}
           </div>

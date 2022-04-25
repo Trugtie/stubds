@@ -16,7 +16,7 @@ import { styled } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addCustomer, editCustomer } from "../../../redux/customerSlice";
-import { HTTP_STATUS } from "../../../redux/constants";
+import { getStaffs } from "../../../redux/staffSlice";
 
 export default function CustomerModal({ cus, isOpen, isClose }) {
   const ColorButton = styled(Button)(({ theme }) => ({
@@ -44,10 +44,15 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
     boxShadow: 24,
   };
 
+  const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
   const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(getStaffs())
+  }, [])
   const [ho, setHo] = React.useState("");
   const [tendem, setTendem] = React.useState("");
   const [ten, setTen] = React.useState("");
+  const [nvid, setNvid] = React.useState("");
   const [ngaysinh, setNgaysinh] = React.useState(null);
   const [sodienthoai, setSdt] = React.useState("");
   const [cmnd, setCmnd] = React.useState("");
@@ -84,6 +89,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
     setMota(cus.mota);
     setLoai(cus.loaikh);
     setCmnd(cus.cmnd);
+    setNvid(cus.nvid);
   };
 
   const handleFormAdd = () => {
@@ -100,6 +106,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
     setMota("");
     setLoai("0");
     setCmnd("");
+    setNvid("");
   };
 
   const handleSubmit = () => {
@@ -113,13 +120,14 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       diachitt === "" ||
       email === "" ||
       cmnd === "" ||
-      loaikh === ""
+      loaikh === "" ||
+      nvid === ""
     ) {
       window.alert("Thông tin không được để trống");
       return;
     } else {
       const hoten = `${ho} ${tendem} ${ten}`
-      dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
+      dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota, nvid }));
       isClose();
     }
   };
@@ -135,7 +143,8 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       diachitt === "" ||
       email === "" ||
       cmnd === "" ||
-      loaikh === ""
+      loaikh === "" ||
+      nvid === ""
     ) {
       window.alert("Thông tin không được để trống");
       return;
@@ -143,7 +152,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       const hoten = `${ho} ${tendem} ${ten}`;
       const khid = cus.khid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa khách hàng ID: " + khid)) {
-        dispatch(editCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota }));
+        dispatch(editCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota, nvid }));
         isClose();
       } else {
         return;
@@ -307,36 +316,29 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                 />
               </Grid>
               <Grid item xs={6}>
-
-                <TextField
-                  id="filled-basic"
-                  label="Nhân viên phụ trách"
-                  variant="filled"
-                  fullWidth
-                  defaultValue={localStorage.getItem('user')}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-
-                {/* <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Nhân viên phụ trách
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                  // onChange={(e) => setLoai(e.target.value)}
+                  <FormControl
+                    variant="filled"
+                    sx={{ width: "100%", minHeight: "100%" }}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                  </Select>
-                </FormControl> */}
-
-              </Grid>
+                    <InputLabel id="demo-simple-select-filled-label">
+                      Nhân viên phụ trách
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-filled-label"
+                      id="demo-simple-select-filled"
+                      defaultValue={nvid}
+                      onChange={(e) => setNvid(e.target.value)}
+                    >
+                      {list?.map(item => {
+                        return (
+                          <MenuItem value={item.nvid}>
+                            {item.tennv}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                </Grid>
               <Grid item xs={6}>
                 <FormControl
                   variant="filled"

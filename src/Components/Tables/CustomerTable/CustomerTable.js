@@ -116,7 +116,7 @@ export default function CustomerTable() {
         }}
       />
       <CustomerModal cus={cusEdit} isOpen={openAdd} isClose={handleClose}  />
-      <RequirementModal open={openRe} close={handleClose} />
+      <RequirementModal cus={cusEdit} request={null} open={openRe} close={handleClose} />
 
     </div>
   );

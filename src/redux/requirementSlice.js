@@ -14,29 +14,29 @@ export const getRequirements = createAsyncThunk(
     }
 )
 
-// export const deleteRequirement = createAsyncThunk(
-//     'requirement/deleteRequirement',
-//     async (value) => {
-//         const { data } = await axios.delete(`${API_URL}yeucaukhachhang/${value}`,config)
-//         return data;
-//     }
-// );
+export const deleteRequirement = createAsyncThunk(
+    'requirement/deleteRequirement',
+    async (value) => {
+        const { data } = await axios.delete(`${API_URL}yeucaukhachhang/${value}`,config)
+        return data;
+    }
+);
 
-// export const addRequirement = createAsyncThunk(
-//     'requirement/addRequirement',
-//     async (value) => {
-//         const { data } = await axios.post(`${API_URL}yeucaukhachhang`, value,config)
-//         return data;
-//     }
-// );
+export const addRequirement = createAsyncThunk(
+    'requirement/addRequirement',
+    async (value) => {
+        const { data } = await axios.post(`${API_URL}yeucaukhachhang`, value,config)
+        return data;
+    }
+);
 
-// export const editRequirement = createAsyncThunk(
-//     'requirement/editRequirement',
-//     async (value) => {
-//         const { data } = await axios.put(`${API_URL}yeucaukhachhang`, value,config)
-//         return data;
-//     }
-// );
+export const editRequirement = createAsyncThunk(
+    'requirement/editRequirement',
+    async (value) => {
+        const { data } = await axios.put(`${API_URL}yeucaukhachhang`, value,config)
+        return data;
+    }
+);
 
 export const requirementSlice = createSlice({
     name: "requirement",
@@ -45,46 +45,45 @@ export const requirementSlice = createSlice({
         status: null
     },
     extraReducers: {
-        // // addRequirement
-        // [addRequirement.pending](state) {
-        //     state.status = HTTP_STATUS.PENDING
-        // },
-        // [addRequirement.fulfilled](state, { payload }) {
-        //     state.list.push(payload)
-        //     state.status = HTTP_STATUS.INSERTED
-        // },
-        // [addRequirement.rejected](state) {
-        //     state.status = HTTP_STATUS.INSERT_FAILED
-        // },
+        // addRequirement
+        [addRequirement.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [addRequirement.fulfilled](state, { payload }) {
+            state.list.push(payload)
+            state.status = HTTP_STATUS.INSERTED
+        },
+        [addRequirement.rejected](state) {
+            state.status = HTTP_STATUS.INSERT_FAILED
+        },
 
-        // // editRequirement
-        // [editRequirement.pending](state) {
-        //     state.status = HTTP_STATUS.PENDING
-        // },
-        // [editRequirement.fulfilled](state, { payload }) {
-        //     state.status = HTTP_STATUS.EDITED
-        //     const index = state.list.findIndex((item) => item.khid === payload.khid)
-        //     if (index >= 0) {
-        //         state.list[index] = payload;
-        //     }
-        // },
-        // [editRequirement.rejected](state) {
-        //     state.status = HTTP_STATUS.EDIT_FAILED
-        // },
+        // editRequirement
+        [editRequirement.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [editRequirement.fulfilled](state, { payload }) {
+            state.status = HTTP_STATUS.EDITED
+            const index = state.list.findIndex((item) => item.ycid === payload.ycid)
+            if (index >= 0) {
+                state.list[index] = payload;
+            }
+        },
+        [editRequirement.rejected](state) {
+            state.status = HTTP_STATUS.EDIT_FAILED
+        },
 
-        // // deleteRequirement
-        // [deleteRequirement.pending](state) {
-        //     state.status = HTTP_STATUS.PENDING
-        // },
-        // [deleteRequirement.fulfilled](state, { payload }) {
-        //     state.list = state.list.filter((item) => item.khid !== payload.khid)
-        //     state.status = HTTP_STATUS.DELETED
-        //     return state
-        // },
-        // [deleteRequirement.rejected](state, { payload }) {
-        //     state.status = HTTP_STATUS.DELETE_FAILED
-        //     state.message = payload.message
-        // },
+        // deleteRequirement
+        [deleteRequirement.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [deleteRequirement.fulfilled](state, { payload }) {
+            state.list = state.list.filter((item) => item.ycid !== payload.ycid)
+            state.status = HTTP_STATUS.DELETED
+            return state
+        },
+        [deleteRequirement.rejected](state) {
+            state.status = HTTP_STATUS.DELETE_FAILED
+        },
 
         // getRequirements
         [getRequirements.pending](state) {
