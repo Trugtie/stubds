@@ -21,6 +21,14 @@ export const login = createAsyncThunk(
     }
 )
 
+export const getStaff = createAsyncThunk(
+    'staff/getStaff',
+    async (value) => {
+        const { data } = await axios.post(`${API_URL}login`, value, config)
+        return data;
+    }
+);
+
 export const getStaffs = createAsyncThunk(
     'staff/getStaffs',
     async () => {
@@ -138,6 +146,18 @@ export const staffSlice = createSlice({
             state.status = HTTP_STATUS.FULFILLED
         },
         [getStaffs.rejected](state) {
+            state.status = HTTP_STATUS.REJECTED
+        },
+
+        // getStaff
+        [getStaff.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [getStaff.fulfilled](state, { payload }) {
+            state.list = payload
+            state.status = HTTP_STATUS.FULFILLED
+        },
+        [getStaff.rejected](state) {
             state.status = HTTP_STATUS.REJECTED
         },
     }

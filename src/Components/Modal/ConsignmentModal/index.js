@@ -15,10 +15,15 @@ import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addCustomer, editCustomer } from "../../../redux/customerSlice";
+import { addConsignment, editConsignment, deleteConsignment } from "../../../redux/consignmentSlice";
+import { getCustomers } from "../../../redux/customerSlice";
+import { getTypes } from "../../../redux/propertyTypeSlice";
+import { getProperty } from "../../../redux/propertySlice";
 import { HTTP_STATUS } from "../../../redux/constants";
+import Loading from "react-fullscreen-loading";
 
-export default function ConsignmentModal({ cus, isOpen, isClose }) {
+
+export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const ColorButton = styled(Button)(({ theme }) => ({
     color: "white",
     fontWeight: "bolder",
@@ -54,135 +59,139 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
     boxShadow: 24,
   };
 
+  const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
+  const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
   const dispatch = useDispatch();
-  const [ho, setHo] = React.useState("");
-  const [tendem, setTendem] = React.useState("");
-  const [ten, setTen] = React.useState("");
-  const [ngaysinh, setNgaysinh] = React.useState(null);
-  const [sodienthoai, setSdt] = React.useState("");
-  const [cmnd, setCmnd] = React.useState("");
-  const [gioitinh, setGioitinh] = React.useState("0");
-  const [diachi, setDiachi] = React.useState("");
-  const [diachitt, setDiachitt] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [mota, setMota] = React.useState("");
-  const [loaikh, setLoai] = React.useState("0");
-  const [trangthai, setTrangthai] = React.useState("0");
-
   React.useEffect(() => {
-    if (cus) {
-      handleForm();
-    } else {
-      handleFormAdd();
+    dispatch(getTypes())
+    dispatch(getCustomers())
+  }, [])
+  const [chiphidv, setChiphi] = React.useState("0");
+  const [giatri, setGiatri] = React.useState("0");
+  const [ngaybd, setNgaybd] = React.useState(null);
+  const [ngayketthuc, setNgaykt] = React.useState(null);
+  const [trangthai, setTrangthai] = React.useState("0");
+  const [khid, setKhachhang] = React.useState("");
+
+  const [chieudai, setChieudai] = React.useState("");
+  const [chieurong, setChieurong] = React.useState("");
+  const [dientich, setDientich] = React.useState("");
+  const [dongia, setDongia] = React.useState("0");
+  const [hinhanh, setHinhanh] = React.useState(null);
+  const [huehong, setHuehong] = React.useState("0");
+  const [masoqsdd, setMasoqsdd] = React.useState("");
+  const [mota, setMota] = React.useState("");
+  const [phuong, setPhuong] = React.useState("");
+  const [quan, setQuan] = React.useState("");
+  const [sonha, setSonha] = React.useState("");
+  const [tenduong, setTenduong] = React.useState("");
+  const [thanhpho, setThanhpho] = React.useState("");
+  const [tinhtrang, setTinhtrang] = React.useState("0");
+  const [loaibdid, setLoaibdid] = React.useState("");
+  const property = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
+  React.useEffect(() => {
+    if (property) {
+      handleForm(property.list);
+    }
+  }, [property.status]);
+
+  React.useLayoutEffect(() => {
+    if (contract) {
+      dispatch(getProperty(contract.bdsid))
     }
   }, [isOpen]);
-  const handleForm = () => {
-    var hotenkh = cus.hoten.split(" ");
-    var lenght = hotenkh.length;
-    setHo(hotenkh[0]);
-    setTen(hotenkh[lenght - 1]);
-    if (lenght > 2) {
-      setTendem(hotenkh.slice(1, lenght - 1).join(" "));
-    }
-    setNgaysinh(cus.ngaysinh);
-    setSdt(cus.sodienthoai);
-    setGioitinh(cus.gioitinh);
-    setDiachi(cus.diachi);
-    setEmail(cus.email);
-    setTrangthai(cus.trangthai);
-    setDiachitt(cus.diachitt);
-    setMota(cus.mota);
-    setLoai(cus.loaikh);
-    setCmnd(cus.cmnd);
-  };
 
-  const handleFormAdd = () => {
-    setHo("");
-    setTen("");
-    setTendem("");
-    setNgaysinh(null);
-    setSdt("");
-    setGioitinh("0");
-    setDiachi("");
-    setEmail("");
-    setTrangthai("0");
-    setDiachitt("");
-    setMota("");
-    setLoai("0");
-    setCmnd("");
+  const handleForm = (prop) => {
+    if (contract) {
+      setChiphi(contract.chiphidv);
+      setGiatri(contract.giatri);
+      setNgaybd(contract.ngaybd);
+      setNgaykt(contract.ngayketthuc);
+      setTrangthai(contract.trangthai);
+      setKhachhang(contract.khid);
+      if (prop) {
+        setChieudai(prop.chieudai);
+        setChieurong(prop.chieurong);
+        setDientich(prop.dientich);
+        setDongia(prop.dongia);
+        setHinhanh(prop.hinhanh);
+        setHuehong(prop.huehong);
+        setMasoqsdd(prop.masoqsdd);
+        setMota(prop.mota);
+        setPhuong(prop.phuong)
+        setQuan(prop.quan);
+        setSonha(prop.sonha);
+        setTenduong(prop.tenduong);
+        setThanhpho(prop.thanhpho);
+        setTinhtrang(prop.tinhtrang);
+        setLoaibdid(prop.loaibdid);
+      }
+    } else {
+      setChiphi("0");
+      setGiatri("0");
+      setNgaybd(null);
+      setNgaykt(null);
+      setTrangthai("0");
+      setKhachhang("");
+      setChieudai("");
+      setChieurong("");
+      setDientich("");
+      setDongia("0");
+      setHinhanh(null);
+      setHuehong("0");
+      setMasoqsdd("");
+      setMota("");
+      setPhuong("");
+      setQuan("");
+      setSonha("");
+      setTenduong("");
+      setThanhpho("");
+      setTinhtrang("0");
+      setLoaibdid("");
+    }
   };
 
   const handleSubmit = () => {
     if (
-      ho === "" ||
-      ten === "" ||
-      ngaysinh === null ||
-      sodienthoai === "" ||
-      gioitinh === "" ||
-      diachi === "" ||
-      diachitt === "" ||
-      email === "" ||
-      cmnd === "" ||
-      loaikh === ""
+      chiphidv === "" ||
+      giatri === "" ||
+      ngaybd === null ||
+      ngayketthuc === null ||
+      chieudai === "" ||
+      chieurong === "" ||
+      dientich === "" ||
+      dongia === "" ||
+      huehong === "" ||
+      masoqsdd === "" ||
+      phuong === "" ||
+      quan === "" ||
+      sonha === "" ||
+      tenduong === "" ||
+      thanhpho === "" ||
+      khid === "" ||
+      loaibdid === ""
     ) {
       window.alert("Thông tin không được để trống");
       return;
     } else {
-      const hoten = `${ho} ${tendem} ${ten}`;
-      dispatch(
-        addCustomer({
-          ngaysinh,
-          sodienthoai,
-          gioitinh,
-          diachi,
-          diachitt,
-          email,
-          cmnd,
-          trangthai,
-          hoten,
-          loaikh,
-          mota,
-        })
-      );
+      // dispatch(addConsignment({ chiphidv, giatri, ngaybd, ngayketthuc, trangthai, khid }));
       isClose();
     }
   };
 
   const handleEdit = () => {
     if (
-      ho === "" ||
-      ten === "" ||
-      ngaysinh === null ||
-      sodienthoai === "" ||
-      gioitinh === "" ||
-      diachi === "" ||
-      diachitt === "" ||
-      email === "" ||
-      cmnd === "" ||
-      loaikh === ""
+      chiphidv === "" ||
+      giatri === "" ||
+      ngaybd === null ||
+      ngayketthuc === null
     ) {
       window.alert("Thông tin không được để trống");
       return;
     } else {
-      const hoten = `${ho} ${tendem} ${ten}`;
-      const khid = cus.khid;
-      if (window.confirm("Bạn có chắc muốn chỉnh sửa khách hàng ID: " + khid)) {
-        dispatch(
-          editCustomer({
-            khid,
-            ngaysinh,
-            sodienthoai,
-            gioitinh,
-            diachi,
-            diachitt,
-            email,
-            cmnd,
-            trangthai,
-            hoten,
-            loaikh,
-            mota,
-          })
-        );
+      const kgid = contract.kgid;
+      if (window.confirm("Bạn có chắc muốn chỉnh sửa hợp đồng ID: " + kgid)) {
+        // dispatch(editConsignment({ kgid, chiphidv, giatri, ngaybd, ngayketthuc, trangthai, khid }));
         isClose();
       } else {
         return;
@@ -202,7 +211,7 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
         <div className="modal-content">
           <h2 className="modal-subtitle">Thông tin hợp đồng ký gửi</h2>
           <hr className="modal-divider" />
-          <div className="modal-form" style={{ marginTop: "2rem" }}>
+          <div className="modal-form" style={{ marginTop: "1rem" }}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
@@ -211,8 +220,8 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
                   variant="filled"
                   placeholder="Nhập chi phí dịch vụ..."
                   fullWidth
-                  defaultValue={tendem}
-                  onChange={(e) => setTendem(e.target.value)}
+                  defaultValue={chiphidv}
+                  onChange={(e) => setChiphi(e.target.value)}
                   type="number"
                 />
               </Grid>
@@ -225,13 +234,13 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
                   fullWidth
                   placeholder="Nhập giá trị..."
                   type="number"
-                  defaultValue={sodienthoai}
+                  defaultValue={giatri}
                   onInput={(e) => {
                     e.target.value = Math.max(0, parseInt(e.target.value))
                       .toString()
                       .slice(0, 10);
                   }}
-                  onChange={(e) => setSdt(e.target.value)}
+                  onChange={(e) => setGiatri(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -242,9 +251,9 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
                   <DatePicker
                     required
                     label="Ngày bắt đầu"
-                    value={ngaysinh}
+                    value={ngaybd}
                     onChange={(newValue) => {
-                      setNgaysinh(newValue);
+                      setNgaybd(newValue);
                     }}
                     renderInput={(params) => (
                       <TextField fullWidth {...params} />
@@ -260,9 +269,9 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
                   <DatePicker
                     required
                     label="Ngày kết thúc"
-                    value={ngaysinh}
+                    value={ngayketthuc}
                     onChange={(newValue) => {
-                      setNgaysinh(newValue);
+                      setNgaykt(newValue);
                     }}
                     renderInput={(params) => (
                       <TextField fullWidth {...params} />
@@ -270,13 +279,160 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
                   />
                 </LocalizationProvider>
               </Grid>
+            </Grid>
+          </div>
+          <h2 className="modal-subtitle">Thông tin bất động sản</h2>
+          <hr className="modal-divider" />
+          <div className="modal-form" style={{ marginTop: "1rem" }}>
+            <Grid container spacing={2}>
               <Grid item xs={4}>
-                <FormControl
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Chiều dài (m)"
+                  variant="filled"
+                  placeholder="Nhập chiều dài..."
+                  defaultValue={chieudai}
+                  onChange={(e) => setChieudai(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  id="filled-basic"
+                  label="Chiều rộng (m)"
+                  variant="filled"
+                  placeholder="Nhập chiều rộng..."
+                  defaultValue={chieurong}
+                  onChange={(e) => setChieurong(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Diện tích (m2)"
+                  variant="filled"
+                  placeholder="Nhập diện tích..."
+                  defaultValue={dientich}
+                  onChange={(e) => setDientich(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  id="filled-basic"
+                  label="Đơn giá (VND)"
+                  variant="filled"
+                  placeholder="Nhập đơn giá..."
+                  fullWidth
+                  defaultValue={dongia}
+                  onChange={(e) => setDongia(e.target.value)}
+                  type="number"
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Mã QSDĐ"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập mã QSDĐ..."
+                  type="number"
+                  defaultValue={masoqsdd}
+                  // onInput={(e) => {
+                  //   e.target.value = Math.max(0, parseInt(e.target.value))
+                  //     .toString()
+                  //     .slice(0, 10);
+                  // }}
+                  onChange={(e) => setMasoqsdd(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Huê hồng (%)"
+                  variant="filled"
+                  fullWidth
+                  placeholder="%"
+                  type="number"
+                  defaultValue={huehong}
+                  onInput={(e) => {
+                    e.target.value = Math.max(0, parseInt(e.target.value))
+                      .toString()
+                      .slice(0, 2);
+                  }}
+                  onChange={(e) => setHuehong(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Số nhà"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập số nhà..."
+                  defaultValue={sonha}
+                  onChange={(e) => setSonha(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Đường"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập tên đường..."
+                  defaultValue={tenduong}
+                  onChange={(e) => setTenduong(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Thành phố/Tỉnh"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập thành phố/tỉnh..."
+                  defaultValue={thanhpho}
+                  onChange={(e) => setThanhpho(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Quận/Huyện"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập quận/huyện..."
+                  defaultValue={quan}
+                  onChange={(e) => setQuan(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  required
+                  id="filled-basic"
+                  label="Phường/xã"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập phường/xã..."
+                  defaultValue={phuong}
+                  onChange={(e) => setPhuong(e.target.value)}
+                />
+              </Grid>
+
+              {/* <Grid item xs={4}>
+              <FormControl
                   variant="filled"
                   sx={{ width: "100%", minHeight: "100%" }}
                 >
                   <InputLabel id="demo-simple-select-filled-label">
-                    Trạng thái
+                    Thành phố/Tỉnh
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-filled-label"
@@ -286,6 +442,64 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
                   >
                     <MenuItem value={"0"}>Cá nhân</MenuItem>
                     <MenuItem value={"1"}>Công ty</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={4}>
+              <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                   Quận/Huyện
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={loaikh}
+                    onChange={(e) => setLoai(e.target.value)}
+                  >
+                    <MenuItem value={"0"}>Cá nhân</MenuItem>
+                    <MenuItem value={"1"}>Công ty</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={4}>
+              <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Phường/Xã
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={loaikh}
+                    onChange={(e) => setLoai(e.target.value)}
+                  >
+                    <MenuItem value={"0"}>Cá nhân</MenuItem>
+                    <MenuItem value={"1"}>Công ty</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid> */}
+
+              <Grid item xs={4}>
+                <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Tình trạng
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={tinhtrang}
+                    onChange={(e) => setTinhtrang(e.target.value)}
+                  >
+                    <MenuItem value={"0"}>Đang ký gửi</MenuItem>
+                    <MenuItem value={"1"}>Hết hạn</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -300,8 +514,120 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={khid}
+                    onChange={(e) => setKhachhang(e.target.value)}
+                  >
+                    {customers.list?.map(item => {
+                      return (
+                        <MenuItem value={item.khid}>
+                          {item.hoten}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={4}>
+                <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Loại BĐS
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={loaibdid}
+                    onChange={(e) => setLoaibdid(e.target.value)}
+                  >
+                    {types.list?.map(item => {
+                      return (
+                        <MenuItem value={item.loaiid}>
+                          {item.tenloai}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12}>
+                <TextField
+                  id="filled-basic"
+                  label="Mô tả"
+                  variant="filled"
+                  fullWidth
+                  placeholder="Nhập mô tả..."
+                  multiline
+                  minRows={3}
+                  maxRows={3}
+                  defaultValue={mota}
+                  onChange={(e) => setMota(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+
+
+            {/* <Grid item xs={4}>
+                <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Trạng thái
+                  </InputLabel>
+                  <Select
+                    disabled
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={trangthai}
+                    onChange={(e) => setTrangthai(e.target.value)}
+                  >
+                    <MenuItem value={"0"}>Đang ký gửi</MenuItem>
+                    <MenuItem value={"1"}>Hết hạn</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={4}>
+                <TextField
+                  disabled
+                  id="filled-basic"
+                  label="Mã khách hàng"
+                  variant="filled"
+                  placeholder="Nhập mã khách hàng..."
+                  fullWidth
+                  defaultValue={khid}
+                  onChange={(e) => setKhachhang(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <TextField
+                  disabled
+                  id="filled-basic"
+                  label="Mã BĐS"
+                  variant="filled"
+                  placeholder="Nhập mã bất động sản..."
+                  fullWidth
+                  defaultValue={bdsid}
+                  onChange={(e) => setBds(e.target.value)}
+                />
+              </Grid> */}
+
+            {/* <Grid item xs={4}>
+                <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Khách hàng
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={khid}
+                    onChange={(e) => setKhachhang(e.target.value)}
                   >
                     <MenuItem value={"0"}>Cá nhân</MenuItem>
                     <MenuItem value={"1"}>Công ty</MenuItem>
@@ -326,58 +652,39 @@ export default function ConsignmentModal({ cus, isOpen, isClose }) {
                     <MenuItem value={"1"}>Công ty</MenuItem>
                   </Select>
                 </FormControl>
-              </Grid>
-            </Grid>
+              </Grid> */}
           </div>
-
           <div
             className="modal-form"
-            style={{ marginTop: "28rem", padding: "0rem 12rem" }}
+            style={{ marginTop: "1rem", padding: "0rem 12rem" }}
           >
-            <Grid container spacing={2}>
-            <Grid item xs={8}>
-              {cus ? (
-                <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
-                  Cập nhật khách hàng
-                </ColorButton>
-              ) : (
-                <ColorButton
-                  variant="contained"
-                  onClick={(e) => handleSubmit(e)}
-                >
-                  Thêm khách hàng
-                </ColorButton>
-              )}
+            {contract ? (
+              <Grid container spacing={2}>
+                <Grid item xs={8}>
+                  <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
+                    Cập nhật hợp đồng
+                  </ColorButton>
+                </Grid>
+                <Grid item xs={4}>
+                  <DeleteButton variant="contained"
+                  // onClick={handleDelete(contract.kgid)}
+                  >
+                    Xoá hợp đồng
+                  </DeleteButton>
+                </Grid>
               </Grid>
-              <Grid item xs={4}>
-              {cus ? (
-                <DeleteButton variant="contained" onClick={(e) => handleEdit(e)}>
-                  XÓA
-                </DeleteButton>
-              ) : (
-                <DeleteButton
-                  variant="contained"
-                  onClick={(e) => handleSubmit(e)}
-                >
-                  XÓA
-                </DeleteButton>
-              )}
-              </Grid>
-            </Grid>
-          </div>
-          {/* <div className="modal-form" style={{ marginTop: "8rem" }}>
-            {cus ? (
-              <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
-                Cập nhật khách hàng
-              </ColorButton>
             ) : (
-              <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
-                Thêm khách hàng
+              <ColorButton
+                variant="contained"
+                onClick={(e) => handleSubmit(e)}
+              >
+                Thêm hợp đồng
               </ColorButton>
             )}
-          </div> */}
+          </div>
         </div>
       </Box>
-    </Modal>
+
+    </Modal >
   );
 }

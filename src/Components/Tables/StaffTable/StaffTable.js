@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getStaffs, deleteStaff } from "../../../redux/staffSlice";
+import { getStaffs, deleteStaff, getStaff } from "../../../redux/staffSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -15,8 +15,16 @@ import AlertToast from "../../Alert/alert";
 export default function StaffTable() {
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
+  window.Buffer = Buffer;
+  const account = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
+  var taikhoan = new FormData();
+  taikhoan.append('taikhoan', account[0]);
+  taikhoan.append('matkhau', account[1]);
   useEffect(() => {
-    dispatch(getStaffs())
+    window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN" ?
+      dispatch(getStaffs())
+      :
+      dispatch(getStaff(taikhoan))
   }, [])
   const handleDelete = (staff) => {
     if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
@@ -70,13 +78,13 @@ export default function StaffTable() {
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
-                {status === HTTP_STATUS.PENDING ? 
-                <Loading
-                  loading={true}
-                  background="rgba(0,0,0,0.2)"
-                  loaderColor="#CF9269"
-                /> 
-                : ""}
+                {status === HTTP_STATUS.PENDING ?
+                  <Loading
+                    loading={true}
+                    background="rgba(0,0,0,0.2)"
+                    loaderColor="#CF9269"
+                  />
+                  : ""}
                 <AlertToast value={toast} open={openToast} close={handleCloseToast} />
               </div>
             </div>

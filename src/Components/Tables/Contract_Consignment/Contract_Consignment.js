@@ -3,7 +3,7 @@ import PlusIcon from './plus.svg';
 import './Contract_Consignment.css';
 import ConsignmentModal from '../../Modal/ConsignmentModal';
 import Button from "@mui/material/Button";
-
+import PropertyModal from '../../Modal/PropertyModal/PropertyModal';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getConsignments } from "../../../redux/consignmentSlice";
@@ -18,14 +18,6 @@ export default function Contract_Consignment() {
   useEffect(() => {
     dispatch(getConsignments())
   }, [])
-
-  // const handleDelete = (staff) => {
-  //   if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
-  //     dispatch(deleteStaff(staff.nvid))
-  //   } else {
-  //     return;
-  //   }
-  // };
 
   const [open, setOpen] = useState(false);
   const [consignmentEdit, setConsignment] = useState(null);
@@ -68,6 +60,8 @@ export default function Contract_Consignment() {
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
+                
+                
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}
@@ -86,7 +80,7 @@ export default function Contract_Consignment() {
             {
               icon: 'edit',
               tooltip: 'Sửa',
-              onClick: (event, rowData) => window.alert(rowData.kgid),
+              onClick: (event, rowData) => handleOpen(rowData),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
           ]}
@@ -96,7 +90,8 @@ export default function Contract_Consignment() {
           pageSizeOptions: [10, 15, 20]
         }}
       />
-      <ConsignmentModal isOpen={open} isClose={handleClose} />
+      <ConsignmentModal contract={consignmentEdit} isOpen={open} isClose={handleClose} />
+      {/* <PropertyModal property={null} isOpen={open} isClose={handleClose} /> */}
     </div>
   );
 }

@@ -63,9 +63,9 @@ export default function PropertyTable() {
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>
-                <Button className="add-btn" onClick={() => handleOpen(null)}>
+                {/* <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
-                </Button>
+                </Button> */}
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}
