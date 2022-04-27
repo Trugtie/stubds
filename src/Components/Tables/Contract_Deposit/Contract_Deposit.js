@@ -16,19 +16,14 @@ export default function Contract_Deposit() {
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Deposit)));
   useEffect(() => {
-    dispatch(getDeposites())
+    if (list.length < 2) {
+      dispatch(getDeposites())
+    }
   }, [])
 
-  // const handleDelete = (staff) => {
-  //   if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
-  //     dispatch(deleteStaff(staff.nvid))
-  //   } else {
-  //     return;
-  //   }
-  // };
 
   const [open, setOpen] = useState(false);
-  const [depositEdit, setDeposit] = useState(null);
+  const [deposit, setDeposit] = useState(null);
   const handleClose = () => setOpen(false);
   const handleOpen = (prop) => {
     setDeposit(prop);
@@ -45,7 +40,6 @@ export default function Contract_Deposit() {
   }, [status])
   // TOAST
 
-
   return (
     <div>
       <MaterialTable
@@ -54,8 +48,8 @@ export default function Contract_Deposit() {
           { title: 'BDSID', field: 'bdsid' },
           { title: 'Ngày lập', field: 'ngaylap', type: 'date', dateSetting: { locale: "vi-VN" } },
           { title: 'Ngày hết hạn', field: 'ngayhethan', type: 'date', dateSetting: { locale: "vi-VN" } },
-          { title: 'Giá trị', field: 'giatri', type: 'currency' , currencySetting:{ locale: 'vi',currencyCode:'vnd', minimumFractionDigits:0, maximumFractionDigits:2}},
-          { title: 'Trạng thái', field: 'trangthai', lookup: { 0: "Chưa đặt cọc", 1: "Hết hạn" } },
+          { title: 'Giá trị', field: 'giatri', type: 'currency', currencySetting: { locale: 'vi', currencyCode: 'vnd', minimumFractionDigits: 0, maximumFractionDigits: 2 } },
+          { title: 'Trạng thái', field: 'trangthai', lookup: { 0: "Đã đặt cọc", 1: "Không khả dụng" } },
 
         ]}
         data={list}
@@ -83,9 +77,9 @@ export default function Contract_Deposit() {
         actions={
           [
             {
-              icon: 'edit',
-              tooltip: 'Sửa',
-              onClick: (event, rowData) => window.alert(rowData.dcid),
+              icon: 'info',
+              tooltip: 'Chi tiết',
+              onClick: (event, rowData) => handleOpen(rowData),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
           ]}
@@ -95,8 +89,7 @@ export default function Contract_Deposit() {
           pageSizeOptions: [10, 15, 20]
         }}
       />
-      <DepositModal isOpen={open} isClose={handleClose} />
+      <DepositModal contract={deposit} isOpen={open} isClose={handleClose} />
     </div>
   );
 }
-

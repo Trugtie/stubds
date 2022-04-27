@@ -63,7 +63,6 @@ export const propertySlice = createSlice({
         },
         [editProperty.fulfilled](state, { payload }) {
             state.status = HTTP_STATUS.EDITED
-            
             const index = state.list.findIndex((item) => item.bdsid === payload.bdsid)
             if (index >= 0) {
                 state.list[index] = payload;

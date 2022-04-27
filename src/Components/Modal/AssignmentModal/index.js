@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import frLocale from "date-fns/locale/fr";
+import frLocale from "date-fns/locale/vi";
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
@@ -15,10 +15,12 @@ import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addCustomer, editCustomer } from "../../../redux/customerSlice";
+import { getDeposites } from "../../../redux/depositSlice";
+import { getCustomers } from "../../../redux/customerSlice";
+import { addAssignment, deleteAssignment } from "../../../redux/assignmentSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 
-export default function AssignmentModal({ cus, isOpen, isClose }) {
+export default function AssignmentModal({ contract, isOpen, isClose }) {
   const ColorButton = styled(Button)(({ theme }) => ({
     color: "white",
     fontWeight: "bolder",
@@ -55,139 +57,81 @@ export default function AssignmentModal({ cus, isOpen, isClose }) {
   };
 
   const dispatch = useDispatch();
-  const [ho, setHo] = React.useState("");
-  const [tendem, setTendem] = React.useState("");
-  const [ten, setTen] = React.useState("");
-  const [ngaysinh, setNgaysinh] = React.useState(null);
-  const [sodienthoai, setSdt] = React.useState("");
-  const [cmnd, setCmnd] = React.useState("");
-  const [gioitinh, setGioitinh] = React.useState("0");
-  const [diachi, setDiachi] = React.useState("");
-  const [diachitt, setDiachitt] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [mota, setMota] = React.useState("");
-  const [loaikh, setLoai] = React.useState("0");
-  const [trangthai, setTrangthai] = React.useState("0");
+  const [giatri, setGiatri] = React.useState("");
+  const [ngaylap, setNgaylap] = React.useState(null);
+  const [trangthai, setTrangthai] = React.useState(0);
+  const [bdsid, setBdsid] = React.useState("");
+  const [khid, setKhid] = React.useState("");
+  const [dcid, setDcid] = React.useState("");
 
   React.useEffect(() => {
-    if (cus) {
-      handleForm();
+    if (contract) {
+      handleForm(contract);
     } else {
       handleFormAdd();
     }
   }, [isOpen]);
-  const handleForm = () => {
-    var hotenkh = cus.hoten.split(" ");
-    var lenght = hotenkh.length;
-    setHo(hotenkh[0]);
-    setTen(hotenkh[lenght - 1]);
-    if (lenght > 2) {
-      setTendem(hotenkh.slice(1, lenght - 1).join(" "));
+
+  const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
+  const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Deposit.list.filter((item) => item.trangthai === 0))));
+
+  React.useEffect(() => {
+    if (customers.list.length < 2) {
+      dispatch(getCustomers())
     }
-    setNgaysinh(cus.ngaysinh);
-    setSdt(cus.sodienthoai);
-    setGioitinh(cus.gioitinh);
-    setDiachi(cus.diachi);
-    setEmail(cus.email);
-    setTrangthai(cus.trangthai);
-    setDiachitt(cus.diachitt);
-    setMota(cus.mota);
-    setLoai(cus.loaikh);
-    setCmnd(cus.cmnd);
+    if (properties.length < 2) {
+      dispatch(getDeposites())
+    }
+  }, []);
+
+  const handleForm = (e) => {
+    setGiatri(e.giatri);
+    setNgaylap(e.ngaylap);
+    setTrangthai(e.trangthai);
+    setBdsid(e.bdsid);
+    setKhid(e.khid);
   };
 
   const handleFormAdd = () => {
-    setHo("");
-    setTen("");
-    setTendem("");
-    setNgaysinh(null);
-    setSdt("");
-    setGioitinh("0");
-    setDiachi("");
-    setEmail("");
-    setTrangthai("0");
-    setDiachitt("");
-    setMota("");
-    setLoai("0");
-    setCmnd("");
+    setGiatri("");
+    setNgaylap(null);
+    setTrangthai(0);
+    setBdsid("");
+    setKhid("");
+    setDcid("");
   };
+
+  React.useEffect(() => {
+    if (dcid) {
+      var deposit = properties.filter((item) => item.dcid === dcid);
+      setBdsid(deposit[0].bdsid)
+    }
+  }, [dcid]);
 
   const handleSubmit = () => {
     if (
-      ho === "" ||
-      ten === "" ||
-      ngaysinh === null ||
-      sodienthoai === "" ||
-      gioitinh === "" ||
-      diachi === "" ||
-      diachitt === "" ||
-      email === "" ||
-      cmnd === "" ||
-      loaikh === ""
+      giatri === "" ||
+      ngaylap === null ||
+      bdsid === "" ||
+      khid === ""
     ) {
       window.alert("Thông tin không được để trống");
       return;
     } else {
-      const hoten = `${ho} ${tendem} ${ten}`;
       dispatch(
-        addCustomer({
-          ngaysinh,
-          sodienthoai,
-          gioitinh,
-          diachi,
-          diachitt,
-          email,
-          cmnd,
-          trangthai,
-          hoten,
-          loaikh,
-          mota,
-        })
+        addAssignment({ giatri, ngaylap, bdsid, khid, trangthai, dcid })
       );
       isClose();
     }
   };
 
-  const handleEdit = () => {
-    if (
-      ho === "" ||
-      ten === "" ||
-      ngaysinh === null ||
-      sodienthoai === "" ||
-      gioitinh === "" ||
-      diachi === "" ||
-      diachitt === "" ||
-      email === "" ||
-      cmnd === "" ||
-      loaikh === ""
-    ) {
-      window.alert("Thông tin không được để trống");
-      return;
+  const handleDelete = () => {
+    if (window.confirm("Bạn có chắc muốn xoá hợp đồng ID: " + contract.cnid)) {
+      dispatch(deleteAssignment(contract.cnid, dcid))
     } else {
-      const hoten = `${ho} ${tendem} ${ten}`;
-      const khid = cus.khid;
-      if (window.confirm("Bạn có chắc muốn chỉnh sửa khách hàng ID: " + khid)) {
-        dispatch(
-          editCustomer({
-            khid,
-            ngaysinh,
-            sodienthoai,
-            gioitinh,
-            diachi,
-            diachitt,
-            email,
-            cmnd,
-            trangthai,
-            hoten,
-            loaikh,
-            mota,
-          })
-        );
-        isClose();
-      } else {
-        return;
-      }
+      return;
     }
+    isClose();
   };
 
   return (
@@ -213,13 +157,8 @@ export default function AssignmentModal({ cus, isOpen, isClose }) {
                   fullWidth
                   placeholder="Nhập giá trị..."
                   type="number"
-                  defaultValue={sodienthoai}
-                  onInput={(e) => {
-                    e.target.value = Math.max(0, parseInt(e.target.value))
-                      .toString()
-                      .slice(0, 10);
-                  }}
-                  onChange={(e) => setSdt(e.target.value)}
+                  defaultValue={giatri}
+                  onChange={(e) => setGiatri(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6}>
@@ -229,10 +168,10 @@ export default function AssignmentModal({ cus, isOpen, isClose }) {
                 >
                   <DatePicker
                     required
-                    label="Ngày bắt đầu"
-                    value={ngaysinh}
+                    label="Ngày lập"
+                    value={ngaylap}
                     onChange={(newValue) => {
-                      setNgaysinh(newValue);
+                      setNgaylap(newValue);
                     }}
                     renderInput={(params) => (
                       <TextField fullWidth {...params} />
@@ -241,7 +180,7 @@ export default function AssignmentModal({ cus, isOpen, isClose }) {
                 </LocalizationProvider>
               </Grid>
               <Grid item xs={6}>
-              <FormControl
+                <FormControl
                   variant="filled"
                   sx={{ width: "100%", minHeight: "100%" }}
                 >
@@ -249,13 +188,14 @@ export default function AssignmentModal({ cus, isOpen, isClose }) {
                     Trạng thái
                   </InputLabel>
                   <Select
+                    disabled
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={trangthai}
+                    onChange={(e) => setTrangthai(e.target.value)}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                    <MenuItem value={"0"}>Thành công</MenuItem>
+                    <MenuItem value={"1"}>Thấi bại</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -265,16 +205,24 @@ export default function AssignmentModal({ cus, isOpen, isClose }) {
                   sx={{ width: "100%", minHeight: "100%" }}
                 >
                   <InputLabel id="demo-simple-select-filled-label">
-                    Bất động sản
+                    Mã bất động sản
                   </InputLabel>
                   <Select
+                    disabled
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={bdsid}
+                    onChange={(e) => {
+                      setBdsid(e.target.value)
+                    }}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                    {properties?.map(item => {
+                      return (
+                        <MenuItem value={item.bdsid}>
+                          {item.bdsid}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Grid>
@@ -289,11 +237,16 @@ export default function AssignmentModal({ cus, isOpen, isClose }) {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={khid}
+                    onChange={(e) => setKhid(e.target.value)}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                    {customers.list?.map(item => {
+                      return (
+                        <MenuItem value={item.khid}>
+                          {item.hoten}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Grid>
@@ -308,11 +261,18 @@ export default function AssignmentModal({ cus, isOpen, isClose }) {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={dcid}
+                    onChange={(e) => {
+                      setDcid(e.target.value)
+                    }}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                    {properties?.map(item => {
+                      return (
+                        <MenuItem value={item.dcid}>
+                          {item.dcid}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Grid>
@@ -323,48 +283,18 @@ export default function AssignmentModal({ cus, isOpen, isClose }) {
             className="modal-form"
             style={{ marginTop: "28rem", padding: "0rem 12rem" }}
           >
-            <Grid container spacing={2}>
-            <Grid item xs={8}>
-              {cus ? (
-                <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
-                  Cập nhật khách hàng
-                </ColorButton>
-              ) : (
-                <ColorButton
-                  variant="contained"
-                  onClick={(e) => handleSubmit(e)}
-                >
-                  Thêm khách hàng
-                </ColorButton>
-              )}
-              </Grid>
-              <Grid item xs={4}>
-              {cus ? (
-                <DeleteButton variant="contained" onClick={(e) => handleEdit(e)}>
-                  XÓA
+            <Grid item xs={12}>
+              {contract ? (
+                <DeleteButton variant="contained" onClick={(e) => handleDelete(e)}>
+                  Xoá hợp đồng
                 </DeleteButton>
               ) : (
-                <DeleteButton
-                  variant="contained"
-                  onClick={(e) => handleSubmit(e)}
-                >
-                  XÓA
-                </DeleteButton>
+                <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
+                  Thêm hợp đồng
+                </ColorButton>
               )}
-              </Grid>
             </Grid>
           </div>
-          {/* <div className="modal-form" style={{ marginTop: "8rem" }}>
-            {cus ? (
-              <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
-                Cập nhật khách hàng
-              </ColorButton>
-            ) : (
-              <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
-                Thêm khách hàng
-              </ColorButton>
-            )}
-          </div> */}
         </div>
       </Box>
     </Modal>

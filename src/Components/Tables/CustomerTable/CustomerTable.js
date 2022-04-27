@@ -15,8 +15,9 @@ export default function CustomerTable() {
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
   useEffect(() => {
+    if (list.length < 2) {
     dispatch(getCustomers())
-  }, [])
+  }}, [])
 
 
   const handleDelete = (cus) => {

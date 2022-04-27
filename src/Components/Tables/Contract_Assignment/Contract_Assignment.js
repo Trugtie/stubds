@@ -16,19 +16,14 @@ export default function Contract_Assignment() {
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Assignment)));
   useEffect(() => {
-    dispatch(getAssignments())
+    if (list.length < 2) {
+      dispatch(getAssignments())
+    }
   }, [])
 
-  // const handleDelete = (staff) => {
-  //   if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
-  //     dispatch(deleteStaff(staff.nvid))
-  //   } else {
-  //     return;
-  //   }
-  // };
 
   const [open, setOpen] = useState(false);
-  const [assignmentEdit, setAssignment] = useState(null);
+  const [assignment, setAssignment] = useState(null);
   const handleClose = () => setOpen(false);
   const handleOpen = (prop) => {
     setAssignment(prop);
@@ -45,7 +40,6 @@ export default function Contract_Assignment() {
   }, [status])
   // TOAST
 
-
   return (
     <div>
       <MaterialTable
@@ -55,8 +49,8 @@ export default function Contract_Assignment() {
           { title: 'KHID', field: 'khid' },
           { title: 'DCID', field: 'dcid' },
           { title: 'Ngày lập', field: 'ngaylap', type: 'date', dateSetting: { locale: "vi-VN" } },
-          { title: 'Giá trị', field: 'giatri', type: 'currency' , currencySetting:{ locale: 'vi',currencyCode:'vnd', minimumFractionDigits:0, maximumFractionDigits:2}},
-          { title: 'Trạng thái', field: 'trangthai', lookup: { 0: "Chưa chuyển nhượng", 1: "Đang chuyển nhượng" } },
+          { title: 'Giá trị', field: 'giatri', type: 'currency', currencySetting: { locale: 'vi', currencyCode: 'vnd', minimumFractionDigits: 0, maximumFractionDigits: 2 } },
+          { title: 'Trạng thái', field: 'trangthai', lookup: { 0: "Thành công", 1: "Thất bại" } },
 
         ]}
         data={list}
@@ -84,9 +78,9 @@ export default function Contract_Assignment() {
         actions={
           [
             {
-              icon: 'edit',
-              tooltip: 'Sửa',
-              onClick: (event, rowData) => window.alert(rowData.cnid),
+              icon: 'info',
+              tooltip: 'Chi tiết',
+              onClick: (event, rowData) => handleOpen(rowData),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
           ]}
@@ -96,7 +90,7 @@ export default function Contract_Assignment() {
           pageSizeOptions: [10, 15, 20]
         }}
       />
-      <AssignmentModal isOpen={open} isClose={handleClose} />
+      <AssignmentModal contract={assignment} isOpen={open} isClose={handleClose} />
     </div>
   );
 }

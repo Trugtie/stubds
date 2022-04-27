@@ -21,10 +21,15 @@ export default function StaffTable() {
   taikhoan.append('taikhoan', account[0]);
   taikhoan.append('matkhau', account[1]);
   useEffect(() => {
-    window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN" ?
-      dispatch(getStaffs())
-      :
-      dispatch(getStaff(taikhoan))
+    if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN") {
+      if (list.length < 2) {
+        dispatch(getStaffs())
+      }
+    } else {
+      if (list.length === 0) {
+        dispatch(getStaff(taikhoan))
+      }
+    }
   }, [])
   const handleDelete = (staff) => {
     if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {

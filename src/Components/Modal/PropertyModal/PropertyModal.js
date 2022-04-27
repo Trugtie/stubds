@@ -162,7 +162,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
     } else {
       const bdsid = property.bdsid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa bất động sản ID: " + bdsid)) {
-        dispatch(editProperty({ chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
+        dispatch(editProperty({ bdsid,chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
         isClose();
       } else {
         return;

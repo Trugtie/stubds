@@ -16,8 +16,9 @@ export default function Contract_Consignment() {
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Consignment)));
   useEffect(() => {
+    if (list.length < 2) {
     dispatch(getConsignments())
-  }, [])
+  }}, [])
 
   const [open, setOpen] = useState(false);
   const [consignmentEdit, setConsignment] = useState(null);

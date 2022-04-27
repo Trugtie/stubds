@@ -30,14 +30,6 @@ export const addConsignment = createAsyncThunk(
     }
 );
 
-export const editConsignment = createAsyncThunk(
-    'consignment/editConsignment',
-    async (value) => {
-        const { data } = await axios.put(`${API_URL}hopdongkygui`, value,config)
-        return data;
-    }
-);
-
 export const consignmentSlice = createSlice({
     name: "consignment",
     initialState: {
@@ -55,21 +47,6 @@ export const consignmentSlice = createSlice({
         },
         [addConsignment.rejected](state) {
             state.status = HTTP_STATUS.INSERT_FAILED
-        },
-
-        // editConsignment
-        [editConsignment.pending](state) {
-            state.status = HTTP_STATUS.PENDING
-        },
-        [editConsignment.fulfilled](state, { payload }) {
-            state.status = HTTP_STATUS.EDITED
-            const index = state.list.findIndex((item) => item.kgid === payload.kgid)
-            if (index >= 0) {
-                state.list[index] = payload;
-            }
-        },
-        [editConsignment.rejected](state) {
-            state.status = HTTP_STATUS.EDIT_FAILED
         },
 
         // deleteConsignment

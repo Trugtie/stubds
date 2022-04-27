@@ -14,18 +14,25 @@ import ThumbGallery from "../../ThumbGallery"
 
 
 export default function PropertyTable() {
+  window.Buffer=Buffer;
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   useEffect(() => {
+    if (list.length < 2) {
     dispatch(getProperties())
-  }, [])
+  }}, [])
 
   const [open, setOpen] = useState(false);
   const [propertyEdit, setProperty] = useState(null);
   const handleClose = () => setOpen(false);
   const handleOpen = (prop) => {
+    if(window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN")
+    {
     setProperty(prop);
     setOpen(true);
+  }else{
+    window.alert("Bạn không có quyền chỉnh sửa !")
+  }
   }
 
   // TOAST

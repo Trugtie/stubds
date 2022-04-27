@@ -14,29 +14,29 @@ export const getAssignments = createAsyncThunk(
     }
 )
 
-// export const deleteAssignment = createAsyncThunk(
-//     'assignment/deleteAssignment',
-//     async (value) => {
-//         const { data } = await axios.delete(`${API_URL}hopdongchuyennhuong/${value}`,config)
-//         return data;
-//     }
-// );
+export const getAssignment = createAsyncThunk(
+    'assignment/getAssignments',
+    async (value) => {
+        const { data } = await axios.get(`${API_URL}hopdongchuyennhuong/${value}`,config)
+        return data;
+    }
+)
 
-// export const addAssignment = createAsyncThunk(
-//     'assignment/addAssignment',
-//     async (value) => {
-//         const { data } = await axios.post(`${API_URL}hopdongchuyennhuong`, value,config)
-//         return data;
-//     }
-// );
+export const deleteAssignment = createAsyncThunk(
+    'assignment/deleteAssignment',
+    async (value) => {
+        const { data } = await axios.delete(`${API_URL}hopdongchuyennhuong/${value}`,config)
+        return data;
+    }
+);
 
-// export const editAssignment = createAsyncThunk(
-//     'assignment/editAssignment',
-//     async (value) => {
-//         const { data } = await axios.put(`${API_URL}hopdongchuyennhuong`, value,config)
-//         return data;
-//     }
-// );
+export const addAssignment = createAsyncThunk(
+    'assignment/addAssignment',
+    async (value) => {
+        const { data } = await axios.post(`${API_URL}hopdongchuyennhuong`, value,config)
+        return data;
+    }
+);
 
 export const assignmentSlice = createSlice({
     name: "assignment",
@@ -45,46 +45,30 @@ export const assignmentSlice = createSlice({
         status: null
     },
     extraReducers: {
-        // // addAssignment
-        // [addAssignment.pending](state) {
-        //     state.status = HTTP_STATUS.PENDING
-        // },
-        // [addAssignment.fulfilled](state, { payload }) {
-        //     state.list.push(payload)
-        //     state.status = HTTP_STATUS.INSERTED
-        // },
-        // [addAssignment.rejected](state) {
-        //     state.status = HTTP_STATUS.INSERT_FAILED
-        // },
+        // addAssignment
+        [addAssignment.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [addAssignment.fulfilled](state, { payload }) {
+            state.list.push(payload)
+            state.status = HTTP_STATUS.INSERTED
+        },
+        [addAssignment.rejected](state) {
+            state.status = HTTP_STATUS.INSERT_FAILED
+        },
 
-        // // editAssignment
-        // [editAssignment.pending](state) {
-        //     state.status = HTTP_STATUS.PENDING
-        // },
-        // [editAssignment.fulfilled](state, { payload }) {
-        //     state.status = HTTP_STATUS.EDITED
-        //     const index = state.list.findIndex((item) => item.khid === payload.khid)
-        //     if (index >= 0) {
-        //         state.list[index] = payload;
-        //     }
-        // },
-        // [editAssignment.rejected](state) {
-        //     state.status = HTTP_STATUS.EDIT_FAILED
-        // },
-
-        // // deleteAssignment
-        // [deleteAssignment.pending](state) {
-        //     state.status = HTTP_STATUS.PENDING
-        // },
-        // [deleteAssignment.fulfilled](state, { payload }) {
-        //     state.list = state.list.filter((item) => item.khid !== payload.khid)
-        //     state.status = HTTP_STATUS.DELETED
-        //     return state
-        // },
-        // [deleteAssignment.rejected](state, { payload }) {
-        //     state.status = HTTP_STATUS.DELETE_FAILED
-        //     state.message = payload.message
-        // },
+        // deleteAssignment
+        [deleteAssignment.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [deleteAssignment.fulfilled](state, { payload }) {
+            state.list = state.list.filter((item) => item.cnid !== payload.cnid)
+            state.status = HTTP_STATUS.DELETED
+            return state
+        },
+        [deleteAssignment.rejected](state) {
+            state.status = HTTP_STATUS.DELETE_FAILED
+        },
 
         // getAssignments
         [getAssignments.pending](state) {
@@ -95,6 +79,18 @@ export const assignmentSlice = createSlice({
             state.status = HTTP_STATUS.FULFILLED
         },
         [getAssignments.rejected](state) {
+            state.status = HTTP_STATUS.REJECTED
+        },
+
+        // getAssignment
+        [getAssignment.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [getAssignment.fulfilled](state, { payload }) {
+            state.list = payload
+            state.status = HTTP_STATUS.FULFILLED
+        },
+        [getAssignment.rejected](state) {
             state.status = HTTP_STATUS.REJECTED
         },
     }
