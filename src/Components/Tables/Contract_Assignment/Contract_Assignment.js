@@ -16,9 +16,7 @@ export default function Contract_Assignment() {
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Assignment)));
   useEffect(() => {
-    if (list.length < 2) {
       dispatch(getAssignments())
-    }
   }, [])
 
 

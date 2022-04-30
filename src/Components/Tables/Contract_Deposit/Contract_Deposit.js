@@ -16,9 +16,7 @@ export default function Contract_Deposit() {
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Deposit)));
   useEffect(() => {
-    if (list.length < 2) {
       dispatch(getDeposites())
-    }
   }, [])
 
 

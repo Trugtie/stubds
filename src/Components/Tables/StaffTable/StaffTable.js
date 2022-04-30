@@ -17,22 +17,17 @@ export default function StaffTable() {
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
   window.Buffer = Buffer;
   const account = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
-  var taikhoan = new FormData();
-  taikhoan.append('taikhoan', account[0]);
-  taikhoan.append('matkhau', account[1]);
-  useEffect(() => {
-    if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN") {
-      if (list.length < 2) {
-        dispatch(getStaffs())
-      }
-    } else {
-      if (list.length === 0) {
-        dispatch(getStaff(taikhoan))
-      }
-    }
-  }, [])
+  // useEffect(() => {
+  //     if (list.length < 2) {
+  //       dispatch(getStaffs())
+  //     }
+  // }, [])
+
   const handleDelete = (staff) => {
-    if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
+    if (staff.taikhoan === account[0]) {
+      window.alert ("Bạn không thể xoá bản thân mình !")
+    }
+    else if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
       dispatch(deleteStaff(staff.nvid))
     } else {
       return;

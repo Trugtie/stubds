@@ -72,13 +72,10 @@ export default function DepositModal({ contract, isOpen, isClose }) {
   }, [isOpen]);
   const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
   const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Consignment.list.filter((item) => item.trangthai === 0))));
+  const property = JSON.parse(JSON.stringify(useSelector((state) => state.Consignment.list.filter((item) => item.trangthai === 1))));
   React.useEffect(() => {
-    if (customers.list.length < 2) {
-      dispatch(getCustomers())
-    }
-    if (properties.length < 2) {
-      dispatch(getConsignments())
-    }
+    dispatch(getCustomers())
+    dispatch(getConsignments())
   }, []);
 
   const handleForm = (e) => {
@@ -112,9 +109,9 @@ export default function DepositModal({ contract, isOpen, isClose }) {
     } else {
       var consignment = properties.filter((item) => item.bdsid === bdsid);
       var kgid = consignment[0].kgid;
-      var tinhtrang=0;
+      var tinhtrang = 0;
       dispatch(
-        addDeposit({ giatri, ngayhethan, ngaylap, bdsid, khid, trangthai, tinhtrang})
+        addDeposit({ giatri, ngayhethan, ngaylap, bdsid, khid, trangthai, tinhtrang, kgid })
       );
       isClose();
     }
@@ -122,9 +119,9 @@ export default function DepositModal({ contract, isOpen, isClose }) {
 
   const handleDelete = () => {
     if (window.confirm("Bạn có chắc muốn xoá hợp đồng ID: " + contract.dcid)) {
-      var consignment = properties.filter((item) => item.bdsid === bdsid);
+      var consignment = property.filter((item) => item.bdsid === bdsid);
       var kgid = consignment[0].kgid;
-      dispatch(deleteDeposit(contract.dcid,kgid))
+      dispatch(deleteDeposit(contract.dcid, kgid))
     } else {
       return;
     }
@@ -231,7 +228,7 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                     {customers.list?.map(item => {
                       return (
                         <MenuItem value={item.khid}>
-                          {item.hoten}
+                          {item.khid + " - " + item.hoten}
                         </MenuItem>
                       );
                     })}
@@ -239,30 +236,41 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                 </FormControl>
               </Grid>
               <Grid item xs={4}>
-                <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Mã bất động sản
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
+                {contract ?
+                  <TextField
+                    disabled
+                    id="filled-basic"
+                    label="Mã bất động sản"
+                    variant="filled"
+                    fullWidth
                     defaultValue={bdsid}
-                    onChange={(e) => {
-                      setBdsid(e.target.value)
-                    }}
+                  />
+                  :
+                  <FormControl
+                    variant="filled"
+                    sx={{ width: "100%", minHeight: "100%" }}
                   >
-                    {properties?.map(item => {
-                      return (
-                        <MenuItem value={item.bdsid}>
-                          {item.bdsid}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
+                    <InputLabel id="demo-simple-select-filled-label">
+                      Mã bất động sản
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-filled-label"
+                      id="demo-simple-select-filled"
+                      defaultValue={bdsid}
+                      onChange={(e) => {
+                        setBdsid(e.target.value)
+                      }}
+                    >
+                      {properties?.map(item => {
+                        return (
+                          <MenuItem value={item.bdsid}>
+                            {item.bdsid}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                }
               </Grid>
             </Grid>
           </div>

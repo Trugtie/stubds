@@ -72,25 +72,6 @@ export default function CustomizedAccordion({ permission }) {
             expanded={expanded === "panel1"}
             onChange={handleChange("panel1")}
           >
-            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-              <div className="icon-bg"><img src={StaffIcon} /></div>
-              <div className="acor-heading">QUẢN LÝ NHÂN VIÊN</div>
-            </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/staffmanagement" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm nhân viên</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === "panel2"}
-            onChange={handleChange("panel2")}
-          >
             <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
               <div className="icon-bg"><img src={CustomerIcon} /></div>
               <div className="acor-heading">QUẢN LÝ KHÁCH HÀNG</div>
@@ -102,6 +83,25 @@ export default function CustomizedAccordion({ permission }) {
                 </Link>
                 <Link to="/" className="link">
                   <li>Thêm khách hàng</li>
+                </Link>
+              </ul>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel2"}
+            onChange={handleChange("panel2")}
+          >
+            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+              <div className="icon-bg"><img src={StaffIcon} /></div>
+              <div className="acor-heading">QUẢN LÝ NHÂN VIÊN</div>
+            </AccordionSummary>
+            <AccordionDetails>
+              <ul className="acor-list">
+                <Link to="/staffmanagement" className="link">
+                  <li>Xem thông tin</li>
+                </Link>
+                <Link to="/" className="link">
+                  <li>Thêm nhân viên</li>
                 </Link>
               </ul>
             </AccordionDetails>

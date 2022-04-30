@@ -20,7 +20,7 @@ function MasterPage() {
   };
 
   let location = useLocation();
-  const [title, setTitle] = useState('Quản lý nhân viên');
+  const [title, setTitle] = useState('Quản lý khách hàng');
 
   useEffect(() => {
     // console.log(location.pathname);
@@ -59,7 +59,7 @@ function MasterPage() {
         </div>
         <div className="Content-layout">
           <Routes>
-            <Route path="/" element={<StaffManagement />} />
+            <Route path="/" element={<CustomerManagement />} />
             <Route path="/staffmanagement" element={<StaffManagement />} />
             <Route path="/customermanagement" element={<CustomerManagement />}/>
             <Route path="/property" element={<PropertyManagement />}/>

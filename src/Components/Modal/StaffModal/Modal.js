@@ -116,10 +116,10 @@ export default function BasicModal({ staff, isOpen, isClose }) {
       email === "" ||
       quyen === ""
     ) {
-      window.alert("Thông tin không được để trống");
+      window.alert("Thông tin không được để trống !");
       return;
     } else if (matkhau1 !== matkhau2) {
-      window.alert("Mật khẩu xác nhận không trùng khớp");
+      window.alert("Mật khẩu xác nhận không trùng khớp !");
     } else {
       var tennv = `${ho} ${tendem} ${ten}`
       var matkhau = matkhau1
@@ -129,8 +129,9 @@ export default function BasicModal({ staff, isOpen, isClose }) {
   };
 
   const handleEdit = () => {
+    const account = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
+    const permission = window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii');
     if (
-      taikhoan === "" ||
       ho === "" ||
       ten === "" ||
       ngaysinh === null ||
@@ -140,19 +141,22 @@ export default function BasicModal({ staff, isOpen, isClose }) {
       email === "" ||
       quyen === ""
     ) {
-      window.alert("Thông tin không được để trống");
+      window.alert("Thông tin không được để trống !");
       return;
     } else if (matkhau1 !== matkhau2) {
-      window.alert("Mật khẩu xác nhận không trùng khớp");
-    } else {
+      window.alert("Mật khẩu xác nhận không trùng khớp !");
+    } else if (taikhoan === account[0] && quyen !== permission ) {
+      window.alert("Bạn không thể tự thay đổi quyền của bản thân !");
+    }
+    else {
       var tennv = `${ho} ${tendem} ${ten}`;
       var nvid = staff.nvid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa nhân viên ID: " + nvid)) {
         if (matkhau1 === "" || matkhau1 === " " || matkhau1 === null) {
-          var matkhau =staff.matkhau;
+          var matkhau = staff.matkhau;
           dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }))
         } else {
-          var matkhau =matkhau1;
+          var matkhau = matkhau1;
           dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }))
         }
         isClose();

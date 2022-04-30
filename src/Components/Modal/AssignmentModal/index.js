@@ -57,12 +57,11 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
   };
 
   const dispatch = useDispatch();
-  const [giatri, setGiatri] = React.useState("");
+  const [giatri, setGiatri] = React.useState();
   const [ngaylap, setNgaylap] = React.useState(null);
   const [trangthai, setTrangthai] = React.useState(0);
-  const [bdsid, setBdsid] = React.useState("");
-  const [khid, setKhid] = React.useState("");
-  const [dcid, setDcid] = React.useState("");
+  const [khid, setKhid] = React.useState();
+  const [dcid, setDcid] = React.useState();
 
   React.useEffect(() => {
     if (contract) {
@@ -76,48 +75,37 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
   const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Deposit.list.filter((item) => item.trangthai === 0))));
 
   React.useEffect(() => {
-    if (customers.list.length < 2) {
-      dispatch(getCustomers())
-    }
-    if (properties.length < 2) {
-      dispatch(getDeposites())
-    }
+    dispatch(getCustomers())
+    dispatch(getDeposites())
   }, []);
 
   const handleForm = (e) => {
     setGiatri(e.giatri);
     setNgaylap(e.ngaylap);
     setTrangthai(e.trangthai);
-    setBdsid(e.bdsid);
     setKhid(e.khid);
   };
 
   const handleFormAdd = () => {
-    setGiatri("");
+    setGiatri();
     setNgaylap(null);
     setTrangthai(0);
-    setBdsid("");
-    setKhid("");
-    setDcid("");
+    setKhid();
+    setDcid();
   };
 
-  React.useEffect(() => {
-    if (dcid) {
-      var deposit = properties.filter((item) => item.dcid === dcid);
-      setBdsid(deposit[0].bdsid)
-    }
-  }, [dcid]);
 
   const handleSubmit = () => {
     if (
       giatri === "" ||
       ngaylap === null ||
-      bdsid === "" ||
       khid === ""
     ) {
       window.alert("Thông tin không được để trống");
       return;
     } else {
+      var deposit = properties.filter((item) => item.dcid === dcid);
+      var bdsid = deposit[0].bdsid
       dispatch(
         addAssignment({ giatri, ngaylap, bdsid, khid, trangthai, dcid })
       );
@@ -127,7 +115,7 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
 
   const handleDelete = () => {
     if (window.confirm("Bạn có chắc muốn xoá hợp đồng ID: " + contract.cnid)) {
-      dispatch(deleteAssignment(contract.cnid, dcid))
+      dispatch(deleteAssignment(contract.cnid, contract.dcid))
     } else {
       return;
     }
@@ -199,7 +187,7 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={4}>
+              {/* <Grid item xs={4}>
                 <FormControl
                   variant="filled"
                   sx={{ width: "100%", minHeight: "100%" }}
@@ -225,8 +213,8 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                     })}
                   </Select>
                 </FormControl>
-              </Grid>
-              <Grid item xs={4}>
+              </Grid> */}
+              <Grid item xs={6}>
                 <FormControl
                   variant="filled"
                   sx={{ width: "100%", minHeight: "100%" }}
@@ -243,38 +231,49 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                     {customers.list?.map(item => {
                       return (
                         <MenuItem value={item.khid}>
-                          {item.hoten}
+                          {item.khid + " - " + item.hoten}
                         </MenuItem>
                       );
                     })}
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={4}>
-                <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Đặt cọc
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={dcid}
-                    onChange={(e) => {
-                      setDcid(e.target.value)
-                    }}
+              <Grid item xs={6}>
+                {contract ?
+                  <TextField
+                    disabled
+                    id="filled-basic"
+                    label="Mã đặt cọc"
+                    variant="filled"
+                    fullWidth
+                    defaultValue={contract.dcid}
+                  />
+                  :
+                  <FormControl
+                    variant="filled"
+                    sx={{ width: "100%", minHeight: "100%" }}
                   >
-                    {properties?.map(item => {
-                      return (
-                        <MenuItem value={item.dcid}>
-                          {item.dcid}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
+                    <InputLabel id="demo-simple-select-filled-label">
+                      Mã đặt cọc
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-filled-label"
+                      id="demo-simple-select-filled"
+                      defaultValue={dcid}
+                      onChange={(e) => {
+                        setDcid(e.target.value)
+                      }}
+                    >
+                      {properties?.map(item => {
+                        return (
+                          <MenuItem value={item.dcid}>
+                            {item.dcid}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                }
               </Grid>
             </Grid>
           </div>

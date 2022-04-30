@@ -16,9 +16,8 @@ export default function Contract_Consignment() {
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Consignment)));
   useEffect(() => {
-    if (list.length < 2) {
     dispatch(getConsignments())
-  }}, [])
+  }, [])
 
   const [open, setOpen] = useState(false);
   const [consignmentEdit, setConsignment] = useState(null);
@@ -48,8 +47,8 @@ export default function Contract_Consignment() {
           { title: 'KHID', field: 'khid' },
           { title: 'Ngày bắt đầu', field: 'ngaybd', type: 'date', dateSetting: { locale: "vi-VN" } },
           { title: 'Ngày kết thúc', field: 'ngayketthuc', type: 'date', dateSetting: { locale: "vi-VN" } },
-          { title: 'Giá trị', field: 'giatri', type: 'currency' , currencySetting:{ locale: 'vi',currencyCode:'vnd', minimumFractionDigits:0, maximumFractionDigits:2}},
-          { title: 'Dịch vụ', field: 'chiphidv', type: 'currency' , currencySetting:{ locale: 'vi',currencyCode:'vnd', minimumFractionDigits:0, maximumFractionDigits:2}},
+          { title: 'Giá trị', field: 'giatri', type: 'currency', currencySetting: { locale: 'vi', currencyCode: 'vnd', minimumFractionDigits: 0, maximumFractionDigits: 2 } },
+          { title: 'Dịch vụ', field: 'chiphidv', type: 'currency', currencySetting: { locale: 'vi', currencyCode: 'vnd', minimumFractionDigits: 0, maximumFractionDigits: 2 } },
           { title: 'Trạng thái', field: 'trangthai', lookup: { 0: "Đang ký gửi", 1: "Hết hạn" } },
         ]}
         data={list}
@@ -61,8 +60,8 @@ export default function Contract_Consignment() {
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
-                
-                
+
+
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}

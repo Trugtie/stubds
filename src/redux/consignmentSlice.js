@@ -9,7 +9,7 @@ let config = {
 export const getConsignments = createAsyncThunk(
     'consignment/getConsignments',
     async () => {
-        const { data } = await axios.get(`${API_URL}hopdongkygui`,config)
+        const { data } = await axios.get(`${API_URL}hopdongkygui`, config)
         return data;
     }
 )
@@ -17,7 +17,7 @@ export const getConsignments = createAsyncThunk(
 export const deleteConsignment = createAsyncThunk(
     'consignment/deleteConsignment',
     async (value) => {
-        const { data } = await axios.delete(`${API_URL}hopdongkygui/${value}`,config)
+        const { data } = await axios.delete(`${API_URL}hopdongkygui/${value}`, config)
         return data;
     }
 );
@@ -25,7 +25,8 @@ export const deleteConsignment = createAsyncThunk(
 export const addConsignment = createAsyncThunk(
     'consignment/addConsignment',
     async (value) => {
-        const { data } = await axios.post(`${API_URL}hopdongkygui`, value,config)
+        console.log(value)
+        const { data } = await axios.post(`${API_URL}hopdongkygui`, value, config)
         return data;
     }
 );

@@ -10,14 +10,61 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { addProperty, editProperty } from "../../../redux/propertySlice";
+import { editProperty } from "../../../redux/propertySlice";
+import { uploadImage } from "../../../redux/imageSlice";
 import { getCustomers } from "../../../redux/customerSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
-import ConsignmentModal from '../../Modal/ConsignmentModal';
-import { HTTP_STATUS } from "../../../redux/constants";
-import Loading from "react-fullscreen-loading";
+import { useDropzone } from 'react-dropzone'
+
 
 export default function PropertyModal({ property, isOpen, isClose }) {
+  const dropzone = {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '20px',
+    borderWidth: 2,
+    borderRadius: 2,
+    borderColor: '#2196f3',
+    borderStyle: 'dashed',
+    backgroundColor: '#fafafa',
+    color: '#bdbdbd',
+    outline: 'none',
+    transition: 'border .24s ease-in-out'
+  };
+
+  const thumbsContainer = {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 16
+  };
+
+  const thumb = {
+    display: 'inline-flex',
+    borderRadius: 2,
+    border: '1px solid #eaeaea',
+    marginBottom: 8,
+    marginRight: 8,
+    width: 100,
+    height: 100,
+    padding: 4,
+    boxSizing: 'border-box'
+  };
+
+  const thumbInner = {
+    display: 'flex',
+    minWidth: 0,
+    overflow: 'hidden'
+  };
+
+  const img = {
+    display: 'block',
+    width: 'auto',
+    height: '100%'
+  };
+
   const ColorButton = styled(Button)(({ theme }) => ({
     color: "white",
     fontWeight: "bolder",
@@ -42,23 +89,14 @@ export default function PropertyModal({ property, isOpen, isClose }) {
     borderRadius: "20px 20px 10px 10px;",
     boxShadow: 24,
   };
-
   const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
   const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
-  const propAdd = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getTypes())
     dispatch(getCustomers())
   }, [])
-  React.useEffect(() => {
-    if(propAdd.status === HTTP_STATUS.INSERTED){
-      setOpen(true);
-    }
-  }, [propAdd.status])
 
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => setOpen(false);
   const [chieudai, setChieudai] = React.useState("");
   const [chieurong, setChieurong] = React.useState("");
   const [dientich, setDientich] = React.useState("");
@@ -75,14 +113,14 @@ export default function PropertyModal({ property, isOpen, isClose }) {
   const [khid, setKhid] = React.useState("");
   const [tinhtrang, setTinhtrang] = React.useState("0");
   const [loaibdid, setLoaibdid] = React.useState("");
+  let file = null;
 
   React.useEffect(() => {
     if (property) {
       handleFormEdit(property);
-    } else {
-      handleFormAdd();
     }
   }, [isOpen]);
+
   const handleFormEdit = (prop) => {
     setChieudai(prop.chieudai);
     setChieurong(prop.chieurong);
@@ -102,47 +140,6 @@ export default function PropertyModal({ property, isOpen, isClose }) {
     setLoaibdid(prop.loaibdid);
   };
 
-  const handleFormAdd = () => {
-    setChieudai("");
-    setChieurong("");
-    setDientich("");
-    setDongia("0");
-    setHinhanh(null);
-    setHuehong("0");
-    setMasoqsdd("");
-    setMota("");
-    setPhuong("");
-    setQuan("");
-    setSonha("");
-    setTenduong("");
-    setThanhpho("");
-    setKhid("");
-    setTinhtrang("0");
-    setLoaibdid("");
-  };
-
-  const handleSubmit = () => {
-    if (
-      chieudai === "" ||
-      chieurong === "" ||
-      dientich === "" ||
-      dongia === "" ||
-      huehong === "" ||
-      masoqsdd === "" ||
-      phuong === "" ||
-      quan === "" ||
-      sonha === "" ||
-      tenduong === "" ||
-      thanhpho === ""
-    ) {
-      window.alert("Thông tin không được để trống");
-      return;
-    } else {
-      dispatch(addProperty({ chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
-      isClose();
-    }
-  };
-  
   const handleEdit = () => {
     if (
       chieudai === "" ||
@@ -162,13 +159,60 @@ export default function PropertyModal({ property, isOpen, isClose }) {
     } else {
       const bdsid = property.bdsid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa bất động sản ID: " + bdsid)) {
-        dispatch(editProperty({ bdsid,chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
-        isClose();
+        // dispatch(editProperty({ bdsid, chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
+        // isClose();
+        if (file) {
+          dispatch(uploadImage({ file, bdsid }))
+        }
       } else {
         return;
       }
     }
   };
+
+  function Dropzone(props) {
+    const [files, setFiles] = React.useState([]);
+    const { getRootProps, getInputProps } = useDropzone({
+      maxFiles: 5,
+      accept: 'image/*',
+      onDrop: acceptedFiles => {
+        file = acceptedFiles
+        setFiles(acceptedFiles.map(file => Object.assign(file, {
+          preview: URL.createObjectURL(file)
+        })));
+      }
+    });
+
+
+    const thumbs = files.map(file => (
+      <div style={thumb} key={file.name}>
+        <div style={thumbInner}>
+          <img
+            src={file.preview}
+            style={img}
+            alt={file.name}
+            onLoad={() => { URL.revokeObjectURL(file.preview) }}
+          />
+        </div>
+      </div>
+    ));
+
+    React.useEffect(() => {
+      return () => files.forEach(file => URL.revokeObjectURL(file.preview));
+    }, []);
+
+    return (
+      <section style={dropzone}>
+        <div {...getRootProps()}>
+          <input {...getInputProps()} />
+          <p>Kéo ảnh hoặc click vào đây để tải ảnh (Tối đa chỉ có 5 ảnh)</p>
+        </div>
+        <aside style={thumbsContainer}>
+          {thumbs}
+        </aside>
+      </section>
+    );
+  }
 
   return (
     <div>
@@ -393,13 +437,15 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                       Tình trạng
                     </InputLabel>
                     <Select
+                      disabled
                       labelId="demo-simple-select-filled-label"
                       id="demo-simple-select-filled"
                       defaultValue={tinhtrang}
                       onChange={(e) => setTinhtrang(e.target.value)}
                     >
                       <MenuItem value={"0"}>Đang ký gửi</MenuItem>
-                      <MenuItem value={"1"}>Hết hạn</MenuItem>
+                      <MenuItem value={"1"}>Đã đặt cọc</MenuItem>
+                      <MenuItem value={"2"}>Đã chuyển nhượng</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
@@ -460,37 +506,38 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                     fullWidth
                     placeholder="Nhập mô tả..."
                     multiline
-                    minRows={6}
-                    maxRows={6}
+                    minRows={2}
+                    maxRows={4}
                     defaultValue={mota}
                     onChange={(e) => setMota(e.target.value)}
                   />
                 </Grid>
+                {/* <Grid item xs={2}>
+                  <label htmlFor="icon-button-file">
+                    <Input id="icon-button-file" type="file" multiple="multiple" onChange={(e) => setHinhanh(e.target.files)} />
+                    <IconButton color="inherit" aria-label="upload picture" component="span">
+                      <PhotoCamera />
+                    </IconButton>
+                  </label>
+                </Grid> */}
+                <Grid item xs={12}>
+                  <Dropzone />
+                </Grid>
               </Grid>
             </div>
-            <div className="modal-form" style={{ marginTop: "8rem" }}>
+            <div className="modal-form" >
               {property ? (
                 <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
                   Cập nhật bất động sản
                 </ColorButton>
               ) : (
-                <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
-                  Thêm bất động sản
-                </ColorButton>
+                ""
               )}
             </div>
           </div>
         </Box>
 
       </Modal>
-      <ConsignmentModal  isOpen={open} isClose={handleClose} contract={null} />
-      {propAdd.status === HTTP_STATUS.PENDING ?
-                  <Loading
-                    loading={true}
-                    background="rgba(0,0,0,0.2)"
-                    loaderColor="#CF9269"
-                  />
-                  : ""}
     </div>
   );
 }

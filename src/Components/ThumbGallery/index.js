@@ -1,20 +1,13 @@
-import React, {useState } from "react";
-// Import Swiper React components
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/free-mode";
-import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import './styles.css';
+import { FreeMode, Thumbs } from "swiper";
 
 
-
-// import required modules
-import { FreeMode, Navigation, Thumbs } from "swiper";
-
-export default function ThumbGallery() {
+export default function ThumbGallery(images) {  
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
@@ -25,29 +18,17 @@ export default function ThumbGallery() {
           "--swiper-pagination-color": "#fff",
         }}
         spaceBetween={10}
-        navigation={true}
         thumbs={{ swiper: thumbsSwiper }}
-        modules={[FreeMode, Navigation, Thumbs]}
+        modules={[FreeMode, Thumbs]}
         className="mySwiper2"
       >
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-        </SwiperSlide>
+        {images.images?.map((item) => {
+        return (
+          <SwiperSlide>
+            <img src={`${item.hinh}`} alt={item.hinhid} />
+          </SwiperSlide>
+        );}) }
+        
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
@@ -55,27 +36,15 @@ export default function ThumbGallery() {
         slidesPerView={4}
         freeMode={true}
         watchSlidesProgress={true}
-        modules={[FreeMode, Navigation, Thumbs]}
+        modules={[FreeMode, Thumbs]}
         className="mySwiper"
       >
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-1.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-        </SwiperSlide>
+        {images.images?.map((item) => {
+        return (
+          <SwiperSlide>
+            <img src={`${item.hinh}`} alt={item.hinhid} />
+          </SwiperSlide>
+        );}) }
       </Swiper>
     </div>
   );

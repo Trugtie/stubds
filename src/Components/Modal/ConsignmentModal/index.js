@@ -19,8 +19,10 @@ import { addConsignment, editConsignment, deleteConsignment } from "../../../red
 import { getCustomers } from "../../../redux/customerSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
 import { getProperty } from "../../../redux/propertySlice";
+import { getCities } from "../../../redux/citySlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
+import axios from "axios";
 
 
 export default function ConsignmentModal({ isOpen, isClose, contract }) {
@@ -61,11 +63,36 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
 
   const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
   const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
+  const property = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
+  // const cities = JSON.parse(JSON.stringify(useSelector((state) => state.City)));
+  const [cities, setCities] = React.useState();
+  const [districts, setDistricts] = React.useState();
+  const [wards, setWards] = React.useState();
+
+  
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getTypes())
     dispatch(getCustomers())
+    // if (cities !== null) {
+    //   dispatch(getCities())
+    // }
+    // fetchCities();
   }, [])
+  
+
+  async function fetchCities() {
+     setCities(await axios.get(`https://provinces.open-api.vn/api/`))
+  }
+  
+  async function fetchDistricts(value) {
+     setDistricts(await axios.get(`https://provinces.open-api.vn/api/p/${value}?depth=2`))
+  }
+  
+  async function fetchWards(value) {
+     setWards(await axios.get(`https://provinces.open-api.vn/api/d/${value}?depth=2`))
+  }
+
   const [chiphidv, setChiphi] = React.useState("0");
   const [giatri, setGiatri] = React.useState("0");
   const [ngaybd, setNgaybd] = React.useState(null);
@@ -88,18 +115,24 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const [thanhpho, setThanhpho] = React.useState("");
   const [tinhtrang, setTinhtrang] = React.useState("0");
   const [loaibdid, setLoaibdid] = React.useState("");
-  const property = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
+
+  const [cityCode, setCityCode] = React.useState();
+  const [districtCode, setDistrictCode] = React.useState();
+
+
+  React.useEffect(() => {
+    fetchDistricts(cityCode)
+  }, [cityCode])
+  
+  React.useEffect(() => {
+    fetchWards(districtCode)
+  }, [districtCode])
+
   React.useEffect(() => {
     if (property) {
       handleForm(property.list);
     }
   }, [property.status]);
-
-  React.useLayoutEffect(() => {
-    if (contract) {
-      // dispatch(getProperty(contract.bdsid))
-    }
-  }, [isOpen]);
 
   const handleForm = (prop) => {
     if (contract) {
@@ -127,18 +160,18 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
         setLoaibdid(prop.loaibdid);
       }
     } else {
-      setChiphi("0");
-      setGiatri("0");
+      setChiphi("");
+      setGiatri("");
       setNgaybd(null);
       setNgaykt(null);
-      setTrangthai("0");
+      setTrangthai(0);
       setKhachhang("");
       setChieudai("");
       setChieurong("");
       setDientich("");
-      setDongia("0");
+      setDongia("");
       setHinhanh(null);
-      setHuehong("0");
+      setHuehong("");
       setMasoqsdd("");
       setMota("");
       setPhuong("");
@@ -146,8 +179,8 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
       setSonha("");
       setTenduong("");
       setThanhpho("");
-      setTinhtrang("0");
-      setLoaibdid("");
+      setTinhtrang(0);
+      setLoaibdid(1);
     }
   };
 
@@ -174,7 +207,25 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
       window.alert("Thông tin không được để trống");
       return;
     } else {
-      // dispatch(addConsignment({ chiphidv, giatri, ngaybd, ngayketthuc, trangthai, khid }));
+      let formBatdongsan = {
+        chieudai: chieudai,
+        chieurong: chieurong,
+        dientich: dientich,
+        dongia: dongia,
+        hinhanh: hinhanh,
+        huehong: huehong,
+        masoqsdd: masoqsdd,
+        mota: mota,
+        phuong: phuong,
+        quan: quan,
+        sonha: sonha,
+        tenduong: tenduong,
+        thanhpho: thanhpho,
+        tinhtrang: tinhtrang,
+        khid: khid,
+        loaibdid: loaibdid
+      }
+      dispatch(addConsignment({ chiphidv, giatri, ngaybd, ngayketthuc, trangthai, khid, formBatdongsan }));
       isClose();
     }
   };
@@ -339,11 +390,11 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   placeholder="Nhập mã QSDĐ..."
                   type="number"
                   defaultValue={masoqsdd}
-                  // onInput={(e) => {
-                  //   e.target.value = Math.max(0, parseInt(e.target.value))
-                  //     .toString()
-                  //     .slice(0, 10);
-                  // }}
+                  onInput={(e) => {
+                    e.target.value = Math.max(0, parseInt(e.target.value))
+                      .toString()
+                      .slice(0, 10);
+                  }}
                   onChange={(e) => setMasoqsdd(e.target.value)}
                 />
               </Grid>
@@ -425,9 +476,9 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   onChange={(e) => setPhuong(e.target.value)}
                 />
               </Grid>
-
+              {/* CITY */}
               {/* <Grid item xs={4}>
-              <FormControl
+                <FormControl
                   variant="filled"
                   sx={{ width: "100%", minHeight: "100%" }}
                 >
@@ -437,35 +488,45 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={thanhpho}
+                    onChange={(e) => setCityCode(e.target.value)}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                    {cities?.map(item => {
+                      return (
+                        <MenuItem value={item.code}>
+                          {item.name}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={4}>
-              <FormControl
+                <FormControl
                   variant="filled"
                   sx={{ width: "100%", minHeight: "100%" }}
                 >
                   <InputLabel id="demo-simple-select-filled-label">
-                   Quận/Huyện
+                    Quận/Huyện
                   </InputLabel>
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={quan}
+                    onChange={(e) => setDistrictCode(e.target.value)}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                    {districts?.map(item => {
+                      return (
+                        <MenuItem value={item.code}>
+                          {item.name}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Grid>
               <Grid item xs={4}>
-              <FormControl
+                <FormControl
                   variant="filled"
                   sx={{ width: "100%", minHeight: "100%" }}
                 >
@@ -475,14 +536,20 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   <Select
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
+                    defaultValue={phuong}
+                    onChange={(e) => setPhuong(e.target.value)}
                   >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
+                    {wards?.map(item => {
+                      return (
+                        <MenuItem value={item.wards.name}>
+                          {item.wards.name}
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </FormControl>
               </Grid> */}
+              {/* CITY */}
 
               <Grid item xs={4}>
                 <FormControl
@@ -493,13 +560,14 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     Tình trạng
                   </InputLabel>
                   <Select
+                    disabled
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     defaultValue={tinhtrang}
                     onChange={(e) => setTinhtrang(e.target.value)}
                   >
                     <MenuItem value={"0"}>Đang ký gửi</MenuItem>
-                    <MenuItem value={"1"}>Hết hạn</MenuItem>
+                    <MenuItem value={"1"}>Không khả dụng</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -512,15 +580,16 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     Khách hàng
                   </InputLabel>
                   <Select
+                    required
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     defaultValue={khid}
-                    onChange={(e) => setKhachhang(e.target.value)}
+                    onChange={(e) => { setKhachhang(e.target.value) }}
                   >
                     {customers.list?.map(item => {
                       return (
                         <MenuItem value={item.khid}>
-                          {item.hoten}
+                          {item.khid + " - " + item.hoten}
                         </MenuItem>
                       );
                     })}
@@ -536,6 +605,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     Loại BĐS
                   </InputLabel>
                   <Select
+                    required
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     defaultValue={loaibdid}

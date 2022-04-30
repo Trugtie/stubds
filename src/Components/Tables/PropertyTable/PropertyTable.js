@@ -1,9 +1,6 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
-import PlusIcon from './plus.svg';
 import './PropertyTable.css';
 import PropertyModal from '../../Modal/PropertyModal/PropertyModal';
-import Button from "@mui/material/Button";
-
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getProperties } from "../../../redux/propertySlice";
@@ -18,9 +15,8 @@ export default function PropertyTable() {
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   useEffect(() => {
-    if (list.length < 2) {
     dispatch(getProperties())
-  }}, [])
+  }, [])
 
   const [open, setOpen] = useState(false);
   const [propertyEdit, setProperty] = useState(null);
@@ -61,7 +57,7 @@ export default function PropertyTable() {
           { title: 'Phường/Xã', field: 'phuong' },
           { title: 'Quận/Huyện', field: 'quan' },
           { title: 'Thành phố/Tỉnh', field: 'thanhpho' },
-          { title: 'Tình trạng', field: 'tinhtrang', lookup: { 0: "Đang ký gửi", 1: "Đã chuyển nhượng" } },
+          { title: 'Tình trạng', field: 'tinhtrang', lookup: { 0: "Đang ký gửi", 1: "Đã đặt cọc", 2: "Đã chuyển nhượng" } },
 
         ]}
         data={list}
@@ -103,8 +99,12 @@ export default function PropertyTable() {
         detailPanel={
           rowData => {
           return (
+            rowData.formhinhBdList.length>0?
+            <ThumbGallery images={rowData.formhinhBdList}/>
+            :
             <div style={{display: 'flex',justifyContent: 'center'}}>
-            <ThumbGallery/>
+              {/* <img src='https://www.feednavigator.com/var/wrbm_gb_food_pharma/storage/images/_aliases/news_large/9/2/8/5/235829-6-eng-GB/Feed-Test-SIC-Feed-20142.jpg'/> */}
+            <p>Không có dữ liệu hình ảnh</p>
             </div>
           )
         }
