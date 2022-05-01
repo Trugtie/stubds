@@ -58,7 +58,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function CustomizedAccordion({ permission }) {
-  const [expanded, setExpanded] = React.useState("panel1");
+  const [expanded, setExpanded] = React.useState("");
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -72,115 +72,117 @@ export default function CustomizedAccordion({ permission }) {
             expanded={expanded === "panel1"}
             onChange={handleChange("panel1")}
           >
-            <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-              <div className="icon-bg"><img src={CustomerIcon} /></div>
-              <div className="acor-heading">QUẢN LÝ KHÁCH HÀNG</div>
-            </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/customermanagement" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm khách hàng</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
+            <Link to="/customermanagement" className="link">
+              <AccordionSummary aria-controls="panel2d-content" id="panel2d-header"
+                sx={{
+                  '&:hover': {
+                    bgcolor: 'green'
+                  },
+                  '&:focus': {
+                    bgcolor: 'green'
+                  }
+                }}
+              >
+                <div className="icon-bg"><img src={CustomerIcon} /></div>
+                <div className="acor-heading">QUẢN LÝ KHÁCH HÀNG</div>
+              </AccordionSummary>
+            </Link>
           </Accordion>
           <Accordion
             expanded={expanded === "panel2"}
             onChange={handleChange("panel2")}
           >
-            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-              <div className="icon-bg"><img src={StaffIcon} /></div>
-              <div className="acor-heading">QUẢN LÝ NHÂN VIÊN</div>
-            </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/staffmanagement" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm nhân viên</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
+            <Link to="/staffmanagement" className="link">
+              <AccordionSummary aria-controls="panel1d-content" id="panel1d-header"
+                sx={{
+                  '&:hover': {
+                    bgcolor: 'green'
+                  },
+                  '&:focus': {
+                    bgcolor: 'green'
+                  }
+                }}
+              >
+                <div className="icon-bg"><img src={StaffIcon} /></div>
+                <div className="acor-heading">QUẢN LÝ NHÂN VIÊN</div>
+              </AccordionSummary>
+            </Link>
           </Accordion>
           <Accordion
             expanded={expanded === "panel3"}
             onChange={handleChange("panel3")}
           >
-            <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+            <Link to="/property" className="link">
+            <AccordionSummary aria-controls="panel3d-content" id="panel3d-header"
+              sx={{
+                '&:hover': {
+                  bgcolor: 'green'
+                },
+                '&:focus': {
+                  bgcolor: 'green'
+                }
+              }}>
               <div className="icon-bg"><img src={BdsIcon} /></div>
               <div className="acor-heading">QUẢN LÝ BẤT ĐỘNG SẢN</div>
             </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/property" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm BĐS</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
+            </Link>
           </Accordion>
           <Accordion
             expanded={expanded === "panel4"}
             onChange={handleChange("panel4")}
           >
-            <AccordionSummary aria-controls="panel4d-content" id="panel4d-header">
+            <Link to="/consignment" className="link">
+            <AccordionSummary aria-controls="panel4d-content" id="panel4d-header"
+              sx={{
+                '&:hover': {
+                  bgcolor: 'green'
+                },
+                '&:focus': {
+                  bgcolor: 'green'
+                }
+              }}>
               <div className="icon-bg"><img src={KyGuiIcon} /></div>
               <div className="acor-heading">QUẢN LÝ HĐ KÝ GỬI</div>
             </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/consignment" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm hợp đồng</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
+            </Link>
           </Accordion>
           <Accordion
             expanded={expanded === "panel5"}
             onChange={handleChange("panel5")}
           >
-            <AccordionSummary aria-controls="panel5d-content" id="panel5d-header">
+            <Link to="/deposit" className="link">
+            <AccordionSummary aria-controls="panel5d-content" id="panel5d-header"
+              sx={{
+                '&:hover': {
+                  bgcolor: 'green'
+                },
+                '&:focus': {
+                  bgcolor: 'green'
+                }
+              }}>
               <div className="icon-bg"><img src={DatCocIcon} /></div>
               <div className="acor-heading">QUẢN LÝ HĐ ĐẶT CỌC</div>
             </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/deposit" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm hợp đồng</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
+            </Link>
           </Accordion>
           <Accordion
             expanded={expanded === "panel6"}
             onChange={handleChange("panel6")}
           >
-            <AccordionSummary aria-controls="panel6d-content" id="panel6d-header">
+            <Link to="/assignment" className="link">
+            <AccordionSummary aria-controls="panel6d-content" id="panel6d-header"
+              sx={{
+                '&:hover': {
+                  bgcolor: 'green'
+                },
+                '&:focus': {
+                  bgcolor: 'green'
+                }
+              }}>
               <div className="icon-bg"><img src={ChuyenNhuongIcon} /></div>
               <div className="acor-heading">QUẢN LÝ HĐ CHUYỂN NHƯỢNG</div>
             </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/assignment" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm hợp đồng</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
+            </Link>
           </Accordion>
         </React.Fragment>
         :
@@ -189,42 +191,42 @@ export default function CustomizedAccordion({ permission }) {
             expanded={expanded === "panel1"}
             onChange={handleChange("panel1")}
           >
-            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+            <Link to="/customermanagement" className="link">
+            <AccordionSummary aria-controls="panel1d-content" id="panel1d-header"
+              sx={{
+                '&:hover': {
+                  bgcolor: 'green'
+                },
+                '&:focus': {
+                  bgcolor: 'green'
+                }
+              }}>
               <div className="icon-bg"><img src={CustomerIcon} /></div>
               <div className="acor-heading">QUẢN LÝ KHÁCH HÀNG</div>
             </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/customermanagement" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm khách hàng</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
+            </Link>
           </Accordion>
           <Accordion
             expanded={expanded === "panel2"}
             onChange={handleChange("panel2")}
           >
-            <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+            <Link to="/property" className="link">
+            <AccordionSummary aria-controls="panel2d-content" id="panel2d-header"
+              sx={{
+                '&:hover': {
+                  bgcolor: 'green'
+                },
+                '&:focus': {
+                  bgcolor: 'green'
+                }
+              }}>
               <div className="icon-bg"><img src={BdsIcon} /></div>
               <div className="acor-heading">QUẢN LÝ BẤT ĐỘNG SẢN</div>
             </AccordionSummary>
-            <AccordionDetails>
-              <ul className="acor-list">
-                <Link to="/property" className="link">
-                  <li>Xem thông tin</li>
-                </Link>
-                <Link to="/" className="link">
-                  <li>Thêm BĐS</li>
-                </Link>
-              </ul>
-            </AccordionDetails>
+            </Link>
           </Accordion>
         </React.Fragment>
       }
-    </div>
+    </div >
   );
 }

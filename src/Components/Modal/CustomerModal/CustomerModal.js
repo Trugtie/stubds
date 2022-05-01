@@ -52,9 +52,13 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
   taikhoan.append('matkhau', acc[1]);
   React.useEffect(() => {
     if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN") {
-      dispatch(getStaffs())
+      if (list.length < 2) {
+        dispatch(getStaffs())
+      }
     } else {
-      dispatch(getStaff(taikhoan))
+      if (list.length === 0) {
+        dispatch(getStaff(taikhoan))
+      }
     }
   }, [])
   const [ho, setHo] = React.useState("");

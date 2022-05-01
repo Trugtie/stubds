@@ -74,7 +74,7 @@ export const staffSlice = createSlice({
             localStorage.removeItem("Token")
             state.list = null
             state.status = null
-        }
+        },
     },
     extraReducers: {
         // login
@@ -114,9 +114,14 @@ export const staffSlice = createSlice({
         },
         [editStaff.fulfilled](state, { payload }) {
             state.status = HTTP_STATUS.EDITED
-            const index = state.list.findIndex((item) => item.nvid === payload.nvid)
-            if (index >= 0) {
-                state.list[index] = payload;
+            if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') !== "ADMIN") {
+                state.list = payload
+            }
+            else {
+                const index = state.list.findIndex((item) => item.nvid === payload.nvid)
+                if (index >= 0) {
+                    state.list[index] = payload;
+                }
             }
         },
         [editStaff.rejected](state) {

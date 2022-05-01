@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import ClockCircle from "../ClockCircle/ClockCircle";
 import "./Nav.css";
 import Logo from "./logo.svg";
@@ -16,40 +15,45 @@ import Loading from "react-fullscreen-loading";
 import AlertToast from "../Alert/alert";
 
 function Nav() {
+  const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
+  window.Buffer = Buffer;
+  let acc = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
+  var taikhoan = new FormData();
+  taikhoan.append('taikhoan', acc[0]);
+  taikhoan.append('matkhau', acc[1]);
   useEffect(() => {
     ClockCircle();
     handleTitle();
-  }, []);
 
-  const staff = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
-  // window.Buffer = Buffer;
-  // let acc = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
-  // var taikhoan = new FormData();
-  // taikhoan.append('taikhoan', acc[0]);
-  // taikhoan.append('matkhau', acc[1]);
-  // useEffect(() => {
-  //   if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') !== "ADMIN") {
-  //     if (staff.list.length ) {
-  //       // dispatch(getStaff(taikhoan))
-  //     }
-  //   }}, [])
-
-  const handleName = () => {
-    window.Buffer = Buffer;
-    let acc = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
-    var taikhoan = new FormData();
-    taikhoan.append('taikhoan', acc[0]);
-    taikhoan.append('matkhau', acc[1]);
     if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') !== "ADMIN") {
-      if (staff.list.length === 0) {
+      if (list.length === 0) {
         dispatch(getStaff(taikhoan))
       }
-      handleOpen(staff.list)
     } else {
-      if (staff.list.length < 2) {
+      if (list.length < 2) {
         dispatch(getStaffs())
       }
-      handleOpen(staff.list.find(item => item.taikhoan === acc[0]))
+    }
+  }, []);
+
+  if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') !== "ADMIN") {
+    if (localStorage.getItem('user') !== list.tennv) {
+      localStorage.setItem('user', list.tennv)
+    }
+  } else {
+    if (list.length !== 0) {
+      var user = list.find(item => item.taikhoan === acc[0])
+      if (localStorage.getItem('user') !== user.tennv) {
+        localStorage.setItem('user', user.tennv)
+      }
+    }
+  }
+
+  const handleName = () => {
+    if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') !== "ADMIN") {
+      handleOpen(list)
+    } else {
+      handleOpen(list.find(item => item.taikhoan === acc[0]))
     }
   }
 
@@ -67,8 +71,8 @@ function Nav() {
   const handleCloseToast = () => setOpenToast(false);
   useEffect(() => {
     setOpenToast(true);
-    setToast(staff.status);
-  }, [staff.status])
+    setToast(status);
+  }, [status])
   // TOAST
 
   const dispatch = useDispatch()
@@ -98,9 +102,6 @@ function Nav() {
               <div className="user-divider">
                 <img className="user-star" src={StarIcon} />
               </div>
-              {/* <h4 className="user-name">
-                {tennv}
-              </h4> */}
               <Link
                 color="inherit"
                 component="button"
@@ -120,14 +121,14 @@ function Nav() {
           <div className="nav-footer">
             <button className="exitBtn" onClick={onLogout}>
               <img src={ExitIcon} />
-              {staff.status === HTTP_STATUS.PENDING ?
-                  <Loading
-                    loading={true}
-                    background="rgba(0,0,0,0.2)"
-                    loaderColor="#CF9269"
-                  />
-                  : ""}
-                <AlertToast value={toast} open={openToast} close={handleCloseToast} />
+              {status === HTTP_STATUS.PENDING ?
+                <Loading
+                  loading={true}
+                  background="rgba(0,0,0,0.2)"
+                  loaderColor="#CF9269"
+                />
+                : ""}
+              <AlertToast value={toast} open={openToast} close={handleCloseToast} />
             </button>
           </div>
         </nav>

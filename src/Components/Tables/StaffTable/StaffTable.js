@@ -9,7 +9,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { getStaffs, deleteStaff } from "../../../redux/staffSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
-import AlertToast from "../../Alert/alert";
 
 
 export default function StaffTable() {
@@ -44,16 +43,6 @@ export default function StaffTable() {
     setOpen(true);
   }
 
-  // TOAST
-  const [toast, setToast] = useState(false);
-  const [openToast, setOpenToast] = useState(false);
-  const handleCloseToast = () => setOpenToast(false);
-  useEffect(() => {
-    setOpenToast(true);
-    setToast(status);
-  }, [status])
-  // TOAST
-
 
   return (
     <div>
@@ -87,7 +76,6 @@ export default function StaffTable() {
                     loaderColor="#CF9269"
                   />
                   : ""}
-                <AlertToast value={toast} open={openToast} close={handleCloseToast} />
               </div>
             </div>
           ),
