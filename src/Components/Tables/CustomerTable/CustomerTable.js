@@ -16,8 +16,9 @@ export default function CustomerTable() {
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
   useEffect(() => {
     if (list.length < 2) {
-    dispatch(getCustomers())
-  }}, [])
+      dispatch(getCustomers())
+    }
+  }, [])
 
 
   const handleDelete = (cus) => {
@@ -77,13 +78,13 @@ export default function CustomerTable() {
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
-                {status === HTTP_STATUS.PENDING ? 
-                <Loading
-                  loading={true}
-                  background="rgba(0,0,0,0.2)"
-                  loaderColor="#CF9269"
-                /> 
-                : ""}
+                {status === HTTP_STATUS.PENDING ?
+                  <Loading
+                    loading={true}
+                    background="rgba(0,0,0,0.2)"
+                    loaderColor="#CF9269"
+                  />
+                  : ""}
                 <AlertToast value={toast} open={openToast} close={handleCloseToast} />
               </div>
             </div>
@@ -116,9 +117,8 @@ export default function CustomerTable() {
           pageSizeOptions: [10, 15, 20]
         }}
       />
-      <CustomerModal cus={cusEdit} isOpen={openAdd} isClose={handleClose}  />
+      <CustomerModal cus={cusEdit} isOpen={openAdd} isClose={handleClose} />
       <RequirementModal cus={cusEdit} request={null} open={openRe} close={handleClose} />
-
     </div>
   );
 }

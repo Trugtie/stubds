@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getStaffs, deleteStaff, getStaff } from "../../../redux/staffSlice";
+import { getStaffs, deleteStaff } from "../../../redux/staffSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -17,15 +17,17 @@ export default function StaffTable() {
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
   window.Buffer = Buffer;
   const account = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
-  // useEffect(() => {
-  //     if (list.length < 2) {
-  //       dispatch(getStaffs())
-  //     }
-  // }, [])
+  useEffect(() => {
+    if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN") {
+      if (list.length < 2) {
+        dispatch(getStaffs())
+      }
+    }
+  }, [])
 
   const handleDelete = (staff) => {
     if (staff.taikhoan === account[0]) {
-      window.alert ("Bạn không thể xoá bản thân mình !")
+      window.alert("Bạn không thể xoá bản thân mình !")
     }
     else if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
       dispatch(deleteStaff(staff.nvid))

@@ -16,7 +16,7 @@ import { styled } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addCustomer, editCustomer } from "../../../redux/customerSlice";
-import { getStaffs } from "../../../redux/staffSlice";
+import { getStaffs, getStaff } from "../../../redux/staffSlice";
 
 export default function CustomerModal({ cus, isOpen, isClose }) {
   const ColorButton = styled(Button)(({ theme }) => ({
@@ -46,8 +46,16 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
 
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
   const dispatch = useDispatch();
+  let acc = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
+  var taikhoan = new FormData();
+  taikhoan.append('taikhoan', acc[0]);
+  taikhoan.append('matkhau', acc[1]);
   React.useEffect(() => {
-    dispatch(getStaffs())
+    if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN") {
+      dispatch(getStaffs())
+    } else {
+      dispatch(getStaff(taikhoan))
+    }
   }, [])
   const [ho, setHo] = React.useState("");
   const [tendem, setTendem] = React.useState("");
@@ -316,29 +324,36 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                 />
               </Grid>
               <Grid item xs={6}>
-                  <FormControl
-                    variant="filled"
-                    sx={{ width: "100%", minHeight: "100%" }}
+                <FormControl
+                  variant="filled"
+                  sx={{ width: "100%", minHeight: "100%" }}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Nhân viên phụ trách
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-filled-label"
+                    id="demo-simple-select-filled"
+                    defaultValue={nvid}
+                    onChange={(e) => setNvid(e.target.value)}
                   >
-                    <InputLabel id="demo-simple-select-filled-label">
-                      Nhân viên phụ trách
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-filled-label"
-                      id="demo-simple-select-filled"
-                      defaultValue={nvid}
-                      onChange={(e) => setNvid(e.target.value)}
-                    >
-                      {list?.map(item => {
-                        return (
-                          <MenuItem value={item.nvid}>
-                            {item.tennv}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                </Grid>
+                    {
+                      window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN" ?
+                        list?.map(item => {
+                          return (
+                            <MenuItem value={item.nvid}>
+                              {item.tennv}
+                            </MenuItem>
+                          );
+                        })
+                        :
+                        <MenuItem value={list.nvid}>
+                          {list.tennv}
+                        </MenuItem>
+                    }
+                  </Select>
+                </FormControl>
+              </Grid>
               <Grid item xs={6}>
                 <FormControl
                   variant="filled"

@@ -47,12 +47,9 @@ export default function PropertyTable() {
       <MaterialTable
         columns={[
           { title: 'ID', field: 'bdsid' },
-          { title: 'Dài (m)', field: 'chieudai', type: 'numeric' },
-          { title: 'Rộng (m)', field: 'chieurong', type: 'numeric' },
-          { title: 'Diện tích (m*m)', field: 'dientich', type: 'numeric' },
+          { title: 'Diện tích (m*m)', field: 'dientich'},
           { title: 'Đơn giá', field: 'dongia', type: 'currency' , currencySetting:{ locale: 'vi',currencyCode:'vnd', minimumFractionDigits:0, maximumFractionDigits:2}},
           { title: 'Huê hồng (%)', field: 'huehong', type: 'numeric' },
-          { title: 'Mã QSDĐ', field: 'masoqsdd', type: 'numeric' },
           { title: 'Đường', field: 'tenduong' },
           { title: 'Phường/Xã', field: 'phuong' },
           { title: 'Quận/Huyện', field: 'quan' },
@@ -66,9 +63,6 @@ export default function PropertyTable() {
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>
-                {/* <Button className="add-btn" onClick={() => handleOpen(null)}>
-                  <img src={PlusIcon} />
-                </Button> */}
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}
@@ -103,7 +97,6 @@ export default function PropertyTable() {
             <ThumbGallery images={rowData.formhinhBdList}/>
             :
             <div style={{display: 'flex',justifyContent: 'center'}}>
-              {/* <img src='https://www.feednavigator.com/var/wrbm_gb_food_pharma/storage/images/_aliases/news_large/9/2/8/5/235829-6-eng-GB/Feed-Test-SIC-Feed-20142.jpg'/> */}
             <p>Không có dữ liệu hình ảnh</p>
             </div>
           )
