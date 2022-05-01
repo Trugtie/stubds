@@ -61,7 +61,6 @@ export const consignmentSlice = createSlice({
         },
         [deleteConsignment.rejected](state, { payload }) {
             state.status = HTTP_STATUS.DELETE_FAILED
-            state.message = payload.message
         },
 
         // getConsignments

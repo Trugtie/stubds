@@ -160,10 +160,12 @@ export default function PropertyModal({ property, isOpen, isClose }) {
       const bdsid = property.bdsid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa bất động sản ID: " + bdsid)) {
         // dispatch(editProperty({ bdsid, chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
-        // isClose();
         if (file) {
-          dispatch(uploadImage({ file, bdsid }))
+          console.log("có hình")
+          // dispatch(uploadImage({ file, bdsid }))
         }
+        console.log("không hình")
+        isClose();
       } else {
         return;
       }
@@ -283,11 +285,11 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                     placeholder="Nhập mã QSDĐ..."
                     type="number"
                     defaultValue={masoqsdd}
-                    // onInput={(e) => {
-                    //   e.target.value = Math.max(0, parseInt(e.target.value))
-                    //     .toString()
-                    //     .slice(0, 10);
-                    // }}
+                    onInput={(e) => {
+                      e.target.value = Math.max(0, parseInt(e.target.value))
+                        .toString()
+                        .slice(0, 10);
+                    }}
                     onChange={(e) => setMasoqsdd(e.target.value)}
                   />
                 </Grid>
@@ -512,14 +514,6 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                     onChange={(e) => setMota(e.target.value)}
                   />
                 </Grid>
-                {/* <Grid item xs={2}>
-                  <label htmlFor="icon-button-file">
-                    <Input id="icon-button-file" type="file" multiple="multiple" onChange={(e) => setHinhanh(e.target.files)} />
-                    <IconButton color="inherit" aria-label="upload picture" component="span">
-                      <PhotoCamera />
-                    </IconButton>
-                  </label>
-                </Grid> */}
                 <Grid item xs={12}>
                   <Dropzone />
                 </Grid>

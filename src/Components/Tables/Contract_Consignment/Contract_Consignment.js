@@ -3,7 +3,6 @@ import PlusIcon from './plus.svg';
 import './Contract_Consignment.css';
 import ConsignmentModal from '../../Modal/ConsignmentModal';
 import Button from "@mui/material/Button";
-import PropertyModal from '../../Modal/PropertyModal/PropertyModal';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getConsignments } from "../../../redux/consignmentSlice";
@@ -49,7 +48,7 @@ export default function Contract_Consignment() {
           { title: 'Ngày kết thúc', field: 'ngayketthuc', type: 'date', dateSetting: { locale: "vi-VN" } },
           { title: 'Giá trị', field: 'giatri', type: 'currency', currencySetting: { locale: 'vi', currencyCode: 'vnd', minimumFractionDigits: 0, maximumFractionDigits: 2 } },
           { title: 'Dịch vụ', field: 'chiphidv', type: 'currency', currencySetting: { locale: 'vi', currencyCode: 'vnd', minimumFractionDigits: 0, maximumFractionDigits: 2 } },
-          { title: 'Trạng thái', field: 'trangthai', lookup: { 0: "Đang ký gửi", 1: "Hết hạn" } },
+          { title: 'Trạng thái', field: 'trangthai', lookup: { 0: "Đang ký gửi", 1: "Không khả dụng" } },
         ]}
         data={list}
         components={{
@@ -78,8 +77,8 @@ export default function Contract_Consignment() {
         actions={
           [
             {
-              icon: 'edit',
-              tooltip: 'Sửa',
+              icon: 'info',
+              tooltip: 'Chi tiết',
               onClick: (event, rowData) => handleOpen(rowData),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
@@ -91,7 +90,6 @@ export default function Contract_Consignment() {
         }}
       />
       <ConsignmentModal contract={consignmentEdit} isOpen={open} isClose={handleClose} />
-      {/* <PropertyModal property={null} isOpen={open} isClose={handleClose} /> */}
     </div>
   );
 }

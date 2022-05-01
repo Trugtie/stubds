@@ -15,10 +15,10 @@ import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addConsignment, editConsignment, deleteConsignment } from "../../../redux/consignmentSlice";
+import { addConsignment, deleteConsignment } from "../../../redux/consignmentSlice";
 import { getCustomers } from "../../../redux/customerSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
-import { getProperty } from "../../../redux/propertySlice";
+import { deleteProperty, getProperties } from "../../../redux/propertySlice";
 import { getCities } from "../../../redux/citySlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
@@ -63,34 +63,41 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
 
   const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
   const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
-  const property = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
+  const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   // const cities = JSON.parse(JSON.stringify(useSelector((state) => state.City)));
   const [cities, setCities] = React.useState();
   const [districts, setDistricts] = React.useState();
   const [wards, setWards] = React.useState();
 
-  
+
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getTypes())
     dispatch(getCustomers())
+    if (properties.list.length === 0) {
+      dispatch(getProperties())
+    }
     // if (cities !== null) {
     //   dispatch(getCities())
     // }
     // fetchCities();
   }, [])
-  
+
+  React.useEffect(() => {
+    handleForm();
+  }, [isOpen]);
+
 
   async function fetchCities() {
-     setCities(await axios.get(`https://provinces.open-api.vn/api/`))
+    setCities(await axios.get(`https://provinces.open-api.vn/api/`))
   }
-  
+
   async function fetchDistricts(value) {
-     setDistricts(await axios.get(`https://provinces.open-api.vn/api/p/${value}?depth=2`))
+    setDistricts(await axios.get(`https://provinces.open-api.vn/api/p/${value}?depth=2`))
   }
-  
+
   async function fetchWards(value) {
-     setWards(await axios.get(`https://provinces.open-api.vn/api/d/${value}?depth=2`))
+    setWards(await axios.get(`https://provinces.open-api.vn/api/d/${value}?depth=2`))
   }
 
   const [chiphidv, setChiphi] = React.useState("0");
@@ -123,42 +130,36 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   React.useEffect(() => {
     fetchDistricts(cityCode)
   }, [cityCode])
-  
+
   React.useEffect(() => {
     fetchWards(districtCode)
   }, [districtCode])
 
-  React.useEffect(() => {
-    if (property) {
-      handleForm(property.list);
-    }
-  }, [property.status]);
 
-  const handleForm = (prop) => {
+  const handleForm = () => {
     if (contract) {
+      var prop = properties.list.find(item => item.bdsid === contract.bdsid)
       setChiphi(contract.chiphidv);
       setGiatri(contract.giatri);
       setNgaybd(contract.ngaybd);
       setNgaykt(contract.ngayketthuc);
       setTrangthai(contract.trangthai);
       setKhachhang(contract.khid);
-      if (prop) {
-        setChieudai(prop.chieudai);
-        setChieurong(prop.chieurong);
-        setDientich(prop.dientich);
-        setDongia(prop.dongia);
-        setHinhanh(prop.hinhanh);
-        setHuehong(prop.huehong);
-        setMasoqsdd(prop.masoqsdd);
-        setMota(prop.mota);
-        setPhuong(prop.phuong)
-        setQuan(prop.quan);
-        setSonha(prop.sonha);
-        setTenduong(prop.tenduong);
-        setThanhpho(prop.thanhpho);
-        setTinhtrang(prop.tinhtrang);
-        setLoaibdid(prop.loaibdid);
-      }
+      setChieudai(prop.chieudai);
+      setChieurong(prop.chieurong);
+      setDientich(prop.dientich);
+      setDongia(prop.dongia);
+      setHinhanh(prop.hinhanh);
+      setHuehong(prop.huehong);
+      setMasoqsdd(prop.masoqsdd);
+      setMota(prop.mota);
+      setPhuong(prop.phuong)
+      setQuan(prop.quan);
+      setSonha(prop.sonha);
+      setTenduong(prop.tenduong);
+      setThanhpho(prop.thanhpho);
+      setTinhtrang(prop.tinhtrang);
+      setLoaibdid(prop.loaibdid);
     } else {
       setChiphi("");
       setGiatri("");
@@ -230,23 +231,17 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
     }
   };
 
-  const handleEdit = () => {
-    if (
-      chiphidv === "" ||
-      giatri === "" ||
-      ngaybd === null ||
-      ngayketthuc === null
-    ) {
-      window.alert("Thông tin không được để trống");
-      return;
-    } else {
-      const kgid = contract.kgid;
-      if (window.confirm("Bạn có chắc muốn chỉnh sửa hợp đồng ID: " + kgid)) {
-        // dispatch(editConsignment({ kgid, chiphidv, giatri, ngaybd, ngayketthuc, trangthai, khid }));
+  const handleDelete = () => {
+    if (window.confirm("Bạn có chắc muốn xoá hợp đồng ID: " + contract.kgid)) {
+      if (contract.trangthai === 0) {
+        dispatch(deleteConsignment(contract.kgid))
+        dispatch(deleteProperty(contract.bdsid))
         isClose();
       } else {
-        return;
+        window.alert("Không thể xoá hợp đồng này !")
       }
+    } else {
+      return;
     }
   };
 
@@ -567,7 +562,8 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     onChange={(e) => setTinhtrang(e.target.value)}
                   >
                     <MenuItem value={"0"}>Đang ký gửi</MenuItem>
-                    <MenuItem value={"1"}>Không khả dụng</MenuItem>
+                    <MenuItem value={"1"}>Đã đặt cọc</MenuItem>
+                    <MenuItem value={"2"}>Đã chuyển nhượng</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -637,120 +633,22 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                 />
               </Grid>
             </Grid>
-
-
-            {/* <Grid item xs={4}>
-                <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Trạng thái
-                  </InputLabel>
-                  <Select
-                    disabled
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={trangthai}
-                    onChange={(e) => setTrangthai(e.target.value)}
-                  >
-                    <MenuItem value={"0"}>Đang ký gửi</MenuItem>
-                    <MenuItem value={"1"}>Hết hạn</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={4}>
-                <TextField
-                  disabled
-                  id="filled-basic"
-                  label="Mã khách hàng"
-                  variant="filled"
-                  placeholder="Nhập mã khách hàng..."
-                  fullWidth
-                  defaultValue={khid}
-                  onChange={(e) => setKhachhang(e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={4}>
-                <TextField
-                  disabled
-                  id="filled-basic"
-                  label="Mã BĐS"
-                  variant="filled"
-                  placeholder="Nhập mã bất động sản..."
-                  fullWidth
-                  defaultValue={bdsid}
-                  onChange={(e) => setBds(e.target.value)}
-                />
-              </Grid> */}
-
-            {/* <Grid item xs={4}>
-                <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Khách hàng
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={khid}
-                    onChange={(e) => setKhachhang(e.target.value)}
-                  >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={4}>
-                <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Loại BĐS
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
-                  >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid> */}
           </div>
           <div
             className="modal-form"
             style={{ marginTop: "1rem", padding: "0rem 12rem" }}
           >
-            {contract ? (
-              <Grid container spacing={2}>
-                <Grid item xs={8}>
-                  <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
-                    Cập nhật hợp đồng
-                  </ColorButton>
-                </Grid>
-                <Grid item xs={4}>
-                  <DeleteButton variant="contained"
-                  // onClick={handleDelete(contract.kgid)}
-                  >
-                    Xoá hợp đồng
-                  </DeleteButton>
-                </Grid>
-              </Grid>
-            ) : (
-              <ColorButton
-                variant="contained"
-                onClick={(e) => handleSubmit(e)}
-              >
-                Thêm hợp đồng
-              </ColorButton>
-            )}
+            <Grid item xs={12}>
+              {contract ? (
+                <DeleteButton variant="contained" onClick={(e) => handleDelete(e)}>
+                  Xoá hợp đồng
+                </DeleteButton>
+              ) : (
+                <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
+                  Thêm hợp đồng
+                </ColorButton>
+              )}
+            </Grid>
           </div>
         </div>
       </Box>

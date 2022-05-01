@@ -23,7 +23,7 @@ export const getProperty = createAsyncThunk(
 )
 
 export const addProperty = createAsyncThunk(
-    'Property/addProperty',
+    'property/addProperty',
     async (value) => {
         const { data } = await axios.post(`${API_URL}batdongsan`, value,config)
         return data;
@@ -31,9 +31,18 @@ export const addProperty = createAsyncThunk(
 );
 
 export const editProperty = createAsyncThunk(
-    'Property/editProperty',
+    'property/editProperty',
     async (value) => {
         const { data } = await axios.put(`${API_URL}batdongsan`, value,config)
+        return data;
+    }
+);
+
+
+export const deleteProperty = createAsyncThunk(
+    'property/deleteProperty',
+    async (value) => {
+        const { data } = await axios.delete(`${API_URL}batdongsan/${value}`, config)
         return data;
     }
 );
@@ -71,6 +80,19 @@ export const propertySlice = createSlice({
         [editProperty.rejected](state) {
             state.status = HTTP_STATUS.EDIT_FAILED
         },
+
+        // deleteProperty
+        [deleteProperty.pending](state) {
+            state.status = HTTP_STATUS.PENDING
+        },
+        [deleteProperty.fulfilled](state, { payload }) {
+            state.list = state.list.filter((item) => item.bdsid !== payload.bdsid)
+            state.status = HTTP_STATUS.DELETED
+            return state
+        },
+        [deleteProperty.rejected](state, { payload }) {
+            state.status = HTTP_STATUS.DELETE_FAILED
+        },        
 
         // getProperties
         [getProperties.pending](state) {
