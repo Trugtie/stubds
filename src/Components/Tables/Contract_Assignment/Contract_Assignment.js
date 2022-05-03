@@ -3,7 +3,7 @@ import PlusIcon from './plus.svg';
 import './Contract_Assignment.css';
 import AssignmentModal from '../../Modal/AssignmentModal';
 import Button from "@mui/material/Button";
-
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getAssignments } from "../../../redux/assignmentSlice";
@@ -13,6 +13,7 @@ import AlertToast from "../../Alert/alert";
 
 
 export default function Contract_Assignment() {
+  let navigate = useNavigate();
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Assignment)));
   useEffect(() => {
@@ -79,6 +80,12 @@ export default function Contract_Assignment() {
               icon: 'info',
               tooltip: 'Chi tiết',
               onClick: (event, rowData) => handleOpen(rowData),
+              iconProps: { style: { color: "var(--button-green-color)" } }
+            },
+            {
+              icon: 'print',
+              tooltip: 'In',
+              onClick: (event, rowData) => navigate("/docx", { state: { rowData } }),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
           ]}

@@ -19,11 +19,6 @@ import { addConsignment, deleteConsignment } from "../../../redux/consignmentSli
 import { getCustomers } from "../../../redux/customerSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
 import { deleteProperty, getProperties } from "../../../redux/propertySlice";
-import { getCities } from "../../../redux/citySlice";
-import { HTTP_STATUS } from "../../../redux/constants";
-import Loading from "react-fullscreen-loading";
-import axios from "axios";
-
 
 export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const ColorButton = styled(Button)(({ theme }) => ({
@@ -64,41 +59,26 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
   const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
   const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
-  // const cities = JSON.parse(JSON.stringify(useSelector((state) => state.City)));
-  const [cities, setCities] = React.useState();
-  const [districts, setDistricts] = React.useState();
-  const [wards, setWards] = React.useState();
+
 
 
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(getTypes())
-    dispatch(getCustomers())
+    if (types.list.length === 0) {
+      dispatch(getTypes())
+    }
+    if (customers.list.length === 0) {
+      dispatch(getCustomers())
+    }
     if (properties.list.length === 0) {
       dispatch(getProperties())
     }
-    // if (cities !== null) {
-    //   dispatch(getCities())
-    // }
-    // fetchCities();
+
   }, [])
 
   React.useEffect(() => {
     handleForm();
   }, [isOpen]);
-
-
-  async function fetchCities() {
-    setCities(await axios.get(`https://provinces.open-api.vn/api/`))
-  }
-
-  async function fetchDistricts(value) {
-    setDistricts(await axios.get(`https://provinces.open-api.vn/api/p/${value}?depth=2`))
-  }
-
-  async function fetchWards(value) {
-    setWards(await axios.get(`https://provinces.open-api.vn/api/d/${value}?depth=2`))
-  }
 
   const [chiphidv, setChiphi] = React.useState("0");
   const [giatri, setGiatri] = React.useState("0");
@@ -122,19 +102,6 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const [thanhpho, setThanhpho] = React.useState("");
   const [tinhtrang, setTinhtrang] = React.useState("0");
   const [loaibdid, setLoaibdid] = React.useState("");
-
-  const [cityCode, setCityCode] = React.useState();
-  const [districtCode, setDistrictCode] = React.useState();
-
-
-  React.useEffect(() => {
-    fetchDistricts(cityCode)
-  }, [cityCode])
-
-  React.useEffect(() => {
-    fetchWards(districtCode)
-  }, [districtCode])
-
 
   const handleForm = () => {
     if (contract) {
@@ -388,7 +355,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   onInput={(e) => {
                     e.target.value = Math.max(0, parseInt(e.target.value))
                       .toString()
-                      .slice(0, 10);
+                      .slice(0, 8);
                   }}
                   onChange={(e) => setMasoqsdd(e.target.value)}
                 />
@@ -471,81 +438,6 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   onChange={(e) => setPhuong(e.target.value)}
                 />
               </Grid>
-              {/* CITY */}
-              {/* <Grid item xs={4}>
-                <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Thành phố/Tỉnh
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={thanhpho}
-                    onChange={(e) => setCityCode(e.target.value)}
-                  >
-                    {cities?.map(item => {
-                      return (
-                        <MenuItem value={item.code}>
-                          {item.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={4}>
-                <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Quận/Huyện
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={quan}
-                    onChange={(e) => setDistrictCode(e.target.value)}
-                  >
-                    {districts?.map(item => {
-                      return (
-                        <MenuItem value={item.code}>
-                          {item.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={4}>
-                <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Phường/Xã
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={phuong}
-                    onChange={(e) => setPhuong(e.target.value)}
-                  >
-                    {wards?.map(item => {
-                      return (
-                        <MenuItem value={item.wards.name}>
-                          {item.wards.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Grid> */}
-              {/* CITY */}
-
               <Grid item xs={4}>
                 <FormControl
                   variant="filled"

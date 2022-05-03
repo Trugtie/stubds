@@ -10,6 +10,7 @@
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.6.1",
     "@mui/x-date-pickers": "^5.0.0-alpha.0",
+    "@pdftron/webviewer": "^8.4.1",
     "@reduxjs/toolkit": "^1.8.1",
     "@testing-library/jest-dom": "^5.16.3",
     "@testing-library/react": "^13.0.0",

@@ -7,7 +7,7 @@ import './styles.css';
 import { FreeMode, Thumbs } from "swiper";
 
 
-export default function ThumbGallery(images) {  
+export default function ThumbGallery(images) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   return (
@@ -23,12 +23,13 @@ export default function ThumbGallery(images) {
         className="mySwiper2"
       >
         {images.images?.map((item) => {
-        return (
-          <SwiperSlide>
-            <img src={`${item.hinh}`} alt={item.hinhid} />
-          </SwiperSlide>
-        );}) }
-        
+          return (
+            <SwiperSlide>
+              <img src={`${item.hinh}`} alt={item.hinhid} />
+            </SwiperSlide>
+          );
+        })}
+
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}
@@ -40,11 +41,12 @@ export default function ThumbGallery(images) {
         className="mySwiper"
       >
         {images.images?.map((item) => {
-        return (
-          <SwiperSlide>
-            <img src={`${item.hinh}`} alt={item.hinhid} />
-          </SwiperSlide>
-        );}) }
+          return (
+            <SwiperSlide>
+              <img src={`${item.hinh}`} alt={item.hinhid} />
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
     </div>
   );

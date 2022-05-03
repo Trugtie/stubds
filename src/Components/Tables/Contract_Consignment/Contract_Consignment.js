@@ -4,6 +4,7 @@ import './Contract_Consignment.css';
 import ConsignmentModal from '../../Modal/ConsignmentModal';
 import Button from "@mui/material/Button";
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getConsignments } from "../../../redux/consignmentSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
@@ -12,6 +13,7 @@ import AlertToast from "../../Alert/alert";
 
 
 export default function Contract_Consignment() {
+  let navigate = useNavigate();
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Consignment)));
   useEffect(() => {
@@ -24,7 +26,7 @@ export default function Contract_Consignment() {
   const handleOpen = (prop) => {
     setConsignment(prop);
     setOpen(true);
-  }
+  };
 
   // TOAST
   const [toast, setToast] = useState(false);
@@ -35,7 +37,6 @@ export default function Contract_Consignment() {
     setToast(status);
   }, [status])
   // TOAST
-
 
   return (
     <div>
@@ -53,9 +54,11 @@ export default function Contract_Consignment() {
         data={list}
         components={{
           Toolbar: props => (
+
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>
+                <ConsignmentModal contract={consignmentEdit} isOpen={open} isClose={handleClose} />
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
@@ -82,6 +85,12 @@ export default function Contract_Consignment() {
               onClick: (event, rowData) => handleOpen(rowData),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
+            {
+              icon: 'print',
+              tooltip: 'In',
+              onClick: (event, rowData) => navigate("/docx", { state: { rowData } }),
+              iconProps: { style: { color: "var(--button-green-color)" } }
+            },
           ]}
         options={{
           actionsColumnIndex: -1,
@@ -89,8 +98,6 @@ export default function Contract_Consignment() {
           pageSizeOptions: [10, 15, 20]
         }}
       />
-      <ConsignmentModal contract={consignmentEdit} isOpen={open} isClose={handleClose} />
     </div>
   );
 }
-

@@ -10,7 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { editProperty } from "../../../redux/propertySlice";
+import { editProperty, getProperty } from "../../../redux/propertySlice";
 import { uploadImage } from "../../../redux/imageSlice";
 import { getCustomers } from "../../../redux/customerSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
@@ -93,8 +93,12 @@ export default function PropertyModal({ property, isOpen, isClose }) {
   const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(getTypes())
-    dispatch(getCustomers())
+    if (types.list.length === 0) {
+      dispatch(getTypes())
+    }
+    if (customers.list.length === 0) {
+      dispatch(getCustomers())
+    }
   }, [])
 
   const [chieudai, setChieudai] = React.useState("");
@@ -159,12 +163,13 @@ export default function PropertyModal({ property, isOpen, isClose }) {
     } else {
       const bdsid = property.bdsid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa bất động sản ID: " + bdsid)) {
-        // dispatch(editProperty({ bdsid, chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
+        dispatch(editProperty({ bdsid, chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
+        setTimeout(function () {
+          dispatch(getProperty({ bdsid }));
+        }, 1000);
         if (file) {
-          console.log("có hình")
-          // dispatch(uploadImage({ file, bdsid }))
+          dispatch(uploadImage({ file, bdsid }))
         }
-        console.log("không hình")
         isClose();
       } else {
         return;
@@ -288,7 +293,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                     onInput={(e) => {
                       e.target.value = Math.max(0, parseInt(e.target.value))
                         .toString()
-                        .slice(0, 10);
+                        .slice(0, 8);
                     }}
                     onChange={(e) => setMasoqsdd(e.target.value)}
                   />
@@ -530,7 +535,6 @@ export default function PropertyModal({ property, isOpen, isClose }) {
             </div>
           </div>
         </Box>
-
       </Modal>
     </div>
   );

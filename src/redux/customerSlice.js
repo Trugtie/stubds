@@ -33,7 +33,8 @@ export const addCustomer = createAsyncThunk(
 export const editCustomer = createAsyncThunk(
     'customer/editCustomer',
     async (value) => {
-        const { data } = await axios.put(`${API_URL}khachhang`, value,config)
+        const { data, error } = await axios.put(`${API_URL}khachhang`, value,config)
+        console.log(error)
         return data;
     }
 );
@@ -71,6 +72,7 @@ export const customerSlice = createSlice({
         [editCustomer.rejected](state) {
             state.status = HTTP_STATUS.EDIT_FAILED
         },
+        
 
         // deleteCustomer
         [deleteCustomer.pending](state) {

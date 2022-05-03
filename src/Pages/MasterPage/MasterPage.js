@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./MasterPage.css";
 import Nav from "../../Components/Nav/Nav";
@@ -10,6 +10,7 @@ import PropertyManagement from "../PropertyManagement/PropertyManagement";
 import AssignmentManagement from "../AssignmentManagement/AssignmentManagement";
 import ConsignmentManagement from "../ConsignmentManagement/ConsignmentManagement";
 import DepositManagement from "../DepositManagement/DepositManagement";
+import Docx from '../Docx/docx';
 
 function MasterPage() {
   const handleMenu = () => {
@@ -31,21 +32,20 @@ function MasterPage() {
       case '/customermanagement':
         setTitle('Quản lý khách hàng');
         break;
-        case '/property':
+      case '/property':
         setTitle('Quản lý bất động sản');
         break;
-        case '/assignment':
+      case '/assignment':
         setTitle('Quản lý hợp đồng chuyển nhượng');
         break;
-        case '/consignment':
+      case '/consignment':
         setTitle('Quản lý hợp đồng ký gửi');
         break;
-        case '/deposit':
+      case '/deposit':
         setTitle('Quản lý hợp đồng đặt cọc');
         break;
       default:
     }
-
   }, [location]);
 
   return (
@@ -59,13 +59,14 @@ function MasterPage() {
         </div>
         <div className="Content-layout">
           <Routes>
+          <Route path="/docx" element={<Docx />} />
             <Route path="/" element={<CustomerManagement />} />
             <Route path="/staffmanagement" element={<StaffManagement />} />
-            <Route path="/customermanagement" element={<CustomerManagement />}/>
-            <Route path="/property" element={<PropertyManagement />}/>
-            <Route path="/assignment" element={<AssignmentManagement />}/>
-            <Route path="/consignment" element={<ConsignmentManagement />}/>
-            <Route path="/deposit" element={<DepositManagement />}/>
+            <Route path="/customermanagement" element={<CustomerManagement />} />
+            <Route path="/property" element={<PropertyManagement />} />
+            <Route path="/assignment" element={<AssignmentManagement />} />
+            <Route path="/consignment" element={<ConsignmentManagement />} />
+            <Route path="/deposit" element={<DepositManagement />} />
           </Routes>
         </div>
       </div>

@@ -8,7 +8,6 @@ import consignmentReducer from "./consignmentSlice";
 import depositReducer from "./depositSlice";
 import requirementReducer from "./requirementSlice";
 import imageReducer from "./imageSlice";
-import cityReducer from "./citySlice";
 
 
 export const store = configureStore({
@@ -21,7 +20,6 @@ export const store = configureStore({
         Consignment:consignmentReducer,
         Deposit:depositReducer,
         Requirement:requirementReducer,
-        City:cityReducer,
         Image:imageReducer,
     }
    

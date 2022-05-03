@@ -11,7 +11,7 @@ import ThumbGallery from "../../ThumbGallery"
 
 
 export default function PropertyTable() {
-  window.Buffer=Buffer;
+  window.Buffer = Buffer;
   const dispatch = useDispatch();
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   useEffect(() => {
@@ -22,13 +22,12 @@ export default function PropertyTable() {
   const [propertyEdit, setProperty] = useState(null);
   const handleClose = () => setOpen(false);
   const handleOpen = (prop) => {
-    if(window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN")
-    {
-    setProperty(prop);
-    setOpen(true);
-  }else{
-    window.alert("Bạn không có quyền chỉnh sửa !")
-  }
+    if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN") {
+      setProperty(prop);
+      setOpen(true);
+    } else {
+      window.alert("Bạn không có quyền chỉnh sửa !")
+    }
   }
 
   // TOAST
@@ -47,8 +46,8 @@ export default function PropertyTable() {
       <MaterialTable
         columns={[
           { title: 'ID', field: 'bdsid' },
-          { title: 'Diện tích (m*m)', field: 'dientich'},
-          { title: 'Đơn giá', field: 'dongia', type: 'currency' , currencySetting:{ locale: 'vi',currencyCode:'vnd', minimumFractionDigits:0, maximumFractionDigits:2}},
+          { title: 'Diện tích (m*m)', field: 'dientich' },
+          { title: 'Đơn giá', field: 'dongia', type: 'currency', currencySetting: { locale: 'vi', currencyCode: 'vnd', minimumFractionDigits: 0, maximumFractionDigits: 2 } },
           { title: 'Huê hồng (%)', field: 'huehong', type: 'numeric' },
           { title: 'Đường', field: 'tenduong' },
           { title: 'Phường/Xã', field: 'phuong' },
@@ -92,17 +91,21 @@ export default function PropertyTable() {
         }}
         detailPanel={
           rowData => {
-          return (
-            rowData.formhinhBdList.length>0?
-            <ThumbGallery images={rowData.formhinhBdList}/>
-            :
-            <div style={{display: 'flex',justifyContent: 'center'}}>
-            <p>Không có dữ liệu hình ảnh</p>
-            </div>
-          )
+            return (
+              rowData.formhinhBdList.length !== 0?
+                  (
+                    <ThumbGallery images={rowData.formhinhBdList} />
+                  )
+                :
+                (
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <p>Không có dữ liệu hình ảnh</p>
+                  </div>
+                )
+            )
+          }
         }
-      }
-      onRowClick={(event, rowData, togglePanel) => togglePanel()}
+        onRowClick={(event, rowData, togglePanel) => togglePanel()}
       />
       <PropertyModal property={propertyEdit} isOpen={open} isClose={handleClose} />
     </div>
