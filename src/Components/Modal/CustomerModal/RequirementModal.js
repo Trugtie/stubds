@@ -110,7 +110,7 @@ export default function RequirementModal({ request, cus, open, close }) {
       return;
     } else {
       dispatch(addRequirement({ dait, daif, rongt, rongf, giat, giaf, mota, vitri, khachhang, loaibd, dientich }));
-      close();
+      
     }
   };
 
@@ -131,7 +131,7 @@ export default function RequirementModal({ request, cus, open, close }) {
       const ycid = request.ycid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa yêu cầu ID: " + ycid)) {
         dispatch(editRequirement({ ycid, dait, daif, rongt, rongf, giat, giaf, mota, vitri, khachhang, loaibd, dientich }));
-        close();
+        
       } else {
         return;
       }

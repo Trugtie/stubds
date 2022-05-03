@@ -17,24 +17,36 @@ export const getCustomers = createAsyncThunk(
 export const deleteCustomer = createAsyncThunk(
     'customer/deleteCustomer',
     async (value) => {
-        const { data } = await axios.delete(`${API_URL}khachhang/${value}`, config)
-        return data;
+        try {
+            const { data } = await axios.delete(`${API_URL}khachhang/${value}`, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
 export const addCustomer = createAsyncThunk(
     'customer/addCustomer',
     async (value) => {
-        const { data } = await axios.post(`${API_URL}khachhang`, value, config)
-        return data;
+        try {
+            const { data } = await axios.post(`${API_URL}khachhang`, value, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
 export const editCustomer = createAsyncThunk(
     'customer/editCustomer',
     async (value) => {
-        const { data } = await axios.put(`${API_URL}khachhang`, value, config)
-        return data;
+        try {
+            const { data } = await axios.put(`${API_URL}khachhang`, value, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
@@ -42,7 +54,8 @@ export const customerSlice = createSlice({
     name: "customer",
     initialState: {
         list: [],
-        status: null
+        status: null,
+        message: null
     },
     extraReducers: {
         // addCustomer
@@ -53,8 +66,9 @@ export const customerSlice = createSlice({
             state.list.push(payload)
             state.status = HTTP_STATUS.INSERTED
         },
-        [addCustomer.rejected](state) {
+        [addCustomer.rejected](state, error) {
             state.status = HTTP_STATUS.INSERT_FAILED
+            state.message = error.error.message
         },
 
         // editCustomer
@@ -68,8 +82,9 @@ export const customerSlice = createSlice({
                 state.list[index] = payload;
             }
         },
-        [editCustomer.rejected](state) {
+        [editCustomer.rejected](state, error) {
             state.status = HTTP_STATUS.EDIT_FAILED
+            state.message = error.error.message
         },
 
 
@@ -82,9 +97,9 @@ export const customerSlice = createSlice({
             state.status = HTTP_STATUS.DELETED
             return state
         },
-        [deleteCustomer.rejected](state, { payload }) {
+        [deleteCustomer.rejected](state, error) {
             state.status = HTTP_STATUS.DELETE_FAILED
-            state.message = payload.message
+            state.message = error.error.message
         },
 
         // getCustomer

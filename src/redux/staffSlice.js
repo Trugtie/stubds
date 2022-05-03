@@ -40,24 +40,36 @@ export const getStaffs = createAsyncThunk(
 export const deleteStaff = createAsyncThunk(
     'staff/deleteStaff',
     async (value) => {
-        const { data } = await axios.delete(`${API_URL}nhanvien/${value}`, config)
-        return data;
+        try {
+            const { data } = await axios.delete(`${API_URL}nhanvien/${value}`, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
 export const addStaff = createAsyncThunk(
     'staff/addStaff',
     async (value) => {
-        const { data } = await axios.post(`${API_URL}nhanvien`, value, config)
-        return data;
+        try {
+            const { data } = await axios.post(`${API_URL}nhanvien`, value, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
 export const editStaff = createAsyncThunk(
     'staff/editStaff',
     async (value) => {
-        const { data } = await axios.put(`${API_URL}nhanvien`, value, config)
-        return data;
+        try {
+            const { data } = await axios.put(`${API_URL}nhanvien`, value, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
@@ -65,7 +77,8 @@ export const staffSlice = createSlice({
     name: "staff",
     initialState: {
         list: [],
-        status: null
+        status: null,
+        message: null
     },
     reducers: {
         logout: (state) => {
@@ -74,6 +87,7 @@ export const staffSlice = createSlice({
             localStorage.removeItem("Token")
             state.list = null
             state.status = null
+            state.message = null
         },
     },
     extraReducers: {
@@ -104,8 +118,9 @@ export const staffSlice = createSlice({
             state.list.push(payload)
             state.status = HTTP_STATUS.INSERTED
         },
-        [addStaff.rejected](state) {
+        [addStaff.rejected](state, error) {
             state.status = HTTP_STATUS.INSERT_FAILED
+            state.message = error.error.message
         },
 
         // editStaff
@@ -124,8 +139,9 @@ export const staffSlice = createSlice({
                 }
             }
         },
-        [editStaff.rejected](state) {
+        [editStaff.rejected](state, error) {
             state.status = HTTP_STATUS.EDIT_FAILED
+            state.message = error.error.message
         },
 
         // deleteStaff
@@ -137,9 +153,9 @@ export const staffSlice = createSlice({
             state.status = HTTP_STATUS.DELETED
             return state
         },
-        [deleteStaff.rejected](state, { payload }) {
+        [deleteStaff.rejected](state, error) {
             state.status = HTTP_STATUS.DELETE_FAILED
-            state.message = payload.message
+            state.message = error.error.message
         },
 
         // getStaffs

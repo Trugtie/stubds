@@ -13,7 +13,7 @@ import ThumbGallery from "../../ThumbGallery"
 export default function PropertyTable() {
   window.Buffer = Buffer;
   const dispatch = useDispatch();
-  const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
+  const { list, status, message } = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   useEffect(() => {
     dispatch(getProperties())
   }, [])
@@ -37,6 +37,14 @@ export default function PropertyTable() {
   useEffect(() => {
     setOpenToast(true);
     setToast(status);
+    if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.EDITED) {
+      setOpen(false);
+    } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.EDIT_FAILED) {
+      setOpen(true);
+      if (message) {
+        window.alert(`${message}`);
+      }
+    }
   }, [status])
   // TOAST
 

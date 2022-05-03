@@ -124,7 +124,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
       var tennv = `${ho} ${tendem} ${ten}`
       var matkhau = matkhau1
       dispatch(addStaff({ taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
-      isClose();
+      
     }
   };
 
@@ -159,7 +159,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
           var matkhau = matkhau1;
           dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }))
         }
-        isClose();
+        
       } else {
         return;
       }

@@ -191,7 +191,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
         loaibdid: loaibdid
       }
       dispatch(addConsignment({ chiphidv, giatri, ngaybd, ngayketthuc, trangthai, khid, formBatdongsan }));
-      isClose();
+      
     }
   };
 
@@ -200,7 +200,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
       if (contract.trangthai === 0) {
         dispatch(deleteConsignment(contract.kgid))
         dispatch(deleteProperty(contract.bdsid))
-        isClose();
+        
       } else {
         window.alert("Không thể xoá hợp đồng này !")
       }

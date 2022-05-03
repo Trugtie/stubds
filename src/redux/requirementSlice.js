@@ -9,7 +9,7 @@ let config = {
 export const getRequirements = createAsyncThunk(
     'requirement/getRequirements',
     async () => {
-        const { data } = await axios.get(`${API_URL}yeucaukhachhang`,config)
+        const { data } = await axios.get(`${API_URL}yeucaukhachhang`, config)
         return data;
     }
 )
@@ -17,24 +17,36 @@ export const getRequirements = createAsyncThunk(
 export const deleteRequirement = createAsyncThunk(
     'requirement/deleteRequirement',
     async (value) => {
-        const { data } = await axios.delete(`${API_URL}yeucaukhachhang/${value}`,config)
-        return data;
+        try {
+            const { data } = await axios.delete(`${API_URL}yeucaukhachhang/${value}`, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
 export const addRequirement = createAsyncThunk(
     'requirement/addRequirement',
     async (value) => {
-        const { data } = await axios.post(`${API_URL}yeucaukhachhang`, value,config)
-        return data;
+        try {
+            const { data } = await axios.post(`${API_URL}yeucaukhachhang`, value, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
 export const editRequirement = createAsyncThunk(
     'requirement/editRequirement',
     async (value) => {
-        const { data } = await axios.put(`${API_URL}yeucaukhachhang`, value,config)
-        return data;
+        try {
+            const { data } = await axios.put(`${API_URL}yeucaukhachhang`, value, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
@@ -42,7 +54,8 @@ export const requirementSlice = createSlice({
     name: "requirement",
     initialState: {
         list: [],
-        status: null
+        status: null,
+        message: null
     },
     extraReducers: {
         // addRequirement
@@ -53,8 +66,9 @@ export const requirementSlice = createSlice({
             state.list.push(payload)
             state.status = HTTP_STATUS.INSERTED
         },
-        [addRequirement.rejected](state) {
+        [addRequirement.rejected](state, error) {
             state.status = HTTP_STATUS.INSERT_FAILED
+            state.message = error.error.message
         },
 
         // editRequirement
@@ -68,8 +82,9 @@ export const requirementSlice = createSlice({
                 state.list[index] = payload;
             }
         },
-        [editRequirement.rejected](state) {
+        [editRequirement.rejected](state, error) {
             state.status = HTTP_STATUS.EDIT_FAILED
+            state.message = error.error.message
         },
 
         // deleteRequirement
@@ -81,8 +96,9 @@ export const requirementSlice = createSlice({
             state.status = HTTP_STATUS.DELETED
             return state
         },
-        [deleteRequirement.rejected](state) {
+        [deleteRequirement.rejected](state, error) {
             state.status = HTTP_STATUS.DELETE_FAILED
+            state.message = error.error.message
         },
 
         // getRequirements

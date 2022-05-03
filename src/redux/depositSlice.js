@@ -9,7 +9,7 @@ let config = {
 export const getDeposites = createAsyncThunk(
     'deposit/getDeposites',
     async () => {
-        const { data } = await axios.get(`${API_URL}hopdongdatcoc`,config)
+        const { data } = await axios.get(`${API_URL}hopdongdatcoc`, config)
         return data;
     }
 )
@@ -17,7 +17,7 @@ export const getDeposites = createAsyncThunk(
 export const getDeposit = createAsyncThunk(
     'deposit/getDeposites',
     async (value) => {
-        const { data } = await axios.get(`${API_URL}hopdongdatcoc/${value}`,config)
+        const { data } = await axios.get(`${API_URL}hopdongdatcoc/${value}`, config)
         return data;
     }
 )
@@ -25,17 +25,24 @@ export const getDeposit = createAsyncThunk(
 export const deleteDeposit = createAsyncThunk(
     'deposit/deleteDeposit',
     async (value) => {
-        const { data } = await axios.delete(`${API_URL}hopdongdatcoc/${value}`,config)
-        return data;
+        try {
+            const { data } = await axios.delete(`${API_URL}hopdongdatcoc/${value}`, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
 export const addDeposit = createAsyncThunk(
     'deposit/addDeposit',
     async (value) => {
-        const { data } = await axios.post(`${API_URL}hopdongdatcoc`, value,config)
-        console.log(data)
-        return data;
+        try {
+            const { data } = await axios.post(`${API_URL}hopdongdatcoc`, value, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
@@ -43,7 +50,8 @@ export const depositSlice = createSlice({
     name: "deposit",
     initialState: {
         list: [],
-        status: null
+        status: null,
+        message: null
     },
     extraReducers: {
         // addDeposit
@@ -54,8 +62,9 @@ export const depositSlice = createSlice({
             state.list.push(payload)
             state.status = HTTP_STATUS.INSERTED
         },
-        [addDeposit.rejected](state) {
+        [addDeposit.rejected](state,error) {
             state.status = HTTP_STATUS.INSERT_FAILED
+            state.message = error.error.message
         },
 
         // deleteDeposit
@@ -67,8 +76,9 @@ export const depositSlice = createSlice({
             state.status = HTTP_STATUS.DELETED
             return state
         },
-        [deleteDeposit.rejected](state) {
+        [deleteDeposit.rejected](state, error) {
             state.status = HTTP_STATUS.DELETE_FAILED
+            state.message = error.error.message
         },
 
         // getDeposites

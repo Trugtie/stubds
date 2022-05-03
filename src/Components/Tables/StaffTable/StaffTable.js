@@ -9,11 +9,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { getStaffs, deleteStaff } from "../../../redux/staffSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
-
+import AlertToast from "../../Alert/alert";
 
 export default function StaffTable() {
   const dispatch = useDispatch();
-  const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
+  const { list, status, message } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
   window.Buffer = Buffer;
   const account = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
   useEffect(() => {
@@ -43,6 +43,23 @@ export default function StaffTable() {
     setOpen(true);
   }
 
+  // TOAST
+  const [toast, setToast] = useState(false);
+  const [openToast, setOpenToast] = useState(false);
+  const handleCloseToast = () => setOpenToast(false);
+  useEffect(() => {
+    setOpenToast(true);
+    setToast(status);
+    if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED || status === HTTP_STATUS.EDITED) {
+      setOpen(false);
+    } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.INSERT_FAILED || status === HTTP_STATUS.EDIT_FAILED) {
+      setOpen(true);
+      if (message) {
+        window.alert(`${message}`);
+      }
+    }
+  }, [status])
+  // TOAST
 
   return (
     <div>
@@ -76,6 +93,7 @@ export default function StaffTable() {
                     loaderColor="#CF9269"
                   />
                   : ""}
+                <AlertToast value={toast} open={openToast} close={handleCloseToast} />
               </div>
             </div>
           ),

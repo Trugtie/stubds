@@ -17,16 +17,24 @@ export const getConsignments = createAsyncThunk(
 export const deleteConsignment = createAsyncThunk(
     'consignment/deleteConsignment',
     async (value) => {
+        try {
         const { data } = await axios.delete(`${API_URL}hopdongkygui/${value}`, config)
         return data;
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
     }
 );
 
 export const addConsignment = createAsyncThunk(
     'consignment/addConsignment',
     async (value) => {
-        const { data } = await axios.post(`${API_URL}hopdongkygui`, value, config)
-        return data;
+        try {
+            const { data } = await axios.post(`${API_URL}hopdongkygui`, value, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
@@ -34,7 +42,8 @@ export const consignmentSlice = createSlice({
     name: "consignment",
     initialState: {
         list: [],
-        status: null
+        status: null,
+        message: null
     },
     extraReducers: {
         // addConsignment
@@ -45,8 +54,9 @@ export const consignmentSlice = createSlice({
             state.list.push(payload)
             state.status = HTTP_STATUS.INSERTED
         },
-        [addConsignment.rejected](state) {
+        [addConsignment.rejected](state, error) {
             state.status = HTTP_STATUS.INSERT_FAILED
+            state.message = error.error.message
         },
 
         // deleteConsignment
@@ -58,8 +68,9 @@ export const consignmentSlice = createSlice({
             state.status = HTTP_STATUS.DELETED
             return state
         },
-        [deleteConsignment.rejected](state, { payload }) {
+        [deleteConsignment.rejected](state, error) {
             state.status = HTTP_STATUS.DELETE_FAILED
+            state.message = error.error.message
         },
 
         // getConsignments

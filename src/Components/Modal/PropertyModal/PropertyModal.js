@@ -170,7 +170,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
         if (file) {
           dispatch(uploadImage({ file, bdsid }))
         }
-        isClose();
+        
       } else {
         return;
       }

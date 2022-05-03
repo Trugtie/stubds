@@ -15,7 +15,7 @@ import AlertToast from "../../Alert/alert";
 export default function Contract_Consignment() {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Consignment)));
+  const { list, status, message } = JSON.parse(JSON.stringify(useSelector((state) => state.Consignment)));
   useEffect(() => {
     dispatch(getConsignments())
   }, [])
@@ -35,6 +35,14 @@ export default function Contract_Consignment() {
   useEffect(() => {
     setOpenToast(true);
     setToast(status);
+    if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED) {
+      setOpen(false);
+    } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.INSERT_FAILED) {
+      setOpen(true);
+      if (message) {
+        window.alert(`${message}`);
+      }
+    }
   }, [status])
   // TOAST
 

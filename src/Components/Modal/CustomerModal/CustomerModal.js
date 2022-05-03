@@ -13,7 +13,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
-
 import { useDispatch, useSelector } from "react-redux";
 import { addCustomer, editCustomer } from "../../../redux/customerSlice";
 import { getStaffs, getStaff } from "../../../redux/staffSlice";
@@ -28,6 +27,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       backgroundColor: "#80583b",
     },
   }));
+
   const style = {
     position: "absolute",
     top: "50%",
@@ -43,7 +43,6 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
     boxShadow: 24,
   };
 
-  
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
   const dispatch = useDispatch();
   let acc = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
@@ -138,7 +137,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
     } else {
       const hoten = `${ho} ${tendem} ${ten}`
       dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota, nvid }));
-      isClose();
+      
     }
   };
 
@@ -163,7 +162,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       const khid = cus.khid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa khách hàng ID: " + khid)) {
         dispatch(editCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota, nvid }));
-        isClose();
+        
       } else {
         return;
       }

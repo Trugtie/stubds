@@ -121,7 +121,6 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
       dispatch(
         addAssignment({ giatri, ngaylap, bdsid, khid, trangthai, dcid })
       );
-      isClose();
     }
   };
 
@@ -131,7 +130,6 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
     } else {
       return;
     }
-    isClose();
   };
 
   return (

@@ -10,7 +10,7 @@ import AlertToast from "../../Alert/alert";
 
 export default function CustomerTable() {
   const dispatch = useDispatch();
-  const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Requirement)));
+  const { list, status, message } = JSON.parse(JSON.stringify(useSelector((state) => state.Requirement)));
   useEffect(() => {
     if (list.length < 2) {
     dispatch(getRequirements())
@@ -38,6 +38,14 @@ export default function CustomerTable() {
   useEffect(() => {
     setOpenToast(true);
     setToast(status);
+    if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED || status === HTTP_STATUS.EDITED) {
+      setOpenRe(false);
+    } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.INSERT_FAILED || status === HTTP_STATUS.EDIT_FAILED) {
+      setOpenRe(true);
+      if (message) {
+        window.alert(`${message}`);
+      }
+    }
   }, [status])
   // TOAST
 

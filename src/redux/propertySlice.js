@@ -24,16 +24,24 @@ export const getProperty = createAsyncThunk(
 export const addProperty = createAsyncThunk(
     'property/addProperty',
     async (value) => {
+        try {
         const { data } = await axios.post(`${API_URL}batdongsan`, value, config)
         return data;
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
     }
 );
 
 export const editProperty = createAsyncThunk(
     'property/editProperty',
     async (value) => {
+        try {
         const { data } = await axios.put(`${API_URL}batdongsan`, value, config)
         return data;
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
     }
 );
 
@@ -41,8 +49,12 @@ export const editProperty = createAsyncThunk(
 export const deleteProperty = createAsyncThunk(
     'property/deleteProperty',
     async (value) => {
+        try {
         const { data } = await axios.delete(`${API_URL}batdongsan/${value}`, config)
         return data;
+    } catch (error) {
+        throw new Error(error.response.data)
+    }
     }
 );
 
@@ -50,7 +62,8 @@ export const propertySlice = createSlice({
     name: "property",
     initialState: {
         list: [],
-        status: null
+        status: null,
+        message: null
     },
     extraReducers: {
         // addProperty
@@ -61,8 +74,9 @@ export const propertySlice = createSlice({
             state.list.push(payload)
             state.status = HTTP_STATUS.INSERTED
         },
-        [addProperty.rejected](state) {
+        [addProperty.rejected](state, error) {
             state.status = HTTP_STATUS.INSERT_FAILED
+            state.message = error.error.message
         },
 
         // editProperty
@@ -73,8 +87,9 @@ export const propertySlice = createSlice({
             state.status = HTTP_STATUS.EDITED
             getProperty(payload.bdsid)
         },
-        [editProperty.rejected](state) {
+        [editProperty.rejected](state, error) {
             state.status = HTTP_STATUS.EDIT_FAILED
+            state.message = error.error.message
         },
 
         // deleteProperty
@@ -86,8 +101,9 @@ export const propertySlice = createSlice({
             state.status = HTTP_STATUS.DELETED
             return state
         },
-        [deleteProperty.rejected](state) {
+        [deleteProperty.rejected](state, error) {
             state.status = HTTP_STATUS.DELETE_FAILED
+            state.message = error.error.message
         },
 
         // getProperties

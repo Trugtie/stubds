@@ -13,7 +13,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
-
+import { HTTP_STATUS } from "../../../redux/constants";
 import { useDispatch, useSelector } from "react-redux";
 import { addDeposit, deleteDeposit } from "../../../redux/depositSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
@@ -125,7 +125,7 @@ export default function DepositModal({ contract, isOpen, isClose }) {
       dispatch(
         addDeposit({ giatri, ngayhethan, ngaylap, bdsid, khid, trangthai, tinhtrang, kgid })
       );
-      isClose();
+      
     }
   };
 
@@ -137,7 +137,7 @@ export default function DepositModal({ contract, isOpen, isClose }) {
     } else {
       return;
     }
-    isClose();
+    
   };
 
   return (

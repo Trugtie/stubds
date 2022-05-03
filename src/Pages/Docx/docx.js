@@ -1,12 +1,13 @@
 import React, { useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import WebViewer from '@pdftron/webviewer';
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { getCustomers } from "../../redux/customerSlice";
 import { getTypes } from "../../redux/propertyTypeSlice";
 import { getProperties } from "../../redux/propertySlice";
 export default function Docx() {
     const { state } = useLocation();
+    let navigate = useNavigate();
     const dispatch = useDispatch();
     const viewer = useRef(null);
     const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
@@ -71,7 +72,6 @@ export default function Docx() {
             ngaykt: ngaykt,
         }
     }
-    console.log(data)
     useEffect(() => {
         WebViewer(
             {
@@ -85,8 +85,9 @@ export default function Docx() {
             disableFeatures([Feature.Ribbons]);
             disableFeatures([Feature.NotesPanel]);
             disableFeatures([Feature.FilePicker]);
+            disableFeatures([Feature.Download]);
             disableElements(['panToolButton', 'searchButton']);
-            setTheme(Theme.DARK);
+            setTheme(Theme.LIGHT);
             instance.UI.setLanguage('vi');
             const { documentViewer } = instance.Core;
             documentViewer.addEventListener('documentLoaded', async () => {

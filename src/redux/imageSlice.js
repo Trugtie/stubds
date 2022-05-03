@@ -9,13 +9,17 @@ let config = {
 export const uploadImage = createAsyncThunk(
     'image/uploadImage',
     async (value) => {
-        var listImage = new FormData();
-        listImage.append('bdsid', value.bdsid);
-        for (let i = 0; i < value.file.length; i++) {
-            listImage.append('listImage', value.file[i]);
+        try {
+            var listImage = new FormData();
+            listImage.append('bdsid', value.bdsid);
+            for (let i = 0; i < value.file.length; i++) {
+                listImage.append('listImage', value.file[i]);
+            }
+            const { data } = await axios.post(`${API_URL}uploadImage`, listImage, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
         }
-        const { data } = await axios.post(`${API_URL}uploadImage`,listImage,config)
-        return data;
     }
 )
 
@@ -23,7 +27,8 @@ export const propertyTypeSlice = createSlice({
     name: "image",
     initialState: {
         list: [],
-        status: null
+        status: null,
+        message: null
     },
     extraReducers: {
         // uploadImage
@@ -34,8 +39,9 @@ export const propertyTypeSlice = createSlice({
             state.list = payload
             state.status = HTTP_STATUS.INSERTED
         },
-        [uploadImage.rejected](state) {
+        [uploadImage.rejected](state, error) {
             state.status = HTTP_STATUS.INSERT_FAILED
+            state.message = error.error.message
         },
     }
 })

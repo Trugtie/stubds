@@ -9,7 +9,7 @@ let config = {
 export const getAssignments = createAsyncThunk(
     'assignment/getAssignments',
     async () => {
-        const { data } = await axios.get(`${API_URL}hopdongchuyennhuong`,config)
+        const { data } = await axios.get(`${API_URL}hopdongchuyennhuong`, config)
         return data;
     }
 )
@@ -17,7 +17,7 @@ export const getAssignments = createAsyncThunk(
 export const getAssignment = createAsyncThunk(
     'assignment/getAssignments',
     async (value) => {
-        const { data } = await axios.get(`${API_URL}hopdongchuyennhuong/${value}`,config)
+        const { data } = await axios.get(`${API_URL}hopdongchuyennhuong/${value}`, config)
         return data;
     }
 )
@@ -25,16 +25,24 @@ export const getAssignment = createAsyncThunk(
 export const deleteAssignment = createAsyncThunk(
     'assignment/deleteAssignment',
     async (value) => {
-        const { data } = await axios.delete(`${API_URL}hopdongchuyennhuong/${value}`,config)
-        return data;
+        try {
+            const { data } = await axios.delete(`${API_URL}hopdongchuyennhuong/${value}`, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
 export const addAssignment = createAsyncThunk(
     'assignment/addAssignment',
     async (value) => {
-        const { data } = await axios.post(`${API_URL}hopdongchuyennhuong`, value,config)
-        return data;
+        try {
+            const { data } = await axios.post(`${API_URL}hopdongchuyennhuong`, value, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
@@ -42,7 +50,8 @@ export const assignmentSlice = createSlice({
     name: "assignment",
     initialState: {
         list: [],
-        status: null
+        status: null,
+        message: null
     },
     extraReducers: {
         // addAssignment
@@ -53,8 +62,9 @@ export const assignmentSlice = createSlice({
             state.list.push(payload)
             state.status = HTTP_STATUS.INSERTED
         },
-        [addAssignment.rejected](state) {
+        [addAssignment.rejected](state, error) {
             state.status = HTTP_STATUS.INSERT_FAILED
+            state.message = error.error.message
         },
 
         // deleteAssignment
@@ -66,8 +76,9 @@ export const assignmentSlice = createSlice({
             state.status = HTTP_STATUS.DELETED
             return state
         },
-        [deleteAssignment.rejected](state) {
+        [deleteAssignment.rejected](state,error) {
             state.status = HTTP_STATUS.DELETE_FAILED
+            state.message = error.error.message
         },
 
         // getAssignments
