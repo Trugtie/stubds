@@ -18,11 +18,11 @@ export const deleteConsignment = createAsyncThunk(
     'consignment/deleteConsignment',
     async (value) => {
         try {
-        const { data } = await axios.delete(`${API_URL}hopdongkygui/${value}`, config)
-        return data;
-    } catch (error) {
-        throw new Error(error.response.data)
-    }
+            const { data } = await axios.delete(`${API_URL}hopdongkygui/${value}`, config)
+            return data;
+        } catch (error) {
+            throw new Error(error.response.data)
+        }
     }
 );
 
@@ -44,6 +44,12 @@ export const consignmentSlice = createSlice({
         list: [],
         status: null,
         message: null
+    },
+    reducers: {
+        setState: (state) => {
+            state.status = HTTP_STATUS.FULFILLED
+            state.message = null
+        }
     },
     extraReducers: {
         // addConsignment
@@ -86,4 +92,5 @@ export const consignmentSlice = createSlice({
         },
     }
 })
+export const { setState } = consignmentSlice.actions;
 export default consignmentSlice.reducer;

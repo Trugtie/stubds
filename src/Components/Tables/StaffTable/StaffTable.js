@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getStaffs, deleteStaff } from "../../../redux/staffSlice";
+import { getStaffs, setState } from "../../../redux/staffSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -15,7 +15,6 @@ export default function StaffTable() {
   const dispatch = useDispatch();
   const { list, status, message } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
   window.Buffer = Buffer;
-  const account = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
   useEffect(() => {
     if (window.Buffer.from(localStorage.getItem("permission"), 'base64').toString('ascii') === "ADMIN") {
       if (list.length < 2) {
@@ -23,17 +22,6 @@ export default function StaffTable() {
       }
     }
   }, [])
-
-  const handleDelete = (staff) => {
-    if (staff.taikhoan === account[0]) {
-      window.alert("Bạn không thể xoá bản thân mình !")
-    }
-    else if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
-      dispatch(deleteStaff(staff.nvid))
-    } else {
-      return;
-    }
-  };
 
   const [open, setOpen] = useState(false);
   const [staffEdit, setStaff] = useState(null);
@@ -56,6 +44,7 @@ export default function StaffTable() {
       setOpen(true);
       if (message) {
         window.alert(`${message}`);
+        dispatch(setState)
       }
     }
   }, [status])
@@ -102,17 +91,11 @@ export default function StaffTable() {
         actions={
           [
             {
-              icon: 'edit',
-              tooltip: 'Sửa',
+              icon: 'info',
+              tooltip: 'Chi tiết',
               onClick: (event, rowData) => handleOpen(rowData),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
-            rowData => ({
-              icon: 'delete',
-              tooltip: 'Xóa',
-              onClick: (event, rowData) => handleDelete(rowData),
-              iconProps: { style: { color: "#B52017" } }
-            })
           ]}
         options={{
           actionsColumnIndex: -1,

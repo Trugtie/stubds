@@ -3,7 +3,7 @@ import RequirementModal from '../../Modal/CustomerModal/RequirementModal';
 import "./Requirement.css";
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getRequirements, deleteRequirement } from "../../../redux/requirementSlice";
+import { getRequirements, deleteRequirement, setState } from "../../../redux/requirementSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -12,18 +12,11 @@ export default function CustomerTable() {
   const dispatch = useDispatch();
   const { list, status, message } = JSON.parse(JSON.stringify(useSelector((state) => state.Requirement)));
   useEffect(() => {
-    if (list.length < 2) {
-    dispatch(getRequirements())
-  }}, [])
-
-
-  const handleDelete = (request) => {
-    if (window.confirm("Bạn có chắc muốn xoá yêu cầu ID:" + request.ycid)) {
-      dispatch(deleteRequirement(request.ycid))
-    } else {
-      return;
+    if (!status) {
+      dispatch(getRequirements())
     }
-  };
+  }, [])
+
   const [openRe, setOpenRe] = useState(false);
   const [request, setRequest] = useState(null);
   const handleClose = () => setOpenRe(false);
@@ -44,6 +37,7 @@ export default function CustomerTable() {
       setOpenRe(true);
       if (message) {
         window.alert(`${message}`);
+        dispatch(setState)
       }
     }
   }, [status])
@@ -86,17 +80,11 @@ export default function CustomerTable() {
 
         actions={[
           {
-            icon: 'edit',
-            tooltip: 'Sửa',
+            icon: 'info',
+            tooltip: 'Chi tiết',
             onClick: (event, rowData) => handleRequest(rowData),
             iconProps: { style: { color: "var(--button-green-color)" } }
           },
-          rowData => ({
-            icon: 'delete',
-            tooltip: 'Xóa',
-            onClick: (event, rowData) => handleDelete(rowData),
-            iconProps: { style: { color: "#B52017" } }
-          })
         ]}
         options={{
           actionsColumnIndex: -1,

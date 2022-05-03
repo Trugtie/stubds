@@ -53,6 +53,12 @@ export const assignmentSlice = createSlice({
         status: null,
         message: null
     },
+    reducers: {
+        setState: (state) => {
+            state.status = HTTP_STATUS.FULFILLED
+            state.message = null
+        }
+    },
     extraReducers: {
         // addAssignment
         [addAssignment.pending](state) {
@@ -106,4 +112,5 @@ export const assignmentSlice = createSlice({
         },
     }
 })
+export const { setState } = assignmentSlice.actions;
 export default assignmentSlice.reducer;

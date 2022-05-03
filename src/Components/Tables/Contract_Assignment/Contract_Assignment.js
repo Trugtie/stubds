@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-import { getAssignments } from "../../../redux/assignmentSlice";
+import { getAssignments, setState } from "../../../redux/assignmentSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -42,6 +42,7 @@ export default function Contract_Assignment() {
       setOpen(true);
       if (message) {
         window.alert(`${message}`);
+        dispatch(setState)
       }
     }
   }, [status])

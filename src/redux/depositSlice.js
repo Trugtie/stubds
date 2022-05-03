@@ -53,6 +53,12 @@ export const depositSlice = createSlice({
         status: null,
         message: null
     },
+    reducers: {
+        setState: (state) => {
+            state.status = HTTP_STATUS.FULFILLED
+            state.message = null
+        }
+    },
     extraReducers: {
         // addDeposit
         [addDeposit.pending](state) {
@@ -106,4 +112,5 @@ export const depositSlice = createSlice({
         },
     }
 })
+export const { setState } = depositSlice.actions;
 export default depositSlice.reducer;

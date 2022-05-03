@@ -14,7 +14,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import frLocale from "date-fns/locale/vi";
 import * as React from "react";
 import { useDispatch } from "react-redux";
-import { addStaff, editStaff } from "../../../redux/staffSlice";
+import { addStaff, editStaff, deleteStaff } from "../../../redux/staffSlice";
 import "./Modal.css";
 
 
@@ -26,6 +26,16 @@ export default function BasicModal({ staff, isOpen, isClose }) {
     backgroundColor: "var(--button-color)",
     "&:hover": {
       backgroundColor: "#80583b",
+    },
+  }));
+
+  const DeleteButton = styled(Button)(({ theme }) => ({
+    color: "white",
+    fontWeight: "bolder",
+    width: "100%",
+    backgroundColor: "rgb(181, 32, 23)",
+    "&:hover": {
+      backgroundColor: "red",
     },
   }));
 
@@ -59,6 +69,8 @@ export default function BasicModal({ staff, isOpen, isClose }) {
   const [matkhau1, setMatkhau] = React.useState("");
   const [matkhau2, setMatkhau2] = React.useState("");
   const [trangthai, setTrangthai] = React.useState("0");
+  window.Buffer = Buffer;
+  const acc = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
 
   React.useEffect(() => {
     if (staff) {
@@ -124,7 +136,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
       var tennv = `${ho} ${tendem} ${ten}`
       var matkhau = matkhau1
       dispatch(addStaff({ taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }));
-      
+
     }
   };
 
@@ -145,7 +157,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
       return;
     } else if (matkhau1 !== matkhau2) {
       window.alert("Mật khẩu xác nhận không trùng khớp !");
-    } else if (taikhoan === account[0] && quyen !== permission ) {
+    } else if (taikhoan === account[0] && quyen !== permission) {
       window.alert("Bạn không thể tự thay đổi quyền của bản thân !");
     }
     else {
@@ -159,12 +171,24 @@ export default function BasicModal({ staff, isOpen, isClose }) {
           var matkhau = matkhau1;
           dispatch(editStaff({ nvid, taikhoan, matkhau, ngaysinh, sdt, gioitinh, diachi, email, quyen, doanhthu, trangthai, tennv }))
         }
-        
+
       } else {
         return;
       }
     }
   };
+
+  const handleDelete = () => {
+    if (staff.taikhoan === acc[0]) {
+      window.alert("Bạn không thể xoá bản thân mình !")
+    }
+    else if (window.confirm("Bạn có chắc muốn xoá nhân viên " + staff.tennv)) {
+      dispatch(deleteStaff(staff.nvid))
+    } else {
+      return;
+    }
+  };
+
   return (
     <Modal
       open={isOpen}
@@ -409,13 +433,24 @@ export default function BasicModal({ staff, isOpen, isClose }) {
           </div>
           <div className="modal-form" style={{ marginTop: "3rem" }}>
             {staff ? (
-              <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
-                Cập nhật nhân viên
-              </ColorButton>
+                <Grid container spacing={2}>
+                <Grid item xs={8}>
+                  <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
+                    Cập nhật nhân viên
+                  </ColorButton>
+                </Grid>
+                <Grid item xs={4}>
+                  <DeleteButton variant="contained" onClick={(e) => handleDelete(e)}>
+                    Xoá nhân viên
+                  </DeleteButton>
+                </Grid>
+              </Grid>
             ) : (
-              <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
-                Thêm nhân viên
-              </ColorButton>
+              <Grid item xs={12}>
+                <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
+                  Thêm nhân viên
+                </ColorButton>
+              </Grid>
             )}
           </div>
         </div>

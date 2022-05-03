@@ -14,7 +14,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { addCustomer, editCustomer } from "../../../redux/customerSlice";
+import { addCustomer, editCustomer, deleteCustomer } from "../../../redux/customerSlice";
 import { getStaffs, getStaff } from "../../../redux/staffSlice";
 
 export default function CustomerModal({ cus, isOpen, isClose }) {
@@ -25,6 +25,16 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
     backgroundColor: "var(--button-color)",
     "&:hover": {
       backgroundColor: "#80583b",
+    },
+  }));
+
+  const DeleteButton = styled(Button)(({ theme }) => ({
+    color: "white",
+    fontWeight: "bolder",
+    width: "100%",
+    backgroundColor: "rgb(181, 32, 23)",
+    "&:hover": {
+      backgroundColor: "red",
     },
   }));
 
@@ -74,6 +84,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
   const [mota, setMota] = React.useState("");
   const [loaikh, setLoai] = React.useState("0");
   const [trangthai, setTrangthai] = React.useState("0");
+
   React.useEffect(() => {
     if (cus) {
       handleForm();
@@ -136,8 +147,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       return;
     } else {
       const hoten = `${ho} ${tendem} ${ten}`
-      dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota, nvid }));
-      
+      dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota, nvid })); 
     }
   };
 
@@ -166,6 +176,14 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       } else {
         return;
       }
+    }
+  };
+
+  const handleDelete = () => {
+    if (window.confirm("Bạn có chắc muốn xoá khách hàng " + cus.hoten)) {
+      dispatch(deleteCustomer(cus.khid))
+    } else {
+      return;
     }
   };
 
@@ -411,17 +429,28 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
               </Grid>
             </Grid>
           </div>
-          <div className="modal-form" style={{ marginTop: "1rem" }}>
+            <div className="modal-form" style={{ marginTop: "1rem" }}>
             {cus ? (
-              <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
-                Cập nhật khách hàng
-              </ColorButton>
+                <Grid container spacing={2}>
+                <Grid item xs={8}>
+                  <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
+                    Cập nhật khách hàng
+                  </ColorButton>
+                </Grid>
+                <Grid item xs={4}>
+                  <DeleteButton variant="contained" onClick={(e) => handleDelete(e)}>
+                    Xoá khách hàng
+                  </DeleteButton>
+                </Grid>
+              </Grid>
             ) : (
-              <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
-                Thêm khách hàng
-              </ColorButton>
+              <Grid item xs={12}>
+                <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
+                  Thêm khách hàng
+                </ColorButton>
+              </Grid>
             )}
-          </div>
+            </div>
         </div>
       </Box>
     </Modal>

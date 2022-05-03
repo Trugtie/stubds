@@ -63,19 +63,24 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
 
   const dispatch = useDispatch();
   React.useEffect(() => {
-    if (types.list.length === 0) {
+    if (!types.status) {
       dispatch(getTypes())
     }
-    if (customers.list.length === 0) {
+    if (!customers.status) {
       dispatch(getCustomers())
     }
-    if (properties.list.length === 0) {
+    if (!properties.status) {
       dispatch(getProperties())
     }
   }, [])
 
   React.useEffect(() => {
-    handleForm();
+    if (contract) {
+      handleForm(contract);
+    } else {
+      handleFormAdd();
+    }
+    console.log("rerender")
   }, [isOpen]);
 
   const [chiphidv, setChiphi] = React.useState("0");
@@ -84,7 +89,6 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const [ngayketthuc, setNgaykt] = React.useState(null);
   const [trangthai, setTrangthai] = React.useState("0");
   const [khid, setKhachhang] = React.useState("");
-
   const [chieudai, setChieudai] = React.useState("");
   const [chieurong, setChieurong] = React.useState("");
   const [dientich, setDientich] = React.useState("");
@@ -100,15 +104,15 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const [thanhpho, setThanhpho] = React.useState("");
   const [tinhtrang, setTinhtrang] = React.useState("0");
   const [loaibdid, setLoaibdid] = React.useState("");
-  const handleForm = () => {
-    if (contract) {
-      var prop = properties.list.find(item => item.bdsid === contract.bdsid)
-      setChiphi(contract.chiphidv);
-      setGiatri(contract.giatri);
-      setNgaybd(contract.ngaybd);
-      setNgaykt(contract.ngayketthuc);
-      setTrangthai(contract.trangthai);
-      setKhachhang(contract.khid);
+
+  const handleForm = (e) => {
+      var prop = properties.list.find(item => item.bdsid === e.bdsid)
+      setChiphi(e.chiphidv);
+      setGiatri(e.giatri);
+      setNgaybd(e.ngaybd);
+      setNgaykt(e.ngayketthuc);
+      setTrangthai(e.trangthai);
+      setKhachhang(e.khid);
       setChieudai(prop.chieudai);
       setChieurong(prop.chieurong);
       setDientich(prop.dientich);
@@ -124,29 +128,30 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
       setThanhpho(prop.thanhpho);
       setTinhtrang(prop.tinhtrang);
       setLoaibdid(prop.loaibdid);
-    } else {
-      setChiphi("");
-      setGiatri("");
-      setNgaybd(null);
-      setNgaykt(null);
-      setTrangthai(0);
-      setKhachhang("");
-      setChieudai("");
-      setChieurong("");
-      setDientich("");
-      setDongia("");
-      setHinhanh(null);
-      setHuehong("");
-      setMasoqsdd("");
-      setMota("");
-      setPhuong("");
-      setQuan("");
-      setSonha("");
-      setTenduong("");
-      setThanhpho("");
-      setTinhtrang(0);
-      setLoaibdid(1);
-    }
+  };
+
+  const handleFormAdd = () => {
+    setChiphi("");
+    setGiatri("");
+    setNgaybd(null);
+    setNgaykt(null);
+    setTrangthai(0);
+    setKhachhang("");
+    setChieudai("");
+    setChieurong("");
+    setDientich("");
+    setDongia("");
+    setHinhanh(null);
+    setHuehong("");
+    setMasoqsdd("");
+    setMota("");
+    setPhuong("");
+    setQuan("");
+    setSonha("");
+    setTenduong("");
+    setThanhpho("");
+    setTinhtrang(0);
+    setLoaibdid(1);
   };
 
   const handleSubmit = () => {
@@ -191,7 +196,6 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
         loaibdid: loaibdid
       }
       dispatch(addConsignment({ chiphidv, giatri, ngaybd, ngayketthuc, trangthai, khid, formBatdongsan }));
-      
     }
   };
 
@@ -200,7 +204,6 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
       if (contract.trangthai === 0) {
         dispatch(deleteConsignment(contract.kgid))
         dispatch(deleteProperty(contract.bdsid))
-        
       } else {
         window.alert("Không thể xoá hợp đồng này !")
       }

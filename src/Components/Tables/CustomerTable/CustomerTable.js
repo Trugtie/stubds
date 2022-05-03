@@ -6,7 +6,7 @@ import CustomerModal from '../../Modal/CustomerModal/CustomerModal';
 import RequirementModal from '../../Modal/CustomerModal/RequirementModal';
 import Button from "@mui/material/Button";
 import { useSelector, useDispatch } from "react-redux";
-import { getCustomers, deleteCustomer } from "../../../redux/customerSlice";
+import { getCustomers, deleteCustomer, setState } from "../../../redux/customerSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -14,20 +14,13 @@ import AlertToast from "../../Alert/alert";
 export default function CustomerTable() {
   const dispatch = useDispatch();
   const { list, status, message } = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
+  const requirement = JSON.parse(JSON.stringify(useSelector((state) => state.Requirement)));
   useEffect(() => {
     if (list.length < 2) {
       dispatch(getCustomers())
     }
   }, [])
 
-
-  const handleDelete = (cus) => {
-    if (window.confirm("Bạn có chắc muốn xoá khách hàng " + cus.hoten)) {
-      dispatch(deleteCustomer(cus.khid))
-    } else {
-      return;
-    }
-  };
   const [openAdd, setOpenAdd] = useState(false);
   const [openRe, setOpenRe] = useState(false);
   const [cusEdit, setCustomer] = useState(null);
@@ -50,12 +43,13 @@ export default function CustomerTable() {
   useEffect(() => {
     setOpenToast(true);
     setToast(status);
-    if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED || status === HTTP_STATUS.EDITED) {
+    if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED || status === HTTP_STATUS.EDITED || requirement.status === HTTP_STATUS.INSERTED) {
       setOpenAdd(false);
+      setOpenRe(false);
     } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.INSERT_FAILED || status === HTTP_STATUS.EDIT_FAILED) {
-      setOpenAdd(true);
       if (message) {
         window.alert(`${message}`);
+        dispatch(setState)
       }
     }
   }, [status])
@@ -101,8 +95,8 @@ export default function CustomerTable() {
 
         actions={[
           {
-            icon: 'edit',
-            tooltip: 'Sửa',
+            icon: 'info',
+              tooltip: 'Chi tiết',
             onClick: (event, rowData) => handleOpen(rowData),
             iconProps: { style: { color: "var(--button-green-color)" } }
           },
@@ -112,12 +106,6 @@ export default function CustomerTable() {
             onClick: (event, rowData) => handleRequest(rowData),
             iconProps: { style: { color: "#B52017" } }
           }),
-          rowData => ({
-            icon: 'delete',
-            tooltip: 'Xóa',
-            onClick: (event, rowData) => handleDelete(rowData),
-            iconProps: { style: { color: "#B52017" } }
-          })
         ]}
         options={{
           actionsColumnIndex: -1,

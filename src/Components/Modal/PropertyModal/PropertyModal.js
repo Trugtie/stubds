@@ -166,7 +166,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
         dispatch(editProperty({ bdsid, chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
         setTimeout(function () {
           dispatch(getProperty({ bdsid }));
-        }, 1000);
+        }, 300);
         if (file) {
           dispatch(uploadImage({ file, bdsid }))
         }

@@ -57,6 +57,12 @@ export const customerSlice = createSlice({
         status: null,
         message: null
     },
+    reducers: {
+        setState: (state) => {
+            state.status = HTTP_STATUS.FULFILLED
+            state.message = null
+        }
+    },
     extraReducers: {
         // addCustomer
         [addCustomer.pending](state) {
@@ -115,4 +121,5 @@ export const customerSlice = createSlice({
         },
     }
 })
+export const { setState } = customerSlice.actions;
 export default customerSlice.reducer;

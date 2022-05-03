@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getConsignments } from "../../../redux/consignmentSlice";
+import { getConsignments, setState } from "../../../redux/consignmentSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -20,13 +20,14 @@ export default function Contract_Consignment() {
     dispatch(getConsignments())
   }, [])
 
+
   const [open, setOpen] = useState(false);
-  const [consignmentEdit, setConsignment] = useState(null);
+  const [consignment, setConsignment] = useState(null);
   const handleClose = () => setOpen(false);
   const handleOpen = (prop) => {
     setConsignment(prop);
     setOpen(true);
-  };
+  }
 
   // TOAST
   const [toast, setToast] = useState(false);
@@ -37,10 +38,12 @@ export default function Contract_Consignment() {
     setToast(status);
     if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED) {
       setOpen(false);
+      dispatch(getConsignments())
     } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.INSERT_FAILED) {
       setOpen(true);
       if (message) {
         window.alert(`${message}`);
+        dispatch(setState)
       }
     }
   }, [status])
@@ -66,12 +69,9 @@ export default function Contract_Consignment() {
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>
-                <ConsignmentModal contract={consignmentEdit} isOpen={open} isClose={handleClose} />
                 <Button className="add-btn" onClick={() => handleOpen(null)}>
                   <img src={PlusIcon} />
                 </Button>
-
-
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}
@@ -106,6 +106,7 @@ export default function Contract_Consignment() {
           pageSizeOptions: [10, 15, 20]
         }}
       />
+      <ConsignmentModal contract={consignment} isOpen={open} isClose={handleClose} />
     </div>
   );
 }

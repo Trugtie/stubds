@@ -89,6 +89,10 @@ export const staffSlice = createSlice({
             state.status = null
             state.message = null
         },
+        setState: (state) => {
+            state.status = HTTP_STATUS.FULFILLED
+            state.message = null
+        }
     },
     extraReducers: {
         // login
@@ -183,5 +187,5 @@ export const staffSlice = createSlice({
         },
     }
 })
-export const { logout } = staffSlice.actions;
+export const { logout, setState } = staffSlice.actions;
 export default staffSlice.reducer;

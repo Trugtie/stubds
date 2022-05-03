@@ -10,7 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequirement, editRequirement } from "../../../redux/requirementSlice";
+import { addRequirement, editRequirement, deleteRequirement } from "../../../redux/requirementSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
 
 export default function RequirementModal({ request, cus, open, close }) {
@@ -21,6 +21,16 @@ export default function RequirementModal({ request, cus, open, close }) {
     backgroundColor: "var(--button-color)",
     "&:hover": {
       backgroundColor: "#80583b",
+    },
+  }));
+
+  const DeleteButton = styled(Button)(({ theme }) => ({
+    color: "white",
+    fontWeight: "bolder",
+    width: "100%",
+    backgroundColor: "rgb(181, 32, 23)",
+    "&:hover": {
+      backgroundColor: "red",
     },
   }));
 
@@ -38,11 +48,13 @@ export default function RequirementModal({ request, cus, open, close }) {
     borderRadius: "20px 20px 10px 10px;",
     boxShadow: 24,
   };
-  
+
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
   const dispatch = useDispatch();
   React.useEffect(() => {
-    dispatch(getTypes())
+    if (!status) {
+      dispatch(getTypes())
+    }
   }, [])
 
   const [dait, setDait] = React.useState("");
@@ -110,7 +122,7 @@ export default function RequirementModal({ request, cus, open, close }) {
       return;
     } else {
       dispatch(addRequirement({ dait, daif, rongt, rongf, giat, giaf, mota, vitri, khachhang, loaibd, dientich }));
-      
+
     }
   };
 
@@ -131,10 +143,18 @@ export default function RequirementModal({ request, cus, open, close }) {
       const ycid = request.ycid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa yêu cầu ID: " + ycid)) {
         dispatch(editRequirement({ ycid, dait, daif, rongt, rongf, giat, giaf, mota, vitri, khachhang, loaibd, dientich }));
-        
+
       } else {
         return;
       }
+    }
+  };
+
+  const handleDelete = () => {
+    if (window.confirm("Bạn có chắc muốn xoá yêu cầu ID:" + request.ycid)) {
+      dispatch(deleteRequirement(request.ycid))
+    } else {
+      return;
     }
   };
 
@@ -301,15 +321,25 @@ export default function RequirementModal({ request, cus, open, close }) {
               </Grid>
             </div>
             <div className="modal-form" style={{ marginTop: "13rem" }}>
-              {cus ? (
-                <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
-                  Thêm yêu cầu
-                </ColorButton>
-              ) : (
-                <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
-                  Cập nhật yêu cầu
-                </ColorButton>
-              )}
+            {request ? (
+              <Grid container spacing={2}>
+                <Grid item xs={8}>
+                  <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
+                    Cập nhật yêu cầu
+                  </ColorButton>
+                </Grid>
+                <Grid item xs={4}>
+                  <DeleteButton variant="contained" onClick={(e) => handleDelete(e)}>
+                    Xoá yêu cầu
+                  </DeleteButton>
+                </Grid></Grid>
+            ) : (
+                <Grid item xs={12}>
+                  <ColorButton variant="contained" onClick={(e) => handleSubmit(e)}>
+                    Thêm yêu cầu
+                  </ColorButton>
+                </Grid>
+            )}
             </div>
           </div>
         </Box>

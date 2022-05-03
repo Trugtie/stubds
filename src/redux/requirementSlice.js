@@ -57,6 +57,12 @@ export const requirementSlice = createSlice({
         status: null,
         message: null
     },
+    reducers: {
+        setState: (state) => {
+            state.status = HTTP_STATUS.FULFILLED
+            state.message = null
+        }
+    },
     extraReducers: {
         // addRequirement
         [addRequirement.pending](state) {
@@ -114,4 +120,5 @@ export const requirementSlice = createSlice({
         },
     }
 })
+export const { setState } = requirementSlice.actions;
 export default requirementSlice.reducer;

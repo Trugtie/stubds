@@ -23,12 +23,18 @@ export const uploadImage = createAsyncThunk(
     }
 )
 
-export const propertyTypeSlice = createSlice({
+export const imageSlice = createSlice({
     name: "image",
     initialState: {
         list: [],
         status: null,
         message: null
+    },
+    reducers: {
+        setState: (state) => {
+            state.status = HTTP_STATUS.FULFILLED
+            state.message = null
+        }
     },
     extraReducers: {
         // uploadImage
@@ -45,4 +51,5 @@ export const propertyTypeSlice = createSlice({
         },
     }
 })
-export default propertyTypeSlice.reducer;
+export const { setState } = imageSlice.actions;
+export default imageSlice.reducer;

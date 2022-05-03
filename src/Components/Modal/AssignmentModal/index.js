@@ -121,6 +121,7 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
       dispatch(
         addAssignment({ giatri, ngaylap, bdsid, khid, trangthai, dcid })
       );
+      return;
     }
   };
 
@@ -199,33 +200,6 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                   </Select>
                 </FormControl>
               </Grid>
-              {/* <Grid item xs={4}>
-                <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Mã bất động sản
-                  </InputLabel>
-                  <Select
-                    disabled
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={bdsid}
-                    onChange={(e) => {
-                      setBdsid(e.target.value)
-                    }}
-                  >
-                    {properties?.map(item => {
-                      return (
-                        <MenuItem value={item.bdsid}>
-                          {item.bdsid}
-                        </MenuItem>
-                      );
-                    })}
-                  </Select>
-                </FormControl>
-              </Grid> */}
               <Grid item xs={6}>
                 <FormControl
                   variant="filled"
@@ -235,6 +209,7 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                     Khách hàng
                   </InputLabel>
                   <Select
+                    required
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     defaultValue={khid}
@@ -269,6 +244,7 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                       Mã đặt cọc
                     </InputLabel>
                     <Select
+                    required
                       labelId="demo-simple-select-filled-label"
                       id="demo-simple-select-filled"
                       defaultValue={dcid}
