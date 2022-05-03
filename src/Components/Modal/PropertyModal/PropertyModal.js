@@ -10,7 +10,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
 import { useDispatch, useSelector } from "react-redux";
-import { editProperty, getProperty } from "../../../redux/propertySlice";
+import { editProperty } from "../../../redux/propertySlice";
 import { uploadImage } from "../../../redux/imageSlice";
 import { getCustomers } from "../../../redux/customerSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
@@ -163,14 +163,10 @@ export default function PropertyModal({ property, isOpen, isClose }) {
     } else {
       const bdsid = property.bdsid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa bất động sản ID: " + bdsid)) {
-        dispatch(editProperty({ bdsid, chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
-        setTimeout(function () {
-          dispatch(getProperty({ bdsid }));
-        }, 300);
         if (file) {
           dispatch(uploadImage({ file, bdsid }))
         }
-        
+        dispatch(editProperty({ bdsid, chieudai, chieurong, dientich, dongia, hinhanh, huehong, masoqsdd, mota, phuong, quan, sonha, thanhpho, tenduong, khid, tinhtrang, loaibdid }));
       } else {
         return;
       }

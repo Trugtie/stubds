@@ -59,7 +59,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
   const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
-  
+
 
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -80,7 +80,6 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
     } else {
       handleFormAdd();
     }
-    console.log("rerender")
   }, [isOpen]);
 
   const [chiphidv, setChiphi] = React.useState("0");
@@ -106,28 +105,28 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const [loaibdid, setLoaibdid] = React.useState("");
 
   const handleForm = (e) => {
-      var prop = properties.list.find(item => item.bdsid === e.bdsid)
-      setChiphi(e.chiphidv);
-      setGiatri(e.giatri);
-      setNgaybd(e.ngaybd);
-      setNgaykt(e.ngayketthuc);
-      setTrangthai(e.trangthai);
-      setKhachhang(e.khid);
-      setChieudai(prop.chieudai);
-      setChieurong(prop.chieurong);
-      setDientich(prop.dientich);
-      setDongia(prop.dongia);
-      setHinhanh(prop.hinhanh);
-      setHuehong(prop.huehong);
-      setMasoqsdd(prop.masoqsdd);
-      setMota(prop.mota);
-      setPhuong(prop.phuong)
-      setQuan(prop.quan);
-      setSonha(prop.sonha);
-      setTenduong(prop.tenduong);
-      setThanhpho(prop.thanhpho);
-      setTinhtrang(prop.tinhtrang);
-      setLoaibdid(prop.loaibdid);
+    var prop = properties.list.find(item => item.bdsid === e.bdsid)
+    setChiphi(e.chiphidv);
+    setGiatri(e.giatri);
+    setNgaybd(e.ngaybd);
+    setNgaykt(e.ngayketthuc);
+    setTrangthai(e.trangthai);
+    setKhachhang(e.khid);
+    setChieudai(prop.chieudai);
+    setChieurong(prop.chieurong);
+    setDientich(prop.dientich);
+    setDongia(prop.dongia);
+    setHinhanh(prop.hinhanh);
+    setHuehong(prop.huehong);
+    setMasoqsdd(prop.masoqsdd);
+    setMota(prop.mota);
+    setPhuong(prop.phuong)
+    setQuan(prop.quan);
+    setSonha(prop.sonha);
+    setTenduong(prop.tenduong);
+    setThanhpho(prop.thanhpho);
+    setTinhtrang(prop.tinhtrang);
+    setLoaibdid(prop.loaibdid);
   };
 
   const handleFormAdd = () => {
@@ -265,8 +264,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     required
                     label="Ngày bắt đầu"
                     value={ngaybd}
-                    openTo="year"
-                    views={["year", "month", "day"]}
+                    disablePast
                     onChange={(newValue) => {
                       setNgaybd(newValue);
                     }}
@@ -285,8 +283,11 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     required
                     label="Ngày kết thúc"
                     value={ngayketthuc}
+                    disablePast
                     openTo="year"
                     views={["year", "month", "day"]}
+                    minDate={new Date().setMonth(new Date().getMonth() + 3)}
+                    maxDate={new Date().setFullYear(new Date().getFullYear() + 5)}
                     onChange={(newValue) => {
                       setNgaykt(newValue);
                     }}

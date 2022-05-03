@@ -69,7 +69,7 @@ export const propertySlice = createSlice({
         setState: (state) => {
             state.status = HTTP_STATUS.FULFILLED
             state.message = null
-        }
+        },
     },
     extraReducers: {
         // addProperty
@@ -89,8 +89,12 @@ export const propertySlice = createSlice({
         [editProperty.pending](state) {
             state.status = HTTP_STATUS.PENDING
         },
-        [editProperty.fulfilled](state) {
-            state.status = HTTP_STATUS.EDITED
+        [editProperty.fulfilled](state, { payload }) {
+            state.status = HTTP_STATUS.EDIT
+            // const index = state.list.findIndex((item) => item.bdsid === payload.bdsid)
+            // if (index >= 0) {
+            //     state.list[index] = payload;
+            // }
         },
         [editProperty.rejected](state, error) {
             state.status = HTTP_STATUS.EDIT_FAILED

@@ -246,6 +246,8 @@ export default function BasicModal({ staff, isOpen, isClose }) {
                     value={ngaysinh}
                     openTo="year"
                     views={["year", "month", "day"]}
+                    minDate={new Date().setFullYear(new Date().getFullYear() - 60)}
+                    maxDate={new Date().setFullYear(new Date().getFullYear() - 18)}
                     onChange={(newValue) => {
                       setNgaysinh(newValue);
                     }}

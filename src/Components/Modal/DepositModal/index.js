@@ -176,8 +176,7 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                     required
                     label="Ngày lập"
                     value={ngaylap}
-                    openTo="year"
-                    views={["year", "month", "day"]}
+                    disablePast
                     onChange={(newValue) => {
                       setNgaylap(newValue);
                     }}
@@ -196,8 +195,11 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                     required
                     label="Ngày hết hạn"
                     value={ngayhethan}
+                    disablePast
                     openTo="year"
                     views={["year", "month", "day"]}
+                    minDate={new Date().setMonth(new Date().getMonth() + 3)}
+                    maxDate={new Date().setFullYear(new Date().getFullYear() + 5)}
                     onChange={(newValue) => {
                       setNgayhethan(newValue);
                     }}

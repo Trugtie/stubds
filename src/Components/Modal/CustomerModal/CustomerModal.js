@@ -147,7 +147,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       return;
     } else {
       const hoten = `${ho} ${tendem} ${ten}`
-      dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota, nvid })); 
+      dispatch(addCustomer({ ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota, nvid }));
     }
   };
 
@@ -172,7 +172,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       const khid = cus.khid;
       if (window.confirm("Bạn có chắc muốn chỉnh sửa khách hàng ID: " + khid)) {
         dispatch(editCustomer({ khid, ngaysinh, sodienthoai, gioitinh, diachi, diachitt, email, cmnd, trangthai, hoten, loaikh, mota, nvid }));
-        
+
       } else {
         return;
       }
@@ -244,6 +244,8 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                     value={ngaysinh}
                     openTo="year"
                     views={["year", "month", "day"]}
+                    minDate={new Date().setFullYear(new Date().getFullYear() - 60)}
+                    maxDate={new Date().setFullYear(new Date().getFullYear() - 18)}
                     onChange={(newValue) => {
                       setNgaysinh(newValue);
                     }}
@@ -429,9 +431,9 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
               </Grid>
             </Grid>
           </div>
-            <div className="modal-form" style={{ marginTop: "1rem" }}>
+          <div className="modal-form" style={{ marginTop: "1rem" }}>
             {cus ? (
-                <Grid container spacing={2}>
+              <Grid container spacing={2}>
                 <Grid item xs={8}>
                   <ColorButton variant="contained" onClick={(e) => handleEdit(e)}>
                     Cập nhật khách hàng
@@ -450,7 +452,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                 </ColorButton>
               </Grid>
             )}
-            </div>
+          </div>
         </div>
       </Box>
     </Modal>

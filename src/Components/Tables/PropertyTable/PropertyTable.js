@@ -39,15 +39,16 @@ export default function PropertyTable() {
     setToast(status);
     if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.EDITED) {
       setOpen(false);
+      if(status === HTTP_STATUS.EDITED){
+        dispatch(getProperties())
+      }
     } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.EDIT_FAILED) {
-      setOpen(true);
       if (message) {
         window.alert(`${message}`);
       }
     }
   }, [status])
   // TOAST
-
 
   return (
     <div>
@@ -100,22 +101,13 @@ export default function PropertyTable() {
         detailPanel={
           rowData => {
             return (
-              rowData.formhinhBdList.length !== 0?
-                  (
-                    <ThumbGallery images={rowData.formhinhBdList} />
-                  )
-                :
-                (
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <p>Không có dữ liệu hình ảnh</p>
-                  </div>
-                )
+              <ThumbGallery images={rowData.formhinhBdList} />
             )
           }
         }
         onRowClick={(event, rowData, togglePanel) => togglePanel()}
       />
-      <PropertyModal property={propertyEdit} isOpen={open} isClose={handleClose} />
+      <PropertyModal property={propertyEdit} isOpen={open} isClose={handleClose}  />
     </div>
   );
 }
