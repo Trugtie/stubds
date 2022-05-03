@@ -57,10 +57,9 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   };
 
   const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
-  const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
   const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
-
-
+  const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
+  
 
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -73,7 +72,6 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
     if (properties.list.length === 0) {
       dispatch(getProperties())
     }
-
   }, [])
 
   React.useEffect(() => {
@@ -102,7 +100,6 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const [thanhpho, setThanhpho] = React.useState("");
   const [tinhtrang, setTinhtrang] = React.useState("0");
   const [loaibdid, setLoaibdid] = React.useState("");
-
   const handleForm = () => {
     if (contract) {
       var prop = properties.list.find(item => item.bdsid === contract.bdsid)
@@ -265,6 +262,8 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     required
                     label="Ngày bắt đầu"
                     value={ngaybd}
+                    openTo="year"
+                    views={["year", "month", "day"]}
                     onChange={(newValue) => {
                       setNgaybd(newValue);
                     }}
@@ -283,6 +282,8 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     required
                     label="Ngày kết thúc"
                     value={ngayketthuc}
+                    openTo="year"
+                    views={["year", "month", "day"]}
                     onChange={(newValue) => {
                       setNgaykt(newValue);
                     }}

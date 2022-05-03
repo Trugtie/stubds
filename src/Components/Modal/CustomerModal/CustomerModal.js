@@ -28,7 +28,6 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
       backgroundColor: "#80583b",
     },
   }));
-
   const style = {
     position: "absolute",
     top: "50%",
@@ -44,6 +43,7 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
     boxShadow: 24,
   };
 
+  
   const { list, status } = JSON.parse(JSON.stringify(useSelector((state) => state.Staff)));
   const dispatch = useDispatch();
   let acc = window.Buffer.from(localStorage.getItem("Token"), 'base64').toString('ascii').split(":");
@@ -75,7 +75,6 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
   const [mota, setMota] = React.useState("");
   const [loaikh, setLoai] = React.useState("0");
   const [trangthai, setTrangthai] = React.useState("0");
-
   React.useEffect(() => {
     if (cus) {
       handleForm();
@@ -120,7 +119,6 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
     setCmnd("");
     setNvid("");
   };
-
   const handleSubmit = () => {
     if (
       ho === "" ||
@@ -227,6 +225,8 @@ export default function CustomerModal({ cus, isOpen, isClose }) {
                     required
                     label="Ngày sinh"
                     value={ngaysinh}
+                    openTo="year"
+                    views={["year", "month", "day"]}
                     onChange={(newValue) => {
                       setNgaysinh(newValue);
                     }}

@@ -25,7 +25,6 @@ export const deleteConsignment = createAsyncThunk(
 export const addConsignment = createAsyncThunk(
     'consignment/addConsignment',
     async (value) => {
-        console.log(value)
         const { data } = await axios.post(`${API_URL}hopdongkygui`, value, config)
         return data;
     }

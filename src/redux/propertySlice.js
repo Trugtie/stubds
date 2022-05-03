@@ -107,7 +107,6 @@ export const propertySlice = createSlice({
             state.status = HTTP_STATUS.PENDING
         },
         [getProperty.fulfilled](state, { payload }) {
-            console.log(payload)
             state.status = HTTP_STATUS.FULFILLED
             const index = state.list.findIndex((item) => item.bdsid === payload.bdsid)
             if (index >= 0) {

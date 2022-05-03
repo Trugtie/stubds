@@ -220,6 +220,8 @@ export default function BasicModal({ staff, isOpen, isClose }) {
                     required
                     label="Ngày sinh"
                     value={ngaysinh}
+                    openTo="year"
+                    views={["year", "month", "day"]}
                     onChange={(newValue) => {
                       setNgaysinh(newValue);
                     }}

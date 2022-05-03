@@ -16,6 +16,8 @@ import { styled } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getDeposites } from "../../../redux/depositSlice";
+import { getTypes } from "../../../redux/propertyTypeSlice";
+import { getProperties } from "../../../redux/propertySlice";
 import { getCustomers } from "../../../redux/customerSlice";
 import { addAssignment, deleteAssignment } from "../../../redux/assignmentSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
@@ -72,10 +74,20 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
   }, [isOpen]);
 
   const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
+  const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
+  const propers = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Deposit.list.filter((item) => item.trangthai === 0))));
 
   React.useEffect(() => {
-    dispatch(getCustomers())
+    if (types.list.length === 0) {
+      dispatch(getTypes())
+    }
+    if (customers.list.length === 0) {
+      dispatch(getCustomers())
+    }
+    if (propers.list.length === 0) {
+      dispatch(getProperties())
+    }
     dispatch(getDeposites())
   }, []);
 
@@ -158,6 +170,8 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                     required
                     label="Ngày lập"
                     value={ngaylap}
+                    openTo="year"
+                    views={["year", "month", "day"]}
                     onChange={(newValue) => {
                       setNgaylap(newValue);
                     }}

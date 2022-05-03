@@ -15,13 +15,13 @@ export default function Docx() {
     useEffect(() => {
         if (types.list.length === 0) {
             dispatch(getTypes())
-        }
-        if (customers.list.length === 0) {
+          }
+          if (customers.list.length === 0) {
             dispatch(getCustomers())
-        }
-        if (properties.list.length === 0) {
+          }
+          if (properties.list.length === 0) {
             dispatch(getProperties())
-        }
+          }
     }, [])
     if (state.rowData) {
         var property = properties.list.find(item => item.bdsid === state.rowData.bdsid)
@@ -48,7 +48,6 @@ export default function Docx() {
         } else {
             var gioitinh = "Nữ"
         }
-        console.log(property);
         var data = {
             type: type,
             id: id.toString(),
@@ -96,7 +95,7 @@ export default function Docx() {
                 await documentViewer.getDocument().applyTemplateValues(data);
             });
         });
-    }, []);
+    }, [viewer]);
 
     return (
         <div className="webviewer" style={{ height: '100vh', }} ref={viewer}></div>

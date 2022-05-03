@@ -9,7 +9,7 @@ let config = {
 export const getCustomers = createAsyncThunk(
     'customer/getCustomers',
     async () => {
-        const { data } = await axios.get(`${API_URL}khachhang`,config)
+        const { data } = await axios.get(`${API_URL}khachhang`, config)
         return data;
     }
 )
@@ -17,7 +17,7 @@ export const getCustomers = createAsyncThunk(
 export const deleteCustomer = createAsyncThunk(
     'customer/deleteCustomer',
     async (value) => {
-        const { data } = await axios.delete(`${API_URL}khachhang/${value}`,config)
+        const { data } = await axios.delete(`${API_URL}khachhang/${value}`, config)
         return data;
     }
 );
@@ -25,7 +25,7 @@ export const deleteCustomer = createAsyncThunk(
 export const addCustomer = createAsyncThunk(
     'customer/addCustomer',
     async (value) => {
-        const { data } = await axios.post(`${API_URL}khachhang`, value,config)
+        const { data } = await axios.post(`${API_URL}khachhang`, value, config)
         return data;
     }
 );
@@ -33,8 +33,7 @@ export const addCustomer = createAsyncThunk(
 export const editCustomer = createAsyncThunk(
     'customer/editCustomer',
     async (value) => {
-        const { data, error } = await axios.put(`${API_URL}khachhang`, value,config)
-        console.log(error)
+        const { data } = await axios.put(`${API_URL}khachhang`, value, config)
         return data;
     }
 );
@@ -72,7 +71,7 @@ export const customerSlice = createSlice({
         [editCustomer.rejected](state) {
             state.status = HTTP_STATUS.EDIT_FAILED
         },
-        
+
 
         // deleteCustomer
         [deleteCustomer.pending](state) {

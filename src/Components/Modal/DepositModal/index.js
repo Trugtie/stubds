@@ -16,6 +16,8 @@ import { styled } from "@mui/material/styles";
 
 import { useDispatch, useSelector } from "react-redux";
 import { addDeposit, deleteDeposit } from "../../../redux/depositSlice";
+import { getTypes } from "../../../redux/propertyTypeSlice";
+import { getProperties } from "../../../redux/propertySlice";
 import { getCustomers } from "../../../redux/customerSlice";
 import { getConsignments } from "../../../redux/consignmentSlice";
 
@@ -71,10 +73,20 @@ export default function DepositModal({ contract, isOpen, isClose }) {
     }
   }, [isOpen]);
   const customers = JSON.parse(JSON.stringify(useSelector((state) => state.Customer)));
+  const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
+  const propers = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Consignment.list.filter((item) => item.trangthai === 0))));
   const property = JSON.parse(JSON.stringify(useSelector((state) => state.Consignment.list.filter((item) => item.trangthai === 1))));
   React.useEffect(() => {
-    dispatch(getCustomers())
+    if (types.list.length === 0) {
+      dispatch(getTypes())
+    }
+    if (customers.list.length === 0) {
+      dispatch(getCustomers())
+    }
+    if (propers.list.length === 0) {
+      dispatch(getProperties())
+    }
     dispatch(getConsignments())
   }, []);
 
@@ -164,6 +176,8 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                     required
                     label="Ngày lập"
                     value={ngaylap}
+                    openTo="year"
+                    views={["year", "month", "day"]}
                     onChange={(newValue) => {
                       setNgaylap(newValue);
                     }}
@@ -182,6 +196,8 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                     required
                     label="Ngày hết hạn"
                     value={ngayhethan}
+                    openTo="year"
+                    views={["year", "month", "day"]}
                     onChange={(newValue) => {
                       setNgayhethan(newValue);
                     }}
