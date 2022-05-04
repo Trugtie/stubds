@@ -1,15 +1,14 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
-import PlusIcon from './plus.svg';
 import './Contract_Consignment.css';
 import ConsignmentModal from '../../Modal/ConsignmentModal';
-import Button from "@mui/material/Button";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getConsignments, setState, setEdited } from "../../../redux/consignmentSlice";
+import { getConsignments, setState, setInserted } from "../../../redux/consignmentSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
+import Typography from '@mui/material/Typography';
 
 
 export default function Contract_Consignment() {
@@ -37,11 +36,10 @@ export default function Contract_Consignment() {
     if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED) {
       setOpen(false);
       dispatch(getConsignments())
-      dispatch(setEdited)
+      dispatch(setInserted)
       setOpenToast(true);
       setToast(status);
     } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.INSERT_FAILED) {
-      setOpen(true);
       setOpenToast(true);
       setToast(status);
       if (message) {
@@ -72,9 +70,9 @@ export default function Contract_Consignment() {
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>
-                <Button className="add-btn" onClick={() => handleOpen(null)}>
-                  <img src={PlusIcon} />
-                </Button>
+              <Typography variant="h4" gutterBottom component="div" style={{ color: "#CF9269" }} sx={{ fontWeight: 'bold' }}>
+                  Danh sách hợp đồng ký gửi
+                </Typography>
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}
@@ -102,11 +100,18 @@ export default function Contract_Consignment() {
               onClick: (event, rowData) => navigate("/docx", { state: { rowData } }),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
+            {
+              icon: 'add_circle',
+              tooltip: 'Thêm',
+              iconProps: {color: "info", fontSize: "large"},
+              isFreeAction: true,
+              onClick: (event) => handleOpen(null)
+            }
           ]}
         options={{
           actionsColumnIndex: -1,
           pageSize: 10,
-          pageSizeOptions: [10, 15, 20]
+          pageSizeOptions: [10, 15, 20],
         }}
       />
       <ConsignmentModal contract={consignment} isOpen={open} isClose={handleClose} />

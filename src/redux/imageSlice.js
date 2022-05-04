@@ -31,7 +31,7 @@ export const imageSlice = createSlice({
         message: null
     },
     reducers: {
-        setState: (state) => {
+        setStateImage: (state) => {
             state.status = HTTP_STATUS.FULFILLED
             state.message = null
         }
@@ -51,5 +51,5 @@ export const imageSlice = createSlice({
         },
     }
 })
-export const { setState } = imageSlice.actions;
+export const { setStateImage } = imageSlice.actions;
 export default imageSlice.reducer;

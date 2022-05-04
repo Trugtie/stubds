@@ -115,6 +115,7 @@ export const customerSlice = createSlice({
         [getCustomers.fulfilled](state, { payload }) {
             state.list = payload
             state.status = HTTP_STATUS.FULFILLED
+            state.message=null
         },
         [getCustomers.rejected](state) {
             state.status = HTTP_STATUS.REJECTED

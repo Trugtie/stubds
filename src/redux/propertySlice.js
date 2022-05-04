@@ -70,6 +70,10 @@ export const propertySlice = createSlice({
             state.status = HTTP_STATUS.FULFILLED
             state.message = null
         },
+        setEdited: (state) => {
+            state.status = HTTP_STATUS.EDITED
+            state.message = null
+        },
     },
     extraReducers: {
         // addProperty
@@ -90,7 +94,7 @@ export const propertySlice = createSlice({
             state.status = HTTP_STATUS.PENDING
         },
         [editProperty.fulfilled](state, { payload }) {
-            state.status = HTTP_STATUS.EDIT
+            state.status = HTTP_STATUS.EDITED
             // const index = state.list.findIndex((item) => item.bdsid === payload.bdsid)
             // if (index >= 0) {
             //     state.list[index] = payload;
@@ -122,6 +126,7 @@ export const propertySlice = createSlice({
         [getProperties.fulfilled](state, { payload }) {
             state.list = payload
             state.status = HTTP_STATUS.FULFILLED
+            state.message=null
         },
         [getProperties.rejected](state) {
             state.status = HTTP_STATUS.REJECTED
@@ -137,11 +142,12 @@ export const propertySlice = createSlice({
             if (index >= 0) {
                 state.list[index] = payload;
             }
+            state.message=null
         },
         [getProperty.rejected](state) {
             state.status = HTTP_STATUS.REJECTED
         },
     }
 })
-export const { setState } = propertySlice.actions;
+export const { setState, setEdited } = propertySlice.actions;
 export default propertySlice.reducer;

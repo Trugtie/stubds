@@ -7,7 +7,7 @@ import { getRequirements, deleteRequirement, setState } from "../../../redux/req
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
-
+import Typography from '@mui/material/Typography';
 export default function CustomerTable() {
   const dispatch = useDispatch();
   const { list, status, message } = JSON.parse(JSON.stringify(useSelector((state) => state.Requirement)));
@@ -65,6 +65,9 @@ export default function CustomerTable() {
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>
+              <Typography variant="h4" gutterBottom component="div" style={{ color: "#CF9269" }}>
+                  Danh sách yêu cầu khách hàng
+                </Typography>
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}

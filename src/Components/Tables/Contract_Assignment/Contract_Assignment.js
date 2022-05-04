@@ -1,8 +1,7 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
-import PlusIcon from './plus.svg';
 import './Contract_Assignment.css';
 import AssignmentModal from '../../Modal/AssignmentModal';
-import Button from "@mui/material/Button";
+import Typography from '@mui/material/Typography';
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
@@ -67,9 +66,9 @@ export default function Contract_Assignment() {
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>
-                <Button className="add-btn" onClick={() => handleOpen(null)}>
-                  <img src={PlusIcon} />
-                </Button>
+              <Typography variant="h4" gutterBottom component="div" style={{ color: "#CF9269" }} sx={{ fontWeight: 'bold' }}>
+                  Danh sách hợp đồng chuyển nhượng
+                </Typography>
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}
@@ -97,6 +96,13 @@ export default function Contract_Assignment() {
               onClick: (event, rowData) => navigate("/docx", { state: { rowData } }),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
+            {
+              icon: 'add_circle',
+              tooltip: 'Thêm',
+              iconProps: {color: "info", fontSize: "large"},
+              isFreeAction: true,
+              onClick: (event) => handleOpen(null)
+            }
           ]}
         options={{
           actionsColumnIndex: -1,

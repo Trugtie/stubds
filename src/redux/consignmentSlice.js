@@ -50,8 +50,8 @@ export const consignmentSlice = createSlice({
             state.status = HTTP_STATUS.FULFILLED
             state.message = null
         },
-        setEdited: (state) => {
-            state.status = HTTP_STATUS.EDITED
+        setInserted: (state) => {
+            state.status = HTTP_STATUS.INSERTED
         }
     },
     extraReducers: {
@@ -89,11 +89,12 @@ export const consignmentSlice = createSlice({
         [getConsignments.fulfilled](state, { payload }) {
             state.list = payload
             state.status = HTTP_STATUS.FULFILLED
+            state.message=null
         },
         [getConsignments.rejected](state) {
             state.status = HTTP_STATUS.REJECTED
         },
     }
 })
-export const { setState, setEdited } = consignmentSlice.actions;
+export const { setState, setInserted } = consignmentSlice.actions;
 export default consignmentSlice.reducer;

@@ -94,6 +94,7 @@ export const assignmentSlice = createSlice({
         [getAssignments.fulfilled](state, { payload }) {
             state.list = payload
             state.status = HTTP_STATUS.FULFILLED
+            state.message=null
         },
         [getAssignments.rejected](state) {
             state.status = HTTP_STATUS.REJECTED
@@ -106,6 +107,7 @@ export const assignmentSlice = createSlice({
         [getAssignment.fulfilled](state, { payload }) {
             state.list = payload
             state.status = HTTP_STATUS.FULFILLED
+            state.message=null
         },
         [getAssignment.rejected](state) {
             state.status = HTTP_STATUS.REJECTED

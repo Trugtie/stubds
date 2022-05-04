@@ -1,9 +1,7 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
-import PlusIcon from './plus.svg';
 import './StaffTable.css';
 import StaffModal from '../../Modal/StaffModal/Modal';
-import Button from "@mui/material/Button";
-
+import Typography from '@mui/material/Typography';
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getStaffs, setState } from "../../../redux/staffSlice";
@@ -72,9 +70,9 @@ export default function StaffTable() {
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>
-                <Button className="add-btn" onClick={() => handleOpen(null)}>
-                  <img src={PlusIcon} />
-                </Button>
+              <Typography variant="h4" gutterBottom component="div" style={{ color: "#CF9269" }} sx={{ fontWeight: 'bold' }}>
+                  Danh sách nhân viên
+                </Typography>
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}
@@ -96,6 +94,13 @@ export default function StaffTable() {
               onClick: (event, rowData) => handleOpen(rowData),
               iconProps: { style: { color: "var(--button-green-color)" } }
             },
+            {
+              icon: 'add_circle',
+              tooltip: 'Thêm',
+              iconProps: {color: "info", fontSize: "large"},
+              isFreeAction: true,
+              onClick: (event) => handleOpen(null)
+            }
           ]}
         options={{
           actionsColumnIndex: -1,

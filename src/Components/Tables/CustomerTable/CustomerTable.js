@@ -1,12 +1,11 @@
 import MaterialTable, { MTableToolbar } from 'material-table';
 import { useState, useEffect } from 'react';
-import PlusIcon from './plus.svg';
 import RequireIcon from './requirement.svg'
 import CustomerModal from '../../Modal/CustomerModal/CustomerModal';
 import RequirementModal from '../../Modal/CustomerModal/RequirementModal';
-import Button from "@mui/material/Button";
+import Typography from '@mui/material/Typography';
 import { useSelector, useDispatch } from "react-redux";
-import { getCustomers, deleteCustomer, setState } from "../../../redux/customerSlice";
+import { getCustomers, setState } from "../../../redux/customerSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -77,9 +76,9 @@ export default function CustomerTable() {
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>
-                <Button className="add-btn" onClick={() => handleOpen(null)}>
-                  <img src={PlusIcon} />
-                </Button>
+              <Typography variant="h4" gutterBottom component="div" style={{ color: "#CF9269" }} sx={{ fontWeight: 'bold' }}>
+                  Danh sách khách hàng
+                </Typography>
                 {status === HTTP_STATUS.PENDING ?
                   <Loading
                     loading={true}
@@ -106,6 +105,13 @@ export default function CustomerTable() {
             onClick: (event, rowData) => handleRequest(rowData),
             iconProps: { style: { color: "#B52017" } }
           }),
+          {
+            icon: 'add_circle',
+            tooltip: 'Thêm',
+            iconProps: {color: "info", fontSize: "large"},
+            isFreeAction: true,
+            onClick: (event) => handleOpen(null)
+          }
         ]}
         options={{
           actionsColumnIndex: -1,

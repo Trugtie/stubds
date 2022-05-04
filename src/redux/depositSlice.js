@@ -94,6 +94,7 @@ export const depositSlice = createSlice({
         [getDeposites.fulfilled](state, { payload }) {
             state.list = payload
             state.status = HTTP_STATUS.FULFILLED
+            state.message=null
         },
         [getDeposites.rejected](state) {
             state.status = HTTP_STATUS.REJECTED
@@ -106,6 +107,7 @@ export const depositSlice = createSlice({
         [getDeposit.fulfilled](state, { payload }) {
             state.list = payload
             state.status = HTTP_STATUS.FULFILLED
+            state.message=null
         },
         [getDeposit.rejected](state) {
             state.status = HTTP_STATUS.REJECTED

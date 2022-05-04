@@ -169,6 +169,7 @@ export const staffSlice = createSlice({
         [getStaffs.fulfilled](state, { payload }) {
             state.list = payload
             state.status = HTTP_STATUS.FULFILLED
+            state.message=null
         },
         [getStaffs.rejected](state) {
             state.status = HTTP_STATUS.REJECTED
@@ -181,6 +182,7 @@ export const staffSlice = createSlice({
         [getStaff.fulfilled](state, { payload }) {
             state.list = payload
             state.status = HTTP_STATUS.FULFILLED
+            state.message=null
         },
         [getStaff.rejected](state) {
             state.status = HTTP_STATUS.REJECTED
