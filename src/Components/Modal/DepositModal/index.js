@@ -121,11 +121,13 @@ export default function DepositModal({ contract, isOpen, isClose }) {
     } else {
       var consignment = properties.filter((item) => item.bdsid === bdsid);
       var kgid = consignment[0].kgid;
+      var kh = consignment[0].khid;
       var tinhtrang = 0;
-      dispatch(
-        addDeposit({ giatri, ngayhethan, ngaylap, bdsid, khid, trangthai, tinhtrang, kgid })
-      );
-      
+      if (kh === khid) {
+        window.alert("Không thể chọn khách hàng ký gửi")
+      } else {
+        dispatch(addDeposit({ giatri, ngayhethan, ngaylap, bdsid, khid, trangthai, tinhtrang, kgid }));
+      }
     }
   };
   const handleDelete = (e) => {
@@ -133,14 +135,14 @@ export default function DepositModal({ contract, isOpen, isClose }) {
       var consignment = property.filter((item) => item.bdsid === bdsid);
       var kgid = consignment[0].kgid;
       if (contract.trangthai === 0) {
-        dispatch(deleteDeposit(contract.dcid,kgid))
+        dispatch(deleteDeposit(contract.dcid, kgid))
       } else {
         window.alert("Không thể xoá hợp đồng này !")
       }
     } else {
       return;
     }
-    
+
   };
 
   return (
@@ -159,7 +161,7 @@ export default function DepositModal({ contract, isOpen, isClose }) {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  
+
                   id="filled-basic"
                   label="Giá trị (VND)"
                   variant="filled"
@@ -176,7 +178,7 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                   locale={frLocale}
                 >
                   <DatePicker
-                    
+
                     label="Ngày lập"
                     value={ngaylap}
                     disablePast

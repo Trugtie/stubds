@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { getDeposites, setState } from "../../../redux/depositSlice";
+import { getConsignments } from "../../../redux/consignmentSlice";
+import { getProperties } from "../../../redux/propertySlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -24,6 +26,7 @@ export default function Contract_Deposit() {
   const [deposit, setDeposit] = useState(null);
   const handleClose = () => setOpen(false);
   const handleOpen = (prop) => {
+    setOpenToast(false);
     setDeposit(prop);
     setOpen(true);
   }
@@ -33,11 +36,18 @@ export default function Contract_Deposit() {
   const [openToast, setOpenToast] = useState(false);
   const handleCloseToast = () => setOpenToast(false);
   useEffect(() => {
-    setOpenToast(true);
-    setToast(status);
     if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED) {
       setOpen(false);
+      dispatch(getProperties())
+      dispatch(getConsignments())
+      setOpenToast(true);
+      setToast(status);
+      setTimeout(function(){
+        dispatch(setState)
+      },500)
     } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.INSERT_FAILED) {
+      setOpenToast(true);
+      setToast(status);
       if (message) {
         window.alert(`${message}`);
         dispatch(setState)

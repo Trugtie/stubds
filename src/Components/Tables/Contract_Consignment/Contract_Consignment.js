@@ -66,7 +66,6 @@ export default function Contract_Consignment() {
         data={list}
         components={{
           Toolbar: props => (
-
             <div className='table-header'>
               <MTableToolbar {...props} />
               <div>

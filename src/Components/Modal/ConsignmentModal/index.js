@@ -13,12 +13,12 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
-
-import { useDispatch, useSelector } from "react-redux";
 import { addConsignment, deleteConsignment } from "../../../redux/consignmentSlice";
+import { deleteProperty, getProperties } from "../../../redux/propertySlice";
+import { useDispatch, useSelector } from "react-redux";
 import { getCustomers } from "../../../redux/customerSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
-import { deleteProperty, getProperties } from "../../../redux/propertySlice";
+
 
 export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const ColorButton = styled(Button)(({ theme }) => ({

@@ -13,7 +13,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import { styled } from "@mui/material/styles";
-
 import { useDispatch, useSelector } from "react-redux";
 import { getDeposites } from "../../../redux/depositSlice";
 import { getTypes } from "../../../redux/propertyTypeSlice";
@@ -136,9 +135,10 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
     var value = e.target.value;
     if (prop === "dcid") {
       setDcid(value);
-      var deposit_amount = properties[0].giatri
+      var deposit_amount = properties.find((item) => item.dcid===value).giatri
       var property_amount = propers.list.find((item) => item.bdsid === properties[0].bdsid).dongia
-      setKhid(properties[0].khid)
+      var kh = properties.find((item) => item.dcid===value).khid
+      setKhid(kh)
       setGiatri(Number(property_amount) - Number(deposit_amount))
     }
   };
@@ -157,7 +157,7 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
           <hr className="modal-divider" />
           <div className="modal-form" style={{ marginTop: "2rem" }}>
             <Grid container spacing={2}>
-              
+
               <Grid item xs={12}>
                 <TextField
                   disabled
@@ -256,7 +256,7 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                     Khách hàng
                   </InputLabel>
                   <Select
-                  disabled
+                    disabled
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     value={khid}
