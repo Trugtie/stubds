@@ -40,6 +40,10 @@ export default function PropertyTable() {
   const handleCloseToast = () => setOpenToast(false);
   useEffect(() => {
     if (status === HTTP_STATUS.EDITED) {
+      if (image.status === HTTP_STATUS.INSERTED && status === HTTP_STATUS.EDITED) {
+        window.alert("Vui lòng F5 lại trang để cập nhật hình ảnh")
+        dispatch(setStateImage)
+      }
       dispatch(getProperties())
       setOpen(false);
       dispatch(setEdited)
@@ -55,13 +59,6 @@ export default function PropertyTable() {
     }
   }, [status])
   // TOAST
-
-  useEffect(() => {
-    if (image.status === HTTP_STATUS.INSERTED && status === HTTP_STATUS.EDITED) {
-      window.alert("Vui lòng F5 lại trang để cập nhật hình ảnh")
-      dispatch(setStateImage)
-    }
-  }, [image.status])
 
   return (
     <div>
