@@ -196,7 +196,11 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
         khid: khid,
         loaibdid: loaibdid
       }
-      dispatch(addConsignment({ chiphidv, giatri, ngaybd, ngayketthuc, trangthai, khid, formBatdongsan }));
+      if (window.confirm("Hợp đồng sau khi thêm sẽ không thể xoá trước thời hạn ! Bạn có chắc thêm ?")) {
+        dispatch(addConsignment({ chiphidv, giatri, ngaybd, ngayketthuc, trangthai, khid, formBatdongsan }));
+      } else {
+        return;
+      }
     }
   };
 
