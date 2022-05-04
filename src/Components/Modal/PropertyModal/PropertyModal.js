@@ -101,8 +101,8 @@ export default function PropertyModal({ property, isOpen, isClose }) {
     }
   }, [])
 
-  const [chieudai, setChieudai] = React.useState("");
-  const [chieurong, setChieurong] = React.useState("");
+  const [chieudai, setChieudai] = React.useState(0);
+  const [chieurong, setChieurong] = React.useState(0);
   const [dientich, setDientich] = React.useState("");
   const [dongia, setDongia] = React.useState("0");
   const [hinhanh, setHinhanh] = React.useState(null);
@@ -144,10 +144,24 @@ export default function PropertyModal({ property, isOpen, isClose }) {
     setLoaibdid(prop.loaibdid);
   };
 
+  const handleChange = (prop) => (e) => {
+    var value = e.target.value;
+    if(prop ==="chieudai"){
+      setChieudai(value)
+      setDientich(value* chieurong)
+    }
+    if(prop ==="chieurong"){
+      setChieurong(value)
+      setDientich(value* chieudai)
+    }
+  };
+
   const handleEdit = () => {
     if (
       chieudai === "" ||
       chieurong === "" ||
+      chieudai === 0 ||
+      chieurong === 0 ||
       dientich === "" ||
       dongia === "" ||
       huehong === "" ||
@@ -240,7 +254,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                     variant="filled"
                     placeholder="Nhập chiều dài..."
                     defaultValue={chieudai}
-                    onChange={(e) => setChieudai(e.target.value)}
+                    onChange={ handleChange("chieudai")}
                   />
                 </Grid>
                 <Grid item xs={4}>
@@ -250,17 +264,18 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                     variant="filled"
                     placeholder="Nhập chiều rộng..."
                     defaultValue={chieurong}
-                    onChange={(e) => setChieurong(e.target.value)}
+                    onChange={ handleChange("chieurong")}
                   />
                 </Grid>
                 <Grid item xs={4}>
                   <TextField
                     required
+                    disabled
                     id="filled-basic"
                     label="Diện tích (m2)"
                     variant="filled"
                     placeholder="Nhập diện tích..."
-                    defaultValue={dientich}
+                    value={dientich}
                     onChange={(e) => setDientich(e.target.value)}
                   />
                 </Grid>

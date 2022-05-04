@@ -88,9 +88,9 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   const [ngayketthuc, setNgaykt] = React.useState(null);
   const [trangthai, setTrangthai] = React.useState("0");
   const [khid, setKhachhang] = React.useState("");
-  const [chieudai, setChieudai] = React.useState("");
-  const [chieurong, setChieurong] = React.useState("");
-  const [dientich, setDientich] = React.useState("");
+  const [chieudai, setChieudai] = React.useState(0);
+  const [chieurong, setChieurong] = React.useState(0);
+  const [dientich, setDientich] = React.useState(chieudai*chieurong);
   const [dongia, setDongia] = React.useState("0");
   const [hinhanh, setHinhanh] = React.useState(null);
   const [huehong, setHuehong] = React.useState("0");
@@ -161,6 +161,8 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
       ngayketthuc === null ||
       chieudai === "" ||
       chieurong === "" ||
+      chieudai === 0 ||
+      chieurong === 0 ||
       dientich === "" ||
       dongia === "" ||
       huehong === "" ||
@@ -208,6 +210,18 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
       }
     } else {
       return;
+    }
+  };
+
+  const handleChange = (prop) => (e) => {
+    var value = e.target.value;
+    if(prop ==="chieudai"){
+      setChieudai(value)
+      setDientich(value* chieurong)
+    }
+    if(prop ==="chieurong"){
+      setChieurong(value)
+      setDientich(value* chieudai)
     }
   };
 
@@ -312,7 +326,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   variant="filled"
                   placeholder="Nhập chiều dài..."
                   defaultValue={chieudai}
-                  onChange={(e) => setChieudai(e.target.value)}
+                  onChange={ handleChange("chieudai")}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -322,17 +336,18 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   variant="filled"
                   placeholder="Nhập chiều rộng..."
                   defaultValue={chieurong}
-                  onChange={(e) => setChieurong(e.target.value)}
+                  onChange={ handleChange("chieurong")}
                 />
               </Grid>
               <Grid item xs={4}>
                 <TextField
                   required
+                  disabled
                   id="filled-basic"
                   label="Diện tích (m2)"
                   variant="filled"
                   placeholder="Nhập diện tích..."
-                  defaultValue={dientich}
+                  value={dientich}
                   onChange={(e) => setDientich(e.target.value)}
                 />
               </Grid>
