@@ -59,10 +59,10 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
   };
 
   const dispatch = useDispatch();
-  const [giatri, setGiatri] = React.useState();
+  const [giatri, setGiatri] = React.useState(0);
   const [ngaylap, setNgaylap] = React.useState(null);
   const [trangthai, setTrangthai] = React.useState(0);
-  const [khid, setKhid] = React.useState();
+  const [khid, setKhid] = React.useState(0);
   const [dcid, setDcid] = React.useState();
 
   React.useEffect(() => {
@@ -77,7 +77,6 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
   const types = JSON.parse(JSON.stringify(useSelector((state) => state.PropertyType)));
   const propers = JSON.parse(JSON.stringify(useSelector((state) => state.Property)));
   const properties = JSON.parse(JSON.stringify(useSelector((state) => state.Deposit.list.filter((item) => item.trangthai === 0))));
-
   React.useEffect(() => {
     if (types.list.length === 0) {
       dispatch(getTypes())
@@ -99,10 +98,10 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
   };
 
   const handleFormAdd = () => {
-    setGiatri();
+    setGiatri(0);
     setNgaylap(null);
     setTrangthai(0);
-    setKhid();
+    setKhid(0);
     setDcid();
   };
 
@@ -133,6 +132,17 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
     }
   };
 
+  const handleChange = (prop) => (e) => {
+    var value = e.target.value;
+    if (prop === "dcid") {
+      setDcid(value);
+      var deposit_amount = properties[0].giatri
+      var property_amount = propers.list.find((item) => item.bdsid === properties[0].bdsid).dongia
+      setKhid(properties[0].khid)
+      setGiatri(Number(property_amount) - Number(deposit_amount))
+    }
+  };
+
   return (
     <Modal
       open={isOpen}
@@ -147,16 +157,16 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
           <hr className="modal-divider" />
           <div className="modal-form" style={{ marginTop: "2rem" }}>
             <Grid container spacing={2}>
+              
               <Grid item xs={12}>
                 <TextField
-                  required
+                  disabled
                   id="filled-basic"
                   label="Giá trị (VND)"
                   variant="filled"
                   fullWidth
-                  placeholder="Nhập giá trị..."
                   type="number"
-                  defaultValue={giatri}
+                  value={giatri}
                   onChange={(e) => setGiatri(e.target.value)}
                 />
               </Grid>
@@ -166,7 +176,7 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                   locale={frLocale}
                 >
                   <DatePicker
-                    required
+
                     label="Ngày lập"
                     value={ngaylap}
                     minDate={new Date().setDate(new Date().getDate() + 1)}
@@ -180,6 +190,42 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                     )}
                   />
                 </LocalizationProvider>
+              </Grid>
+              <Grid item xs={6}>
+                {contract ?
+                  <TextField
+                    disabled
+                    id="filled-basic"
+                    label="Mã đặt cọc"
+                    variant="filled"
+                    fullWidth
+                    defaultValue={contract.dcid}
+                  />
+                  :
+                  <FormControl
+                    variant="filled"
+                    sx={{ width: "100%", minHeight: "100%" }}
+                  >
+                    <InputLabel id="demo-simple-select-filled-label">
+                      Mã đặt cọc
+                    </InputLabel>
+                    <Select
+
+                      labelId="demo-simple-select-filled-label"
+                      id="demo-simple-select-filled"
+                      defaultValue={dcid}
+                      onChange={handleChange("dcid")}
+                    >
+                      {properties?.map(item => {
+                        return (
+                          <MenuItem value={item.dcid}>
+                            {item.dcid}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                }
               </Grid>
               <Grid item xs={6}>
                 <FormControl
@@ -210,10 +256,10 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                     Khách hàng
                   </InputLabel>
                   <Select
-                    required
+                  disabled
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
-                    defaultValue={khid}
+                    value={khid}
                     onChange={(e) => setKhid(e.target.value)}
                   >
                     {customers.list?.map(item => {
@@ -225,44 +271,6 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                     })}
                   </Select>
                 </FormControl>
-              </Grid>
-              <Grid item xs={6}>
-                {contract ?
-                  <TextField
-                    disabled
-                    id="filled-basic"
-                    label="Mã đặt cọc"
-                    variant="filled"
-                    fullWidth
-                    defaultValue={contract.dcid}
-                  />
-                  :
-                  <FormControl
-                    variant="filled"
-                    sx={{ width: "100%", minHeight: "100%" }}
-                  >
-                    <InputLabel id="demo-simple-select-filled-label">
-                      Mã đặt cọc
-                    </InputLabel>
-                    <Select
-                    required
-                      labelId="demo-simple-select-filled-label"
-                      id="demo-simple-select-filled"
-                      defaultValue={dcid}
-                      onChange={(e) => {
-                        setDcid(e.target.value)
-                      }}
-                    >
-                      {properties?.map(item => {
-                        return (
-                          <MenuItem value={item.dcid}>
-                            {item.dcid}
-                          </MenuItem>
-                        );
-                      })}
-                    </Select>
-                  </FormControl>
-                }
               </Grid>
             </Grid>
           </div>

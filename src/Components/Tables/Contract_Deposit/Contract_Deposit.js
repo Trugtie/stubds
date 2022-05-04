@@ -38,7 +38,6 @@ export default function Contract_Deposit() {
     if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED) {
       setOpen(false);
     } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.INSERT_FAILED) {
-      setOpen(true);
       if (message) {
         window.alert(`${message}`);
         dispatch(setState)

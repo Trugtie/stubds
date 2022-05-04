@@ -82,18 +82,18 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
     }
   }, [isOpen]);
 
-  const [chiphidv, setChiphi] = React.useState("0");
-  const [giatri, setGiatri] = React.useState("0");
+  const [chiphidv, setChiphi] = React.useState(0);
+  const [giatri, setGiatri] = React.useState(0);
   const [ngaybd, setNgaybd] = React.useState(null);
   const [ngayketthuc, setNgaykt] = React.useState(null);
   const [trangthai, setTrangthai] = React.useState("0");
   const [khid, setKhachhang] = React.useState("");
   const [chieudai, setChieudai] = React.useState(0);
   const [chieurong, setChieurong] = React.useState(0);
-  const [dientich, setDientich] = React.useState(chieudai*chieurong);
-  const [dongia, setDongia] = React.useState("0");
+  const [dientich, setDientich] = React.useState(chieudai * chieurong);
+  const [dongia, setDongia] = React.useState(0);
   const [hinhanh, setHinhanh] = React.useState(null);
-  const [huehong, setHuehong] = React.useState("0");
+  const [huehong, setHuehong] = React.useState(0);
   const [masoqsdd, setMasoqsdd] = React.useState("");
   const [mota, setMota] = React.useState("");
   const [phuong, setPhuong] = React.useState("");
@@ -130,18 +130,18 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
   };
 
   const handleFormAdd = () => {
-    setChiphi("");
-    setGiatri("");
+    setChiphi(0);
+    setGiatri(0);
     setNgaybd(null);
     setNgaykt(null);
     setTrangthai(0);
-    setKhachhang("");
-    setChieudai("");
-    setChieurong("");
-    setDientich("");
-    setDongia("");
+    setKhachhang(0);
+    setChieudai(0);
+    setChieurong(0);
+    setDientich(0);
+    setDongia(0);
     setHinhanh(null);
-    setHuehong("");
+    setHuehong(0);
     setMasoqsdd("");
     setMota("");
     setPhuong("");
@@ -215,13 +215,19 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
 
   const handleChange = (prop) => (e) => {
     var value = e.target.value;
-    if(prop ==="chieudai"){
+    if (prop === "chieudai") {
       setChieudai(value)
-      setDientich(value* chieurong)
+      setDientich(value * chieurong)
     }
-    if(prop ==="chieurong"){
+    if (prop === "chieurong") {
       setChieurong(value)
-      setDientich(value* chieudai)
+      setDientich(value * chieudai)
+    }
+    if (prop === "dongia") {
+      setDongia(value)
+      setHuehong(Math.round(value * 1 / 100))
+      setChiphi(Math.round(value * 2 / 100))
+      setGiatri(Number(value) + Number(Math.round(value * 1 / 100)) + Number(Math.round(value * 2 / 100)))
     }
   };
 
@@ -241,31 +247,25 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField
+                  disabled
                   id="filled-basic"
                   label="Chi phí dịch vụ (VND)"
                   variant="filled"
                   placeholder="Nhập chi phí dịch vụ..."
                   fullWidth
-                  defaultValue={chiphidv}
+                  value={chiphidv}
                   onChange={(e) => setChiphi(e.target.value)}
-                  type="number"
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
+                  disabled
                   id="filled-basic"
                   label="Giá trị (VND)"
                   variant="filled"
                   fullWidth
-                  placeholder="Nhập giá trị..."
                   type="number"
-                  defaultValue={giatri}
-                  onInput={(e) => {
-                    e.target.value = Math.max(0, parseInt(e.target.value))
-                      .toString()
-                      .slice(0, 10);
-                  }}
+                  value={giatri}
                   onChange={(e) => setGiatri(e.target.value)}
                 />
               </Grid>
@@ -275,7 +275,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   locale={frLocale}
                 >
                   <DatePicker
-                    required
+
                     label="Ngày bắt đầu"
                     value={ngaybd}
                     disablePast
@@ -295,7 +295,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   locale={frLocale}
                 >
                   <DatePicker
-                    required
+
                     label="Ngày kết thúc"
                     value={ngayketthuc}
                     disablePast
@@ -320,13 +320,13 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
             <Grid container spacing={2}>
               <Grid item xs={4}>
                 <TextField
-                  required
+
                   id="filled-basic"
                   label="Chiều dài (m)"
                   variant="filled"
                   placeholder="Nhập chiều dài..."
                   defaultValue={chieudai}
-                  onChange={ handleChange("chieudai")}
+                  onChange={handleChange("chieudai")}
                 />
               </Grid>
               <Grid item xs={4}>
@@ -336,12 +336,12 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   variant="filled"
                   placeholder="Nhập chiều rộng..."
                   defaultValue={chieurong}
-                  onChange={ handleChange("chieurong")}
+                  onChange={handleChange("chieurong")}
                 />
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  required
+
                   disabled
                   id="filled-basic"
                   label="Diện tích (m2)"
@@ -359,13 +359,13 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                   placeholder="Nhập đơn giá..."
                   fullWidth
                   defaultValue={dongia}
-                  onChange={(e) => setDongia(e.target.value)}
+                  onChange={handleChange("dongia")}
                   type="number"
                 />
               </Grid>
               <Grid item xs={3}>
                 <TextField
-                  required
+
                   id="filled-basic"
                   label="Mã QSDĐ"
                   variant="filled"
@@ -383,25 +383,19 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
               </Grid>
               <Grid item xs={3}>
                 <TextField
-                  required
+                  disabled
                   id="filled-basic"
-                  label="Huê hồng (%)"
+                  label="Huê hồng"
                   variant="filled"
                   fullWidth
-                  placeholder="%"
                   type="number"
-                  defaultValue={huehong}
-                  onInput={(e) => {
-                    e.target.value = Math.max(0, parseInt(e.target.value))
-                      .toString()
-                      .slice(0, 2);
-                  }}
+                  value={huehong}
                   onChange={(e) => setHuehong(e.target.value)}
                 />
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
+
                   id="filled-basic"
                   label="Số nhà"
                   variant="filled"
@@ -413,7 +407,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
+
                   id="filled-basic"
                   label="Đường"
                   variant="filled"
@@ -425,7 +419,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  required
+
                   id="filled-basic"
                   label="Thành phố/Tỉnh"
                   variant="filled"
@@ -437,7 +431,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  required
+
                   id="filled-basic"
                   label="Quận/Huyện"
                   variant="filled"
@@ -449,7 +443,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  required
+
                   id="filled-basic"
                   label="Phường/xã"
                   variant="filled"
@@ -489,7 +483,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     Khách hàng
                   </InputLabel>
                   <Select
-                    required
+
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     defaultValue={khid}
@@ -514,7 +508,6 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     Loại BĐS
                   </InputLabel>
                   <Select
-                    required
                     labelId="demo-simple-select-filled-label"
                     id="demo-simple-select-filled"
                     defaultValue={loaibdid}

@@ -205,7 +205,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
             <Grid container spacing={2}>
               <Grid item xs={4}>
                 <TextField
-                  required
+                  
                   id="filled-basic"
                   label="Họ"
                   variant="filled"
@@ -226,7 +226,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  required
+                  
                   id="filled-basic"
                   label="Tên"
                   variant="filled"
@@ -241,7 +241,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
                   locale={frLocale}
                 >
                   <DatePicker
-                    required
+                    
                     label="Ngày sinh"
                     value={ngaysinh}
                     openTo="year"
@@ -259,7 +259,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
               </Grid>
               <Grid item xs={4}>
                 <TextField
-                  required
+                  
                   id="filled-basic"
                   label="Số điện thoại"
                   variant="filled"
@@ -296,7 +296,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  
                   id="filled-basic"
                   label="Địa chỉ"
                   variant="filled"
@@ -308,7 +308,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  
                   id="filled-basic"
                   label="Email"
                   variant="filled"
@@ -377,7 +377,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
                 ) : (
                   <React.Fragment>
                     <TextField
-                      required
+                      
                       id="filled-basic"
                       label="Tên tài khoản"
                       variant="filled"
@@ -409,7 +409,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
+                  
                   id="filled-basic"
                   label="Mật khẩu"
                   variant="filled"
@@ -421,7 +421,7 @@ export default function BasicModal({ staff, isOpen, isClose }) {
               </Grid>
               <Grid item xs={6}>
                 <TextField
-                  required
+                  
                   id="filled-basic"
                   label="Xác nhận mật khẩu"
                   variant="filled"

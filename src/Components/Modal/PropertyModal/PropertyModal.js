@@ -146,13 +146,13 @@ export default function PropertyModal({ property, isOpen, isClose }) {
 
   const handleChange = (prop) => (e) => {
     var value = e.target.value;
-    if(prop ==="chieudai"){
+    if (prop === "chieudai") {
       setChieudai(value)
-      setDientich(value* chieurong)
+      setDientich(value * chieurong)
     }
-    if(prop ==="chieurong"){
+    if (prop === "chieurong") {
       setChieurong(value)
-      setDientich(value* chieudai)
+      setDientich(value * chieudai)
     }
   };
 
@@ -248,13 +248,13 @@ export default function PropertyModal({ property, isOpen, isClose }) {
               <Grid container spacing={2}>
                 <Grid item xs={4}>
                   <TextField
-                    required
+                    
                     id="filled-basic"
                     label="Chiều dài (m)"
                     variant="filled"
                     placeholder="Nhập chiều dài..."
                     defaultValue={chieudai}
-                    onChange={ handleChange("chieudai")}
+                    onChange={handleChange("chieudai")}
                   />
                 </Grid>
                 <Grid item xs={4}>
@@ -264,12 +264,12 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                     variant="filled"
                     placeholder="Nhập chiều rộng..."
                     defaultValue={chieurong}
-                    onChange={ handleChange("chieurong")}
+                    onChange={handleChange("chieurong")}
                   />
                 </Grid>
                 <Grid item xs={4}>
                   <TextField
-                    required
+                    
                     disabled
                     id="filled-basic"
                     label="Diện tích (m2)"
@@ -281,6 +281,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
+                    disabled
                     id="filled-basic"
                     label="Đơn giá (VND)"
                     variant="filled"
@@ -293,7 +294,6 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                 </Grid>
                 <Grid item xs={3}>
                   <TextField
-                    required
                     id="filled-basic"
                     label="Mã QSDĐ"
                     variant="filled"
@@ -311,7 +311,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                 </Grid>
                 <Grid item xs={3}>
                   <TextField
-                    required
+                    disabled
                     id="filled-basic"
                     label="Huê hồng (%)"
                     variant="filled"
@@ -329,7 +329,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    required
+                    
                     id="filled-basic"
                     label="Số nhà"
                     variant="filled"
@@ -341,7 +341,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                 </Grid>
                 <Grid item xs={6}>
                   <TextField
-                    required
+                    
                     id="filled-basic"
                     label="Đường"
                     variant="filled"
@@ -353,7 +353,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                 </Grid>
                 <Grid item xs={4}>
                   <TextField
-                    required
+                    
                     id="filled-basic"
                     label="Thành phố/Tỉnh"
                     variant="filled"
@@ -365,7 +365,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                 </Grid>
                 <Grid item xs={4}>
                   <TextField
-                    required
+                    
                     id="filled-basic"
                     label="Quận/Huyện"
                     variant="filled"
@@ -377,7 +377,7 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                 </Grid>
                 <Grid item xs={4}>
                   <TextField
-                    required
+                    
                     id="filled-basic"
                     label="Phường/xã"
                     variant="filled"
@@ -387,65 +387,6 @@ export default function PropertyModal({ property, isOpen, isClose }) {
                     onChange={(e) => setPhuong(e.target.value)}
                   />
                 </Grid>
-
-                {/* <Grid item xs={4}>
-              <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Thành phố/Tỉnh
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
-                  >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={4}>
-              <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                   Quận/Huyện
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
-                  >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={4}>
-              <FormControl
-                  variant="filled"
-                  sx={{ width: "100%", minHeight: "100%" }}
-                >
-                  <InputLabel id="demo-simple-select-filled-label">
-                    Phường/Xã
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-filled-label"
-                    id="demo-simple-select-filled"
-                    defaultValue={loaikh}
-                    onChange={(e) => setLoai(e.target.value)}
-                  >
-                    <MenuItem value={"0"}>Cá nhân</MenuItem>
-                    <MenuItem value={"1"}>Công ty</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid> */}
-
                 <Grid item xs={4}>
                   <FormControl
                     variant="filled"

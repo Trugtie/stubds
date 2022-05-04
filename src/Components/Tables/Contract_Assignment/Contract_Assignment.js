@@ -69,13 +69,6 @@ export default function Contract_Assignment() {
               <Typography variant="h4" gutterBottom component="div" style={{ color: "#CF9269" }} sx={{ fontWeight: 'bold' }}>
                   Danh sách hợp đồng chuyển nhượng
                 </Typography>
-                {status === HTTP_STATUS.PENDING ?
-                  <Loading
-                    loading={true}
-                    background="rgba(0,0,0,0.2)"
-                    loaderColor="#CF9269"
-                  />
-                  : ""}
                 <AlertToast value={toast} open={openToast} close={handleCloseToast} />
               </div>
             </div>
@@ -111,6 +104,13 @@ export default function Contract_Assignment() {
         }}
       />
       <AssignmentModal contract={assignment} isOpen={open} isClose={handleClose} />
+      {status === HTTP_STATUS.PENDING ?
+                  <Loading
+                    loading={true}
+                    background="rgba(0,0,0,0.2)"
+                    loaderColor="#CF9269"
+                  />
+                  : ""}
     </div>
   );
 }

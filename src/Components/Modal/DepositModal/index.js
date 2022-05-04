@@ -128,12 +128,15 @@ export default function DepositModal({ contract, isOpen, isClose }) {
       
     }
   };
-
-  const handleDelete = () => {
+  const handleDelete = (e) => {
     if (window.confirm("Bạn có chắc muốn xoá hợp đồng ID: " + contract.dcid)) {
       var consignment = property.filter((item) => item.bdsid === bdsid);
       var kgid = consignment[0].kgid;
-      dispatch(deleteDeposit(contract.dcid, kgid))
+      if (contract.trangthai === 0) {
+        dispatch(deleteDeposit(contract.dcid,kgid))
+      } else {
+        window.alert("Không thể xoá hợp đồng này !")
+      }
     } else {
       return;
     }
@@ -156,7 +159,7 @@ export default function DepositModal({ contract, isOpen, isClose }) {
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
-                  required
+                  
                   id="filled-basic"
                   label="Giá trị (VND)"
                   variant="filled"
@@ -173,7 +176,7 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                   locale={frLocale}
                 >
                   <DatePicker
-                    required
+                    
                     label="Ngày lập"
                     value={ngaylap}
                     disablePast
@@ -193,13 +196,12 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                   locale={frLocale}
                 >
                   <DatePicker
-                    required
                     label="Ngày hết hạn"
                     value={ngayhethan}
                     disablePast
                     openTo="year"
                     views={["year", "month", "day"]}
-                    minDate={new Date().setMonth(new Date().getMonth() + 3)}
+                    minDate={ngaylap}
                     maxDate={new Date().setFullYear(new Date().getFullYear() + 5)}
                     onChange={(newValue) => {
                       setNgayhethan(newValue);
