@@ -169,6 +169,7 @@ export default function AssignmentModal({ contract, isOpen, isClose }) {
                     required
                     label="Ngày lập"
                     value={ngaylap}
+                    minDate={new Date().setDate(new Date().getDate() + 1)}
                     maxDate={new Date().setMonth(new Date().getMonth() + 3)}
                     disablePast
                     onChange={(newValue) => {

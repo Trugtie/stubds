@@ -49,6 +49,9 @@ export const consignmentSlice = createSlice({
         setState: (state) => {
             state.status = HTTP_STATUS.FULFILLED
             state.message = null
+        },
+        setEdited: (state) => {
+            state.status = HTTP_STATUS.EDITED
         }
     },
     extraReducers: {
@@ -92,5 +95,5 @@ export const consignmentSlice = createSlice({
         },
     }
 })
-export const { setState } = consignmentSlice.actions;
+export const { setState, setEdited } = consignmentSlice.actions;
 export default consignmentSlice.reducer;

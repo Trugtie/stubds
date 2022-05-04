@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getConsignments, setState } from "../../../redux/consignmentSlice";
+import { getConsignments, setState, setEdited } from "../../../redux/consignmentSlice";
 import { HTTP_STATUS } from "../../../redux/constants";
 import Loading from "react-fullscreen-loading";
 import AlertToast from "../../Alert/alert";
@@ -34,13 +34,16 @@ export default function Contract_Consignment() {
   const [openToast, setOpenToast] = useState(false);
   const handleCloseToast = () => setOpenToast(false);
   useEffect(() => {
-    setOpenToast(true);
-    setToast(status);
     if (status === HTTP_STATUS.DELETED || status === HTTP_STATUS.INSERTED) {
       setOpen(false);
       dispatch(getConsignments())
+      dispatch(setEdited)
+      setOpenToast(true);
+      setToast(status);
     } else if (status === HTTP_STATUS.DELETE_FAILED || status === HTTP_STATUS.INSERT_FAILED) {
       setOpen(true);
+      setOpenToast(true);
+      setToast(status);
       if (message) {
         window.alert(`${message}`);
         dispatch(setState)

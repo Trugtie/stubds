@@ -177,6 +177,7 @@ export default function DepositModal({ contract, isOpen, isClose }) {
                     label="Ngày lập"
                     value={ngaylap}
                     disablePast
+                    minDate={new Date().setDate(new Date().getDate() + 1)}
                     onChange={(newValue) => {
                       setNgaylap(newValue);
                     }}

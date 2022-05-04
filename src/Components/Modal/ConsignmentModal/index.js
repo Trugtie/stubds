@@ -265,6 +265,7 @@ export default function ConsignmentModal({ isOpen, isClose, contract }) {
                     label="Ngày bắt đầu"
                     value={ngaybd}
                     disablePast
+                    minDate={new Date().setDate(new Date().getDate() + 1)}
                     onChange={(newValue) => {
                       setNgaybd(newValue);
                     }}
